@@ -1,5 +1,4 @@
-require "rbvhdl/version"
-
-module Rbvhdl
-  # Your code goes here...
+module RbVHDL
+  require_relative 'rbvhdl/version'
+  require_relative 'rbvhdl/ast'
 end
