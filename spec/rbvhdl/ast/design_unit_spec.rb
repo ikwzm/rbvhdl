@@ -29,8 +29,8 @@ describe 'RbVHDL::Ast::DesignUnit' do
     expect(design_unit._clause_list[1]._name_list[0]._suffix._name        ).to eq :ALL
   end
 
-  it "design_unit._use_clause()._use(name(:work)._select(:textio)._select(:ALL))" do
-    design_unit._use_clause._use(RbVHDL::Ast.name(:work)._select(:textio)._select(:ALL))
+  it "design_unit._use_clause()._use!(name(:work)._select(:textio)._select(:ALL))" do
+    design_unit._use_clause._use!(RbVHDL::Ast.name(:work)._select(:textio)._select(:ALL))
     expect(design_unit._clause_list.size                                  ).to eq 3
     expect(design_unit._clause_list[2].class                              ).to eq RbVHDL::Ast::Declaration::UseClause
     expect(design_unit._clause_list[2]._owner                             ).to eq design_unit

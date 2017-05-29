@@ -13,7 +13,7 @@ module RbVHDL::Ast
        expr.class  < RbVHDL::Ast::Expression::Term       then
       return expr
     else
-      raise "abort #{self.class}.#{__method__}(#{expr}:#{expr.class}): Illegal class"
+      raise ArgumentError, "#{self.inspect}.#{__method__}(#{expr.inspect}:#{expr.class})"
     end
   end
 
@@ -21,7 +21,7 @@ module RbVHDL::Ast
     if expr.class < RbVHDL::Ast::Expression::Term then
       return expr
     else
-      raise "abort #{self.class}.#{__method__}(#{expr}:#{expr.class}): Illegal class"
+      raise ArgumentError, "#{self.inspect}.#{__method__}(#{expr.inspect}:#{expr.class})"
     end
   end
 

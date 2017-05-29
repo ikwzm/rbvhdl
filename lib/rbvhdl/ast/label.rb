@@ -10,7 +10,7 @@ module RbVHDL::Ast
     elsif name.class == Identifier then return Label.new(name.to_sym)
     elsif name.class == Symbol     then return Label.new(name)
     elsif name.class == String     then return Label.new(name.to_sym)
-    else  raise "abort #{self.class}.#{__method__}(#{name}:#{name.class}): Illegal class"
+    else  raise ArgumentError, "#{self.inspect}.#{__method__}(#{name.inspect}:#{name.class})"
     end
   end
 

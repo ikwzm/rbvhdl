@@ -13,7 +13,7 @@ module RbVHDL::Ast
         @_annotation = Hash.new
       end
 
-      def _use(selected_name)
+      def _use!(selected_name)
         @_name_list.push(selected_name)
         return self
       end
@@ -23,13 +23,22 @@ module RbVHDL::Ast
 
   def self.use_clause(owner, arg=nil)
     decl = RbVHDL::Ast::Declaration::UseClause.new(owner)
-    if    arg.nil?                                      then name_list = []
-    elsif arg.class == Array                            then name_list = arg
+    if    arg.nil?                                           then name_list = []
     elsif arg.class == RbVHDL::Ast::Expression::SelectedName then name_list = [arg]
-    else  raise "abort #{self.class}.#{__method__}(arg:#{arg.class}): Illegal arg'class)"
+    elsif arg.class == Array                                 then
+      if arg.reject{ |name| name.class == RbVHDL::Ast::Expression::SelectedName }.count == 0 then
+        name_list = arg
+      else
+        name_list = nil
+      end
+    else
+        name_list = nil
+    end
+    if name_list.nil? then
+      raise ArgumentError, "#{self.inspect}.#{__method__}(#{owner.inspect}, #{arg.inspect}:#{arg.class})"
     end
     name_list.each do |selected_name|
-      decl._use(selected_name)
+      decl._use!(selected_name)
     end
     return decl
   end

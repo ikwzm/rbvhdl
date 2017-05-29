@@ -157,7 +157,7 @@ module RbVHDL::Ast
        delay.class < RbVHDL::Ast::Statement::DelayMechanism then
       return delay
     else
-      raise "abort RbVHDL.#{__method__}(#{delay}:#{delay.class}): Illegal class"
+      raise ArgumentError, "#{self.inspect}.#{__method__}(#{delay.inspect}:#{delay.class})"
     end
   end
 

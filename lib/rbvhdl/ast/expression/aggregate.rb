@@ -23,10 +23,10 @@ module RbVHDL::Ast
       attr_reader   :_item_list
       def initialize(item_list)
         super()
-        @_item_list = _item_list
+        @_item_list = item_list
       end
 
-      def _add_item(item)
+      def _add_item!(item)
         @_item_list.push(item)
         return self
       end
@@ -34,33 +34,30 @@ module RbVHDL::Ast
 
   end
 
-  def self.aggregate_item(choice_list, expression)
-    if choice_list.nil? then
-      choices = nil
-    else
-      choices = RbVHDL::Ast.choices(choice_list)
-    end
-    return RbVHDL::Ast::Expression::Aggregate::Item.new(choices, RbVHDL::Ast.expression(expression))
+  def self.aggregate_item(choices, expression)
+    return RbVHDL::Ast::Expression::Aggregate::Item.new(RbVHDL::Ast.choices_or_nil(choices), RbVHDL::Ast.expression(expression))
   end
 
   def self.aggregate(items=nil)
     aggregate = RbVHDL::Ast::Expression::Aggregate.new([])
-    if items.nil? then
-      return aggregate
+    if    items.nil?                                              then item_list = []
+    elsif items.class == RbVHDL::Ast::Expression::Aggregate::Item then item_list = [items]
     elsif items.class == Array then
-      items.each do |item|
-        if item.class == RbVHDL::Ast::Expression::Aggregate::Item then
-          aggregate._add_item(item)
-        else
-          raise "abort #{self.class}.#{__method__}(#{items}:#{items.class}): Illegal class"
-        end
+      if items.reject { |item| item.class == RbVHDL::Ast::Expression::Aggregate::Item }.count == 0 then
+        item_list = items
+      else
+        item_list = nil
       end
-      return aggregate
-    elsif items.class = RbVHDL::Ast::Expression::Aggregate::Item then
-      return aggregate._add_item(items)
     else
-      raise "abort #{self.class}.#{__method__}(#{items}:#{items.class}): Illegal class"
+      item_list = nil
     end
+    if item_list.nil? then
+      raise ArgumentError, "#{self.inspect}.#{__method__}(#{items.inspect}:#{items.class})"
+    end
+    item_list.each do |item|
+      aggregate._add_item!(item)
+    end
+    return aggregate
   end
 
 end

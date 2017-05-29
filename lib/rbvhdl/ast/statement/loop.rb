@@ -120,7 +120,7 @@ module RbVHDL::Ast
     if index_range.class < RbVHDL::Ast::Type::Range then
       return RbVHDL::Ast::Statement::ForLoop.new(owner, _index_identifier, index_range)
     else
-      raise "abort #{self.class}.#{__method__}(#{index_range}:#{index_range.class}): Illegal class"
+      raise ArgumentError, "#{self.inspect}.#{__method__}(#{index_range.inspect}:#{index_range.class})"
     end
   end
 

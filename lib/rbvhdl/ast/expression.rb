@@ -27,7 +27,7 @@ module RbVHDL::Ast
     if    arg.class < RbVHDL::Ast::Expression then
       return arg
     else
-      raise "abort #{self.class}.#{__method__}(arg:#{arg.class}): Illegal args'class)"
+      raise ArgumentError, "#{self.inspect}.#{__method__}(#{arg.inspect}:#{arg.class})"
     end      
   end
 

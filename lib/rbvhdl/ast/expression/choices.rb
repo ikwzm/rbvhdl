@@ -10,7 +10,7 @@ module RbVHDL::Ast
       def initialize
         @_choice_list = []
       end
-      def _add_choice(choice)
+      def _add_choice!(choice)
         if choice.class == Choices then
           @_choice_list.concat(choice._choice_list)
         else
@@ -106,12 +106,16 @@ module RbVHDL::Ast
     elsif choices.class == Array then
       new_choices = RbVHDL::Ast::Expression::Choices.new
       choices.each do |choice|
-        new_choices._add_choice(RbVHDL::Ast.choice(choice))
+        new_choices._add_choice!(RbVHDL::Ast.choice(choice))
       end
       return new_choices
     else
       return RbVHDL::Ast.choice(choice)
     end
+  end
+  
+  def self.choices_or_nil(choices)
+    return (choices.nil?)? nil : self.choices(choices)
   end
   
 end
