@@ -34,14 +34,4 @@ module RbVHDL::Ast
   def self.expression_or_nil(arg)
     return (arg.nil?)? nil : self.expression(arg)
   end
-
-
-
-    # <condistion> <= <expression>
-
-    # <expression> <= <logical_expression>
-
-    # <qualified_expression>: <type_mark> "'" "(" <expression> ")"
-    #                       | <type_mark> "'" <aggregate>
-
 end

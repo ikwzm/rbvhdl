@@ -5,7 +5,8 @@ require_relative '../type/mark'
 module RbVHDL::Ast
 
   class Expression
-
+    # qualified_expression  : type_mark "'" "(" expression ")"
+    #                       | type_mark "'" aggregate
     class QualifiedExpression < Primary
       attr_reader   :_type_mark
       attr_reader   :_argument
