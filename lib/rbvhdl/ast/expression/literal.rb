@@ -138,8 +138,24 @@ module RbVHDL::Ast
       return num
     elsif num.class < Integer then
       return RbVHDL::Ast::Expression::DecimalLiteral.new(num)
+    elsif num.class == Float then
+      str     = num.to_s
+      match   = str.match(/^(-?\d*)(.*)/)
+      literal = RbVHDL::Ast::Expression::DecimalLiteral.new(match[1])
+      str     = match[2]
+      match   = str.match(/^\.(\d+)(.*)/)
+      unless match.nil? then
+        literal._fraction!(match[1])
+        str   = match[2]
+      end
+      match   = str.match(/^[eE]([-+]?\d+)/)
+      unless match.nil? then
+        literal._exponent!(match[1].to_i, true)
+        str   = match[2]
+      end
+      return literal
     else
-      "abort #{self.class}.#{__method__}(#{num}:#{num.class}): Illegal class"
+      raise ArgumentError, "#{self.inspect}.#{__method__}(#{num.inspect}:#{num.class})"
     end
   end
 
@@ -149,7 +165,7 @@ module RbVHDL::Ast
     elsif num.class == String then
       return RbVHDL::Ast::Expression::BasedLiteral.new(base, num)
     else
-      "abort #{self.class}.#{__method__}(#{base}:#{base.class},#{num}:#{num.class}): Illegal class"
+      raise ArgumentError, "#{self.inspect}.#{__method__}(#{base.inspect}:#{base.class},#{num.inspect}:#{num.class})"
     end
   end
 
@@ -159,7 +175,7 @@ module RbVHDL::Ast
     elsif num.class < Integer then
       return RbVHDL::Ast::Expression::Exponent.new(num, sign)
     else
-      "abort #{self.class}.#{__method__}(#{num}:#{num.class},#{sign}:#{sign.class}): Illegal class"
+      raise ArgumentError, "#{self.inspect}.#{__method__}(#{base.inspect}:#{base.class},#{num.inspect}:#{num.class})"
     end
   end
 

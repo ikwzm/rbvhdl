@@ -230,8 +230,8 @@ describe 'RbVHDL::Ast::Statement::ForLoop' do
 
   context "new" do
 
-    it "new(nil, 'i', range_to(decimal_literal(0), decimal_literal(7)))" do
-      stmt = RbVHDL::Ast::Statement::ForLoop.new(nil, RbVHDL::Ast.identifier('i'), RbVHDL::Ast.range_to(RbVHDL::Ast.decimal_literal(0), RbVHDL::Ast.decimal_literal(7)))
+    it "new(nil, 'i', range_to(0, 7))" do
+      stmt = RbVHDL::Ast::Statement::ForLoop.new(nil, RbVHDL::Ast.identifier('i'), RbVHDL::Ast.range_to(0, 7))
       expect(stmt.class                        ).to eq RbVHDL::Ast::Statement::ForLoop
       expect(stmt._owner                       ).to eq nil
       expect(stmt._label                       ).to eq nil
@@ -245,9 +245,8 @@ describe 'RbVHDL::Ast::Statement::ForLoop' do
       expect(stmt._statement_list              ).to eq []
     end
 
-    it "RbVHDL::Ast.for_loop_statement(nil, identifier('i'), range_to(decimal_literal(0), decimal_literal(7)))._label!('TOP_LOOP')" do
-      stmt = RbVHDL::Ast.for_loop_statement(nil, RbVHDL::Ast.identifier('i'), RbVHDL::Ast.range_to(RbVHDL::Ast.decimal_literal(0), RbVHDL::Ast.decimal_literal(7)))
-      stmt._label!('TOP_LOOP')
+    it "RbVHDL::Ast.for_loop_statement(nil, identifier('i'), range_to(0, 7))._label!('TOP_LOOP')" do
+      stmt = RbVHDL::Ast.for_loop_statement(nil, RbVHDL::Ast.identifier('i'), RbVHDL::Ast.range_to(0, 7))._label!('TOP_LOOP')
       expect(stmt.class                        ).to eq RbVHDL::Ast::Statement::ForLoop
       expect(stmt._owner                       ).to eq nil
       expect(stmt._label.class                 ).to eq RbVHDL::Ast::Label

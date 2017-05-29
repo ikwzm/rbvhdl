@@ -66,7 +66,7 @@ module RbVHDL::Ast
       def initialize(name, attribute, signature=nil, expression=nil)
         super()
         @_name       = name
-        @_attribute  = RbVHDL::Ast.identifier(attribute)
+        @_attribute  = attribute
         @_signature  = signature
         @_expression = expression
       end
@@ -76,9 +76,9 @@ module RbVHDL::Ast
 
       def _index(expression)
         if expression.class == Array then
-          expression_list =  expression
+          expression_list = expression.map{|expr| RbVHDL::Ast.expression(expr)}
         else
-          expression_list = [expression]
+          expression_list = [RbVHDL::Ast.expression(expression)]
         end
         name = IndexedName.new(self, nil)
         name._index_list.concat(expression_list)
@@ -87,9 +87,13 @@ module RbVHDL::Ast
       end
 
       def _slice(range)
-        name = SliceName.new(self, range)
-        name._annotation.merge(self._annotation)
-        return name
+        if range.class < RbVHDL::Ast::Type::Range then
+          name = SliceName.new(self, range)
+          name._annotation.merge(self._annotation)
+          return name
+        else
+          raise ArgumentError, "#{self.inspect}.#{__method__}(#{range.inspect}:#{range.class})"
+        end
       end
 
       def _to(l, r)
@@ -118,7 +122,7 @@ module RbVHDL::Ast
       end
 
       def _attribute(attribute, signature=nil, expression=nil)
-        name = AttributeName.new(self, RbVHDL::Ast.identifier(attribute), signature, expression)
+        name = AttributeName.new(self, RbVHDL::Ast.identifier(attribute), signature, RbVHDL::Ast.expression_or_nil(expression))
         name._annotation.merge(self._annotation)
         return name
       end

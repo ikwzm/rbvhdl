@@ -11,8 +11,8 @@ describe 'RbVHDL::Ast::Type::Indication' do
     expect(type._resolution     ).to eq nil
   end
 
-  it "new(type_mark('unsigned')).downto(decimal_literal(3),decimal_literal(0))" do
-    type = RbVHDL::Ast::Type::Indication.new(RbVHDL::Ast.type_mark('unsigned'))._downto(RbVHDL::Ast.decimal_literal(3),RbVHDL::Ast.decimal_literal(0))
+  it "new(type_mark('unsigned')).downto(3, 0)" do
+    type = RbVHDL::Ast::Type::Indication.new(RbVHDL::Ast.type_mark('unsigned'))._downto(3, 0)
     expect(type.class                                             ).to eq RbVHDL::Ast::Type::Indication
     expect(type._type_mark.class                                  ).to eq RbVHDL::Ast::Type::Mark
     expect(type._type_mark                                        ).to eq :unsigned
@@ -26,10 +26,8 @@ describe 'RbVHDL::Ast::Type::Indication' do
     expect(type._resolution                                       ).to eq nil
   end
   
-  it "new('vec_2d').downto(decimal_literal(3),decimal_literal(0)).to(decimal_literal(0),decimal_literal(3))" do
-    type = RbVHDL::Ast::Type::Indication.new(RbVHDL::Ast.type_mark('vec_2d'))
-             ._downto(RbVHDL::Ast.decimal_literal(3),RbVHDL::Ast.decimal_literal(0))
-             ._to(    RbVHDL::Ast.decimal_literal(0),RbVHDL::Ast.decimal_literal(3))
+  it "new('vec_2d').downto(3, 0).to(0, 3)" do
+    type = RbVHDL::Ast::Type::Indication.new(RbVHDL::Ast.type_mark('vec_2d'))._downto(3,0)._to(0,3)
     expect(type.class                                             ).to eq RbVHDL::Ast::Type::Indication
     expect(type._type_mark.class                                  ).to eq RbVHDL::Ast::Type::Mark
     expect(type._type_mark                                        ).to eq :vec_2d

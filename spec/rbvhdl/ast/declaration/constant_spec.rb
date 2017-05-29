@@ -5,7 +5,7 @@ describe 'RbVHDL::Ast::Declaration::Constant' do
   context "new" do
 
     it "new(nil, identifier_list('width'), subtype_indication('integer'), 8)" do
-      var = RbVHDL::Ast::Declaration::Constant.new(nil, RbVHDL::Ast.identifier_list('width'), RbVHDL::Ast.subtype_indication('integer'), RbVHDL::Ast.expression(RbVHDL::Ast.decimal_literal(8)))
+      var = RbVHDL::Ast::Declaration::Constant.new(nil, RbVHDL::Ast.identifier_list('width'), RbVHDL::Ast.subtype_indication('integer'), RbVHDL::Ast.expression(8))
       expect(var.class                               ).to eq RbVHDL::Ast::Declaration::Constant
       expect(var._owner                              ).to eq nil
       expect(var._identifier_list                    ).to eq [:width]
@@ -30,7 +30,7 @@ describe 'RbVHDL::Ast::Declaration::Constant' do
     end
 
     it "constant_declaration(nil, 'width', 'integer', 8)" do
-      var = RbVHDL::Ast.constant_declaration(nil, 'width', 'integer', RbVHDL::Ast.decimal_literal(8))
+      var = RbVHDL::Ast.constant_declaration(nil, 'width', 'integer', 8)
       expect(var.class                               ).to eq RbVHDL::Ast::Declaration::Constant
       expect(var._owner                              ).to eq nil
       expect(var._identifier_list                    ).to eq [:width]

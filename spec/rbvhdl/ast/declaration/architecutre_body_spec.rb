@@ -4,9 +4,9 @@ describe 'RbVHDL::Ast::Declaration::ArchitectureBody' do
   
     design_unit = RbVHDL::Ast::DesignUnit.new
     body        = design_unit._architecture('MODEL', 'TEST')
-    sig1_type   = body._integer_type_declaration(    'INT08_TYPE', RbVHDL::Ast.range_to(RbVHDL::Ast.decimal_literal(0), RbVHDL::Ast.decimal_literal(7)))
-    sig1_decl   = body._constant_declaration('sig1', 'INT08_TYPE', RbVHDL::Ast.decimal_literal(5))
-    sig2_type   = body._floating_type_declaration(   'FLOAT_TYPE', RbVHDL::Ast.range_to(RbVHDL::Ast.decimal_literal(0), RbVHDL::Ast.decimal_literal(0)))
+    sig1_type   = body._integer_type_declaration(    'INT08_TYPE', RbVHDL::Ast.range_to(0, 7))
+    sig1_decl   = body._constant_declaration('sig1', 'INT08_TYPE', 5)
+    sig2_type   = body._floating_type_declaration(   'FLOAT_TYPE', RbVHDL::Ast.range_to(0, 0))
     sig2_decl   = body._signal_declaration(  'sig2', 'FLOAT_TYPE', nil, nil)
     sig3_type   = body._enumeration_type_declaration('STATE_TYPE', ['IDLE_STATE'])
     sig3_type._enum!('RUN_STATE')

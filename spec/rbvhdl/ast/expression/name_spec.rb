@@ -28,30 +28,40 @@ describe 'RbVHDL::Ast::Expression::Name' do
   describe 'IndexedName' do
     context "new" do
 
-      it "name('indexed_name_0')._index(:expression)" do
-        name = RbVHDL::Ast.name('indexed_name_0')._index(:expression)
-        expect(name.class        ).to eq RbVHDL::Ast::Expression::IndexedName
-        expect(name._prefix.class).to eq RbVHDL::Ast::Expression::SimpleName
-        expect(name._prefix._name).to eq :indexed_name_0
-        expect(name._index_list  ).to eq [:expression]
+      it "name('indexed_name_0')._index(RbVHDL::Ast.name(:expression))" do
+        name = RbVHDL::Ast.name('indexed_name_0')._index(RbVHDL::Ast.name(:expression))
+        expect(name.class               ).to eq RbVHDL::Ast::Expression::IndexedName
+        expect(name._prefix.class       ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(name._prefix._name       ).to eq :indexed_name_0
+        expect(name._index_list.size    ).to eq 1
+        expect(name._index_list[0].class).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(name._index_list[0]._name).to eq :expression
       end
 
-      it "name('indexed_name_1')._index([:expression0, :expression1])" do
-        name = RbVHDL::Ast.name('indexed_name_1')._index([:expression0, :expression1])
-        expect(name.class        ).to eq RbVHDL::Ast::Expression::IndexedName
-        expect(name._prefix.class).to eq RbVHDL::Ast::Expression::SimpleName
-        expect(name._prefix._name).to eq :indexed_name_1
-        expect(name._index_list  ).to eq [:expression0,:expression1]
+      it "name('indexed_name_1')._index([RbVHDL::Ast.name(:expression0), RbVHDL::Ast.name(:expression1)])" do
+        name = RbVHDL::Ast.name('indexed_name_1')._index([RbVHDL::Ast.name(:expression0), RbVHDL::Ast.name(:expression1)])
+        expect(name.class               ).to eq RbVHDL::Ast::Expression::IndexedName
+        expect(name._prefix.class       ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(name._prefix._name       ).to eq :indexed_name_1
+        expect(name._index_list.size    ).to eq 2
+        expect(name._index_list[0].class).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(name._index_list[0]._name).to eq :expression0
+        expect(name._index_list[1].class).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(name._index_list[1]._name).to eq :expression1
       end
 
-      it "name('indexed_name_2')._index(expression2)._index(expression3)" do
-        name = RbVHDL::Ast.name('indexed_name_2')._index(:expression2)._index(:expression3)
-        expect(name.class                ).to eq RbVHDL::Ast::Expression::IndexedName
-        expect(name._prefix.class        ).to eq RbVHDL::Ast::Expression::IndexedName
-        expect(name._prefix._prefix.class).to eq RbVHDL::Ast::Expression::SimpleName
-        expect(name._prefix._prefix._name).to eq :indexed_name_2
-        expect(name._prefix._index_list  ).to eq [:expression2]
-        expect(name._index_list          ).to eq [:expression3]
+      it "name('indexed_name_2')._index(RbVHDL::Ast.name((expression2))._index(RbVHDL::Ast.name(expression3))" do
+        name = RbVHDL::Ast.name('indexed_name_2')._index(RbVHDL::Ast.name(:expression2))._index(RbVHDL::Ast.name(:expression3))
+        expect(name.class                       ).to eq RbVHDL::Ast::Expression::IndexedName
+        expect(name._prefix.class               ).to eq RbVHDL::Ast::Expression::IndexedName
+        expect(name._prefix._prefix.class       ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(name._prefix._prefix._name       ).to eq :indexed_name_2
+        expect(name._prefix._index_list.size    ).to eq 1
+        expect(name._prefix._index_list[0].class).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(name._prefix._index_list[0]._name).to eq :expression2
+        expect(name._index_list.size            ).to eq 1
+        expect(name._index_list[0].class        ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(name._index_list[0]._name        ).to eq :expression3
       end
     end
   end
@@ -72,7 +82,7 @@ describe 'RbVHDL::Ast::Expression::Name' do
       end      
 
       it "name('slice_name_1')._to(0,5)" do
-        name = RbVHDL::Ast.name('slice_name_1')._to(RbVHDL::Ast.decimal_literal(0),RbVHDL::Ast.decimal_literal(5))
+        name = RbVHDL::Ast.name('slice_name_1')._to(0, 5)
         expect(name.class                         ).to eq RbVHDL::Ast::Expression::SliceName
         expect(name._prefix.class                 ).to eq RbVHDL::Ast::Expression::SimpleName
         expect(name._prefix._name                 ).to eq :slice_name_1
@@ -84,7 +94,7 @@ describe 'RbVHDL::Ast::Expression::Name' do
       end
 
       it "name('slice_name_2')._downto(7,4)" do
-        name = RbVHDL::Ast.name('slice_name_2')._downto(RbVHDL::Ast.decimal_literal(7),RbVHDL::Ast.decimal_literal(4))
+        name = RbVHDL::Ast.name('slice_name_2')._downto(7, 4)
         expect(name.class                         ).to eq RbVHDL::Ast::Expression::SliceName
         expect(name._prefix.class                 ).to eq RbVHDL::Ast::Expression::SimpleName
         expect(name._prefix._name                 ).to eq :slice_name_2
@@ -217,33 +227,36 @@ describe 'RbVHDL::Ast::Expression::Name' do
     context "new" do
 
       it "AttributeName.new(name('signal_0', 'range')" do
-        name = RbVHDL::Ast::Expression::AttributeName.new(RbVHDL::Ast.name('signal_0'), "range",  nil, nil)
-        expect(name.class        ).to eq RbVHDL::Ast::Expression::AttributeName
-        expect(name._name.class  ).to eq RbVHDL::Ast::Expression::SimpleName
-        expect(name._name._name  ).to eq :signal_0
-        expect(name._attribute   ).to eq :range
-        expect(name._signature   ).to eq nil
-        expect(name._expression  ).to eq nil
+        name = RbVHDL::Ast::Expression::AttributeName.new(RbVHDL::Ast.name('signal_0'), RbVHDL::Ast.identifier("range"),  nil, nil)
+        expect(name.class           ).to eq RbVHDL::Ast::Expression::AttributeName
+        expect(name._name.class     ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(name._name._name     ).to eq :signal_0
+        expect(name._attribute.class).to eq RbVHDL::Ast::Identifier
+        expect(name._attribute      ).to eq :range
+        expect(name._signature      ).to eq nil
+        expect(name._expression     ).to eq nil
       end
 
       it "name('signal_1')._attribute('range')" do
         name = RbVHDL::Ast.name('signal_1')._attribute('range', nil, nil)
-        expect(name.class        ).to eq RbVHDL::Ast::Expression::AttributeName
-        expect(name._name.class  ).to eq RbVHDL::Ast::Expression::SimpleName
-        expect(name._name._name  ).to eq :signal_1
-        expect(name._attribute   ).to eq :range
-        expect(name._signature   ).to eq nil
-        expect(name._expression  ).to eq nil
+        expect(name.class           ).to eq RbVHDL::Ast::Expression::AttributeName
+        expect(name._name.class     ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(name._name._name     ).to eq :signal_1
+        expect(name._attribute.class).to eq RbVHDL::Ast::Identifier
+        expect(name._attribute      ).to eq :range
+        expect(name._signature      ).to eq nil
+        expect(name._expression     ).to eq nil
       end
 
       it "name('signal_1')._attribute('range', nil, nil)" do
         name = RbVHDL::Ast.name('signal_1')._attribute('range', nil, nil)
-        expect(name.class        ).to eq RbVHDL::Ast::Expression::AttributeName
-        expect(name._name.class  ).to eq RbVHDL::Ast::Expression::SimpleName
-        expect(name._name._name  ).to eq :signal_1
-        expect(name._attribute   ).to eq :range
-        expect(name._signature   ).to eq nil
-        expect(name._expression  ).to eq nil
+        expect(name.class           ).to eq RbVHDL::Ast::Expression::AttributeName
+        expect(name._name.class     ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(name._name._name     ).to eq :signal_1
+        expect(name._attribute.class).to eq RbVHDL::Ast::Identifier
+        expect(name._attribute      ).to eq :range
+        expect(name._signature      ).to eq nil
+        expect(name._expression     ).to eq nil
       end
     end
   end

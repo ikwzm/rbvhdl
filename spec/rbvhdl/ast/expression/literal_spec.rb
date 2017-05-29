@@ -32,7 +32,7 @@ describe 'RbVHDL::Ast::Expression::Literal' do
         expect(literal._exponent._sign   ).to eq nil
       end
 
-      it "decimal_literal.new(10)._exponent!(-2)" do
+      it "decimal_literal(10)._exponent!(-2)" do
         literal = RbVHDL::Ast.decimal_literal(10)._exponent!(-2)
         expect(literal.class             ).to eq RbVHDL::Ast::Expression::DecimalLiteral
         expect(literal._integer          ).to eq 10
@@ -42,7 +42,7 @@ describe 'RbVHDL::Ast::Expression::Literal' do
         expect(literal._exponent._sign   ).to eq :"-"
       end
 
-      it "decimal_literal.new(10)._fraction!(3)._exponent!(-2)" do
+      it "decimal_literal(10)._fraction!(3)._exponent!(-2)" do
         literal = RbVHDL::Ast.decimal_literal(10)._fraction!(3)._exponent!(-2)
         expect(literal.class             ).to eq RbVHDL::Ast::Expression::DecimalLiteral
         expect(literal._integer          ).to eq 10
@@ -52,6 +52,70 @@ describe 'RbVHDL::Ast::Expression::Literal' do
         expect(literal._exponent._sign   ).to eq :"-"
       end
 
+      it "decimal_literal(0.0)" do
+        literal = RbVHDL::Ast.decimal_literal(0.0)
+        expect(literal.class             ).to eq RbVHDL::Ast::Expression::DecimalLiteral
+        expect(literal._integer          ).to eq "0"
+        expect(literal._fraction         ).to eq "0"
+        expect(literal._exponent         ).to eq nil
+      end
+        
+      it "decimal_literal(-0.1)" do
+        literal = RbVHDL::Ast.decimal_literal(-0.1)
+        expect(literal.class             ).to eq RbVHDL::Ast::Expression::DecimalLiteral
+        expect(literal._integer          ).to eq "-0"
+        expect(literal._fraction         ).to eq "1"
+        expect(literal._exponent         ).to eq nil
+      end
+        
+      it "decimal_literal(-1.0)" do
+        literal = RbVHDL::Ast.decimal_literal(-1.0)
+        expect(literal.class             ).to eq RbVHDL::Ast::Expression::DecimalLiteral
+        expect(literal._integer          ).to eq "-1"
+        expect(literal._fraction         ).to eq "0"
+        expect(literal._exponent         ).to eq nil
+      end
+        
+      it "decimal_literal(0.0000000001)" do
+        literal = RbVHDL::Ast.decimal_literal(0.0000000001)
+        expect(literal.class             ).to eq RbVHDL::Ast::Expression::DecimalLiteral
+        expect(literal._integer          ).to eq "1"
+        expect(literal._fraction         ).to eq "0"
+        expect(literal._exponent.class   ).to eq RbVHDL::Ast::Expression::Exponent
+        expect(literal._exponent._number ).to eq -10
+        expect(literal._exponent._sign   ).to eq :"-"
+      end
+        
+      it "decimal_literal(-0.0000000001)" do
+        literal = RbVHDL::Ast.decimal_literal(-0.0000000001)
+        expect(literal.class             ).to eq RbVHDL::Ast::Expression::DecimalLiteral
+        expect(literal._integer          ).to eq "-1"
+        expect(literal._fraction         ).to eq "0"
+        expect(literal._exponent.class   ).to eq RbVHDL::Ast::Expression::Exponent
+        expect(literal._exponent._number ).to eq -10
+        expect(literal._exponent._sign   ).to eq :"-"
+      end
+        
+      it "decimal_literal(123456789012345670.0)" do
+        literal = RbVHDL::Ast.decimal_literal(123456789012345678.9)
+        expect(literal.class             ).to eq RbVHDL::Ast::Expression::DecimalLiteral
+        expect(literal._integer          ).to eq "1"
+        expect(literal._fraction         ).to eq "2345678901234568"
+        expect(literal._exponent.class   ).to eq RbVHDL::Ast::Expression::Exponent
+        expect(literal._exponent._number ).to eq 17
+        expect(literal._exponent._sign   ).to eq :"+"
+      end
+        
+      it "decimal_literal(-123456789012345670.0)" do
+        literal = RbVHDL::Ast.decimal_literal(-123456789012345678.9)
+        expect(literal.class             ).to eq RbVHDL::Ast::Expression::DecimalLiteral
+        expect(literal._integer          ).to eq "-1"
+        expect(literal._fraction         ).to eq "2345678901234568"
+        expect(literal._exponent.class   ).to eq RbVHDL::Ast::Expression::Exponent
+        expect(literal._exponent._number ).to eq 17
+        expect(literal._exponent._sign   ).to eq :"+"
+      end
+        
     end
   end
 

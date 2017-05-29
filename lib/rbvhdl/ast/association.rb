@@ -28,7 +28,9 @@ module RbVHDL::Ast
       actual_part = actual
     elsif actual.class <  RbVHDL::Ast::Expression::Name  then
       actual_part = self.association_actual_name(actual)
-    elsif actual.class <  RbVHDL::Ast::Expression        then
+    elsif actual.class <  RbVHDL::Ast::Expression        or
+          actual.class <  Integer or
+          actual.class == Float   then
       actual_part = self.association_actual_expression(actual)
     else
       actual_part = self.association_actual_name(actual)

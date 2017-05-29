@@ -54,8 +54,8 @@ describe 'RbVHDL::Ast::Declaration::IntegerType' do
 
   context "new" do
 
-    it "new(identifier('integer_type'), integer_type_definition(range_to(decimal_literal(0), decimal_literal(255))))" do
-      decl = RbVHDL::Ast::Declaration::IntegerType.new(nil, RbVHDL::Ast.identifier('integer_type'), RbVHDL::Ast.integer_type_definition(RbVHDL::Ast.range_to(RbVHDL::Ast.decimal_literal(0), RbVHDL::Ast.decimal_literal(255))))
+    it "new(identifier('integer_type'), integer_type_definition(range_to(0, 255)))" do
+      decl = RbVHDL::Ast::Declaration::IntegerType.new(nil, RbVHDL::Ast.identifier('integer_type'), RbVHDL::Ast.integer_type_definition(RbVHDL::Ast.range_to(0, 255)))
       expect(decl.class                                   ).to eq RbVHDL::Ast::Declaration::IntegerType
       expect(decl._owner                                  ).to eq nil
       expect(decl._identifier.class                       ).to eq RbVHDL::Ast::Identifier
@@ -68,8 +68,8 @@ describe 'RbVHDL::Ast::Declaration::IntegerType' do
       expect(decl._type_definition._range._r_expr._integer).to eq 255
     end
 
-    it "RbVHDL::Ast.integer_type_declaration(nil, 'integer_type', range_to(decimal_literal(0), decimal_literal(255)))" do
-      decl = RbVHDL::Ast.integer_type_declaration(nil, 'integer_type', RbVHDL::Ast.range_to(RbVHDL::Ast.decimal_literal(0), RbVHDL::Ast.decimal_literal(255)))
+    it "RbVHDL::Ast.integer_type_declaration(nil, 'integer_type', range_to(0, 255))" do
+      decl = RbVHDL::Ast.integer_type_declaration(nil, 'integer_type', RbVHDL::Ast.range_to(0, 255))
       expect(decl._owner                                  ).to eq nil
       expect(decl._identifier.class                       ).to eq RbVHDL::Ast::Identifier
       expect(decl._identifier                             ).to eq :integer_type
@@ -88,8 +88,8 @@ describe 'RbVHDL::Ast::Declaration::FloatingType' do
 
   context "new" do
 
-    it "new(identifier('integer_type'), floating_type_definition(range_to(decimal_literal(0)._fraction!(0), decimal_literal(255)._fraction!(0))))" do
-      decl = RbVHDL::Ast::Declaration::FloatingType.new(nil, RbVHDL::Ast.identifier('float_type'), RbVHDL::Ast.floating_type_definition(RbVHDL::Ast.range_to(RbVHDL::Ast.decimal_literal(0)._fraction!(0), RbVHDL::Ast.decimal_literal(255)._fraction!(0))))
+    it "new(identifier('integer_type'), floating_type_definition(range_to(0.0, 255.0)))" do
+      decl = RbVHDL::Ast::Declaration::FloatingType.new(nil, RbVHDL::Ast.identifier('float_type'), RbVHDL::Ast.floating_type_definition(RbVHDL::Ast.range_to(0.0, 255.0)))
       expect(decl.class                                    ).to eq RbVHDL::Ast::Declaration::FloatingType
       expect(decl._owner                                   ).to eq nil
       expect(decl._identifier.class                        ).to eq RbVHDL::Ast::Identifier
@@ -97,15 +97,15 @@ describe 'RbVHDL::Ast::Declaration::FloatingType' do
       expect(decl._type_definition.class                   ).to eq RbVHDL::Ast::Type::FloatingDefinition
       expect(decl._type_definition._range.class            ).to eq RbVHDL::Ast::Type::RangeTo
       expect(decl._type_definition._range._l_expr.class    ).to eq RbVHDL::Ast::Expression::DecimalLiteral
-      expect(decl._type_definition._range._l_expr._integer ).to eq 0
-      expect(decl._type_definition._range._l_expr._fraction).to eq 0
+      expect(decl._type_definition._range._l_expr._integer ).to eq "0"
+      expect(decl._type_definition._range._l_expr._fraction).to eq "0"
       expect(decl._type_definition._range._r_expr.class    ).to eq RbVHDL::Ast::Expression::DecimalLiteral
-      expect(decl._type_definition._range._r_expr._integer ).to eq 255
-      expect(decl._type_definition._range._r_expr._fraction).to eq 0
+      expect(decl._type_definition._range._r_expr._integer ).to eq "255"
+      expect(decl._type_definition._range._r_expr._fraction).to eq "0"
     end
 
-    it "RbVHDL::Ast.floating_type_declaration(nil, 'float_type', range_to(decimal_literal(0)._fraction!(0), decimal_literal(255)._fraction!(0)))" do
-      decl = RbVHDL::Ast.floating_type_declaration(nil, 'float_type', RbVHDL::Ast.range_to(RbVHDL::Ast.decimal_literal(0)._fraction!(0), RbVHDL::Ast.decimal_literal(255)._fraction!(0)))
+    it "RbVHDL::Ast.floating_type_declaration(nil, 'float_type', range_to(0.0, 255.0))" do
+      decl = RbVHDL::Ast.floating_type_declaration(nil, 'float_type', RbVHDL::Ast.range_to(0.0, 255.0))
       expect(decl.class                                    ).to eq RbVHDL::Ast::Declaration::FloatingType
       expect(decl._owner                                   ).to eq nil
       expect(decl._identifier.class                        ).to eq RbVHDL::Ast::Identifier
@@ -113,11 +113,11 @@ describe 'RbVHDL::Ast::Declaration::FloatingType' do
       expect(decl._type_definition.class                   ).to eq RbVHDL::Ast::Type::FloatingDefinition
       expect(decl._type_definition._range.class            ).to eq RbVHDL::Ast::Type::RangeTo
       expect(decl._type_definition._range._l_expr.class    ).to eq RbVHDL::Ast::Expression::DecimalLiteral
-      expect(decl._type_definition._range._l_expr._integer ).to eq 0
-      expect(decl._type_definition._range._l_expr._fraction).to eq 0
+      expect(decl._type_definition._range._l_expr._integer ).to eq "0"
+      expect(decl._type_definition._range._l_expr._fraction).to eq "0"
       expect(decl._type_definition._range._r_expr.class    ).to eq RbVHDL::Ast::Expression::DecimalLiteral
-      expect(decl._type_definition._range._r_expr._integer ).to eq 255
-      expect(decl._type_definition._range._r_expr._fraction).to eq 0
+      expect(decl._type_definition._range._r_expr._integer ).to eq "255"
+      expect(decl._type_definition._range._r_expr._fraction).to eq "0"
     end
     
   end
@@ -208,8 +208,8 @@ describe 'RbVHDL::Ast::Declaration::ArrayType' do
 
   context "new" do
 
-    it "new(identifier('test_vector'), array_type_definition(range_to(decimal_literal(0), decimal_literal(7)), 'test_type'))" do
-      decl = RbVHDL::Ast::Declaration::ArrayType.new(nil, RbVHDL::Ast.identifier('test_vector'), RbVHDL::Ast.array_type_definition(RbVHDL::Ast.range_to(RbVHDL::Ast.decimal_literal(0), RbVHDL::Ast.decimal_literal(7)), 'test_type'))
+    it "new(identifier('test_vector'), array_type_definition(range_to(0, 7), 'test_type'))" do
+      decl = RbVHDL::Ast::Declaration::ArrayType.new(nil, RbVHDL::Ast.identifier('test_vector'), RbVHDL::Ast.array_type_definition(RbVHDL::Ast.range_to(0,7), 'test_type'))
       expect(decl.class                                                ).to eq RbVHDL::Ast::Declaration::ArrayType
       expect(decl._owner                                               ).to eq nil
       expect(decl._identifier.class                                    ).to eq RbVHDL::Ast::Identifier
@@ -226,8 +226,8 @@ describe 'RbVHDL::Ast::Declaration::ArrayType' do
       expect(decl._type_definition._subtype_indication._type_mark      ).to eq :test_type
     end
 
-    it "RbVHDL::Ast.array_type_declaration(nil, 'test_vector', RbVHDL::Ast.range_to(RbVHDL::Ast.decimal_literal(0), RbVHDL::Ast.decimal_literal(7)), 'test_type')" do
-      decl = RbVHDL::Ast.array_type_declaration(nil, 'test_vector', RbVHDL::Ast.range_to(RbVHDL::Ast.decimal_literal(0), RbVHDL::Ast.decimal_literal(7)), 'test_type')
+    it "RbVHDL::Ast.array_type_declaration(nil, 'test_vector', RbVHDL::Ast.range_to(0, 7), 'test_type')" do
+      decl = RbVHDL::Ast.array_type_declaration(nil, 'test_vector', RbVHDL::Ast.range_to(0, 7), 'test_type')
       expect(decl.class                                                ).to eq RbVHDL::Ast::Declaration::ArrayType
       expect(decl._owner                                               ).to eq nil
       expect(decl._identifier.class                                    ).to eq RbVHDL::Ast::Identifier

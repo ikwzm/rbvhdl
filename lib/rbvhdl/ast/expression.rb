@@ -26,6 +26,8 @@ module RbVHDL::Ast
   def self.expression(arg)
     if    arg.class < RbVHDL::Ast::Expression then
       return arg
+    elsif arg.class < Integer or arg.class == Float then
+      return self.decimal_literal(arg)
     else
       raise ArgumentError, "#{self.inspect}.#{__method__}(#{arg.inspect}:#{arg.class})"
     end      

@@ -29,8 +29,8 @@ describe 'RbVHDL::Ast::Expression::Choice' do
   describe 'ChoiceRange' do
     context "new" do
 
-      it "new(range_to(decimal_literal(0),decimal_literal(2)))" do
-        choice = RbVHDL::Ast::Expression::ChoiceRange.new(RbVHDL::Ast.range_to(RbVHDL::Ast.decimal_literal(0),RbVHDL::Ast.decimal_literal(2)))
+      it "new(range_to(0, 2))" do
+        choice = RbVHDL::Ast::Expression::ChoiceRange.new(RbVHDL::Ast.range_to(0, 2))
         expect(choice.class                        ).to eq RbVHDL::Ast::Expression::ChoiceRange
         expect(choice._range.class                 ).to eq RbVHDL::Ast::Type::RangeTo
         expect(choice._range._l_expr.class         ).to eq RbVHDL::Ast::Expression::DecimalLiteral
@@ -50,8 +50,8 @@ describe 'RbVHDL::Ast::Expression::Choice' do
         expect(choice._range._name._attribute      ).to eq :range
       end
 
-      it "RbVHDL::Ast.choice_range_to(decimal_literal(0),decimal_literal(2))" do
-        choice = RbVHDL::Ast.choice_range_to(RbVHDL::Ast.decimal_literal(0),RbVHDL::Ast.decimal_literal(2))
+      it "RbVHDL::Ast.choice_range_to(0, 2)" do
+        choice = RbVHDL::Ast.choice_range_to(0, 2)
         expect(choice.class                        ).to eq RbVHDL::Ast::Expression::ChoiceRange
         expect(choice._range.class                 ).to eq RbVHDL::Ast::Type::RangeTo
         expect(choice._range._l_expr.class         ).to eq RbVHDL::Ast::Expression::DecimalLiteral
@@ -60,8 +60,8 @@ describe 'RbVHDL::Ast::Expression::Choice' do
         expect(choice._range._r_expr._integer      ).to eq 2
       end
 
-      it "RbVHDL::Ast.choice_range_downto(decimal_literal(7),decimal_literal(0))" do
-        choice = RbVHDL::Ast.choice_range_downto(RbVHDL::Ast.decimal_literal(7),RbVHDL::Ast.decimal_literal(0))
+      it "RbVHDL::Ast.choice_range_downto(7, 0)" do
+        choice = RbVHDL::Ast.choice_range_downto(7, 0)
         expect(choice.class                        ).to eq RbVHDL::Ast::Expression::ChoiceRange
         expect(choice._range.class                 ).to eq RbVHDL::Ast::Type::RangeDownto
         expect(choice._range._l_expr.class         ).to eq RbVHDL::Ast::Expression::DecimalLiteral
@@ -114,10 +114,10 @@ describe 'RbVHDL::Ast::Expression::Choice' do
 
       it "RbVHDL::Ast.choices(...)" do
         choice_list = [RbVHDL::Ast.name('sig1')._attribute('range'),
-                       RbVHDL::Ast.range_to(RbVHDL::Ast.decimal_literal(0),RbVHDL::Ast.decimal_literal(3)),
+                       RbVHDL::Ast.range_to(0, 3),
                        RbVHDL::Ast.choice_expression(RbVHDL::Ast.name('sig2')._attribute('range')),
                        RbVHDL::Ast.choice_identifier('sig3'),
-                       RbVHDL::Ast.choice_range_downto(RbVHDL::Ast.decimal_literal(7),RbVHDL::Ast.decimal_literal(0)),
+                       RbVHDL::Ast.choice_range_downto(7, 0),
                        RbVHDL::Ast.choice_others]
         choices = RbVHDL::Ast.choices(choice_list)
         expect(choices.class                                  ).to eq RbVHDL::Ast::Expression::Choices

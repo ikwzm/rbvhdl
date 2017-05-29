@@ -91,12 +91,14 @@ module RbVHDL::Ast
   def self.choice(choice)
     if    choice.class < RbVHDL::Ast::Expression::Choices then
       return choice
-    elsif choice.class < RbVHDL::Ast::Expression  then
-      return RbVHDL::Ast.choice_expression(choice)
+    elsif choice.class < RbVHDL::Ast::Expression  or
+          choice.class < Integer or
+          choice.class == Float
+      return self.choice_expression(choice)
     elsif choice.class < RbVHDL::Ast::Type::Range then
-      return RbVHDL::Ast.choice_range(choice)
+      return self.choice_range(choice)
     else
-      return RbVHDL::Ast.choice_identifier(choice)
+      return self.choice_identifier(choice)
     end
   end
 

@@ -41,12 +41,12 @@ describe 'RbVHDL::Ast::Statement::ProcedureCall' do
     it "RbVHDL::Ast.procedure_call(nil, 'proc')" do
       stmt = RbVHDL::Ast.procedure_call(nil, 'proc')
       stmt._parameter_association(RbVHDL::Ast.name('param0'), RbVHDL::Ast.name('arg0'))
-      stmt._parameter_association(RbVHDL::Ast.name('param1'), RbVHDL::Ast.decimal_literal(32))
+      stmt._parameter_association(RbVHDL::Ast.name('param1'), 32)
       stmt._parameter_association(RbVHDL::Ast.name('param2'), RbVHDL::Ast.association_actual_open)
-      stmt._parameter_association(RbVHDL::Ast.name('param3')._to(RbVHDL::Ast.decimal_literal(3), RbVHDL::Ast.decimal_literal(7)),
-                                  RbVHDL::Ast.name('arg3'  )._to(RbVHDL::Ast.decimal_literal(0), RbVHDL::Ast.decimal_literal(3)))
-      stmt._parameter_association(RbVHDL::Ast.name('param4')._index(RbVHDL::Ast.decimal_literal(0)),
-                                  RbVHDL::Ast.name('arg4'  )._index(RbVHDL::Ast.decimal_literal(8)))
+      stmt._parameter_association(RbVHDL::Ast.name('param3')._to(3, 7),
+                                  RbVHDL::Ast.name('arg3'  )._to(0, 3))
+      stmt._parameter_association(RbVHDL::Ast.name('param4')._index(0),
+                                  RbVHDL::Ast.name('arg4'  )._index(8))
       expect(stmt.class                            ).to eq RbVHDL::Ast::Statement::ProcedureCall
       expect(stmt._owner                           ).to eq nil
       expect(stmt._label                           ).to eq nil
