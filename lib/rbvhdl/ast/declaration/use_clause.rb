@@ -1,7 +1,9 @@
 module RbVHDL::Ast
 
   module Declaration
-
+    #
+    # use_clause : "use" selected_name ["," selected_name ] ";"
+    #
     class UseClause
       attr_reader   :_owner
       attr_reader   :_name_list

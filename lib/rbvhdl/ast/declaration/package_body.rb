@@ -3,7 +3,11 @@ require_relative '../declaration/methods'
 module RbVHDL::Ast
 
   module Declaration
-
+    #
+    # package_body        : "package" "body" identifier "is"
+    #                         { package_body_declarative_item }
+    #                       "end" [ "package" "body" ] [ identifier ] ";"
+    #
     class PackageBody
       attr_reader   :_owner
       attr_reader   :_identifier
@@ -19,7 +23,6 @@ module RbVHDL::Ast
 
       include RbVHDL::Ast::Declaration::Methods::PackageBodyItem
     end
-
   end
 
   def self.package_body(owner, identifier)

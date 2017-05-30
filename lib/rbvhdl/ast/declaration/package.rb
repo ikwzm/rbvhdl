@@ -5,13 +5,17 @@ require_relative '../interface/methods'
 module RbVHDL::Ast
 
   module Declaration
-
+    #
+    # package_declaration : "package" identifier "is"
+    #                         { package_declarative_item }
+    #                       "end" [ "package" ] [ identifier ] ";"
+    #
     class Package
       attr_reader   :_owner
-      attr_reader   :_identifier
-      attr_reader   :_generic_interface_list
-      attr_reader   :_generic_association_list
-      attr_reader   :_declarative_item_list
+      attr_reader   :_identifier                # RbVHDL::Ast::Identifer
+      attr_reader   :_generic_interface_list    # Array of RbVHDL::Ast::Interface::Constant
+      attr_reader   :_generic_association_list  # Array of RbVHDL::Ast::Association
+      attr_reader   :_declarative_item_list     # Array of RbVHDL::Ast::Declaration::*
       attr_reader   :_annotation
     
       def initialize(owner, identifier)
@@ -27,7 +31,6 @@ module RbVHDL::Ast
       include RbVHDL::Ast::Association::Methods::Generic
       include RbVHDL::Ast::Declaration::Methods::PackageItem
     end
-
   end
 
   def self.package_declaration(owner, identifier)

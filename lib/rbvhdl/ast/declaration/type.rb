@@ -1,10 +1,13 @@
 module RbVHDL::Ast
-  module Declaration
 
+  module Declaration
+    #
+    # type_declaration : "type" identifier [ "is" type_definition ] ":"
+    #
     class Type
       attr_reader   :_owner
-      attr_reader   :_identifier
-      attr_reader   :_type_definition
+      attr_reader   :_identifier          # RbVHDL::Ast::Identifer
+      attr_reader   :_type_definition     # RbVHDL::Ast::Type::Definition
       attr_reader   :_annotation
     
       def initialize(owner, identifier, type_definition)

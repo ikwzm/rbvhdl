@@ -1,13 +1,15 @@
 module RbVHDL::Ast
 
   module Declaration
-
+    #
+    # signal_declaration : "signal" identifier [,identifier]* ":" subtype_indication [ "register" | "bus" ] [ ":=" expression ] ";"
+    #
     class Signal
       attr_reader   :_owner
-      attr_reader   :_identifier_list
-      attr_reader   :_subtype_indication
-      attr_reader   :_value_expression
-      attr_reader   :_mode
+      attr_reader   :_identifier_list     # Array of RbVHDL::Ast::Type::Indication
+      attr_reader   :_subtype_indication  # RbVHDL::Ast::Type::Indication
+      attr_reader   :_value_expression    # RbVHDL::Ast::Expression
+      attr_reader   :_mode                # Symbol :register | :bus
       attr_reader   :_annotation
 
       def initialize(owner, identifier_list, subtype_indication, value_expression, mode)
@@ -18,7 +20,6 @@ module RbVHDL::Ast
         @_mode               = mode
         @_annotation         = Hash.new
       end
-    
     end
   end
 

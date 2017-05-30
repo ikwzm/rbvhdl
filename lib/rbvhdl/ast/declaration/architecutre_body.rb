@@ -4,13 +4,19 @@ require_relative '../statement/methods'
 module RbVHDL::Ast
 
   module Declaration
-
+    #
+    # architecture_body : "architecture" identifier "of" entity_name "is"
+    #                         {block_declaration_item}
+    #                     "begin"
+    #                         {concurrent_statement}
+    #                     "end" ["architecture"] [identifier] ";"
+    #
     class ArchitectureBody
-      attr_reader   :_owner
-      attr_reader   :_identifier
-      attr_reader   :_entity_name
-      attr_reader   :_declarative_item_list
-      attr_reader   :_statement_list
+      attr_reader   :_owner                 # RbVHDL::Ast::DesignUnit
+      attr_reader   :_identifier            # RbVHDL::Ast::Identifier
+      attr_reader   :_entity_name           # RbVHDL::Ast::Identifier
+      attr_reader   :_declarative_item_list # Array of RbVHDL::Declaration::*
+      attr_reader   :_statement_list        # Array of RbVHDL::Statement::*
       attr_reader   :_annotation
 
       def initialize(owner, identifier, entity_name)
@@ -25,7 +31,6 @@ module RbVHDL::Ast
       include RbVHDL::Ast::Declaration::Methods::BlockItem
       include RbVHDL::Ast::Statement::Methods::Concurrent
     end
-
   end
 
   def self.architecture_body(owner, ident, entity)

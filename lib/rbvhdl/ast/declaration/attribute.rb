@@ -1,10 +1,13 @@
 module RbVHDL::Ast
-  module Declaration
 
+  module Declaration
+    #
+    # attribute_declaration : "attribute" identifier ":" type_mark ";"
+    # 
     class AttributeDecl
       attr_reader   :_owner
-      attr_reader   :_identifier
-      attr_reader   :_type_mark
+      attr_reader   :_identifier  # RbVHDL::Ast::Identifier
+      attr_reader   :_type_mark   # RbVHDL::Ast::Type::Mark
       attr_reader   :_annotation
     
       def initialize(owner, identifier, type_mark)
@@ -15,12 +18,15 @@ module RbVHDL::Ast
       end
     end
 
+    #
+    # attribute_specification : "attribute" identifier "of" entity_name_list ":" entity_class "is" expression ";"
+    # 
     class AttributeSpec
       attr_reader   :_owner
-      attr_reader   :_identifier
-      attr_reader   :_entity_name_list
-      attr_reader   :_entity_class
-      attr_reader   :_value_expression
+      attr_reader   :_identifier        # RbVHDL::Ast::Identifier
+      attr_reader   :_entity_name_list  # Array of RbVHDL::Ast::Identifier
+      attr_reader   :_entity_class      # Symbol
+      attr_reader   :_value_expression  # RbVHDL::Ast::Expression
       attr_reader   :_annotation
 
       def initialize(owner, identifier, entity_name_list, entity_class, value_expression)

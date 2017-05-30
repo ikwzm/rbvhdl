@@ -1,12 +1,14 @@
 module RbVHDL::Ast
 
   module Declaration
-
+    #
+    # constant_declaration : "constant" identifier [,identifier]* ":" subtype_indication [ ":=" expression ] ";"
+    #
     class Constant
       attr_reader   :_owner
-      attr_reader   :_identifier_list
-      attr_reader   :_subtype_indication
-      attr_reader   :_value_expression
+      attr_reader   :_identifier_list     # Array of RbVHDL::Ast::Type::Indication
+      attr_reader   :_subtype_indication  # RbVHDL::Ast::Type::Indication
+      attr_reader   :_value_expression    # RbVHDL::Ast::Expression
       attr_reader   :_annotation
   
       def initialize(owner, identifier_list, subtype_indication, value_expression)
@@ -16,7 +18,6 @@ module RbVHDL::Ast
         @_value_expression   = value_expression
         @_annotation         = Hash.new
       end
-    
     end
   end
 

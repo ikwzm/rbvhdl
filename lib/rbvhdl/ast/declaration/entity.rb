@@ -5,14 +5,26 @@ require_relative '../statement/methods'
 module RbVHDL::Ast
 
   module Declaration
-
+    #
+    # entity_declaration : "entity" identifier "is"
+    #                        [ "generic" "(" generic_interface_list ")" ";" ]
+    #                        [ "port"    "(" port_interface_list    ")" ";" ]
+    #                        { entity_declarative_item }
+    #                      [ "begin"
+    #                         { concurrent_assertion_statement      |
+    #                           concurrent_procedure_call_statement |
+    #                           passive_process_statement
+    #                         }
+    #                      ]
+    #                      "end" [ "entity" ] [ identifier ] ";"
+    #
     class Entity
       attr_reader   :_owner
-      attr_reader   :_identifier
-      attr_reader   :_generic_interface_list
-      attr_reader   :_port_interface_list
-      attr_reader   :_declarative_item_list
-      attr_reader   :_statement_list
+      attr_reader   :_identifier              # RbVHDL::Ast::Identifer
+      attr_reader   :_generic_interface_list  # Array of RbVHDL::Ast::Interface::Constant
+      attr_reader   :_port_interface_list     # Array of RbVHDL::Ast::Interface::Signal
+      attr_reader   :_declarative_item_list   # Array of RbVHDL::Ast::Declaration::*
+      attr_reader   :_statement_list          # Array of RbVHDL::Ast::Statement::*
       attr_reader   :_annotation
     
       def initialize(owner, identifier)
@@ -32,7 +44,6 @@ module RbVHDL::Ast
       include RbVHDL::Ast::Statement::Methods::ProcedureCall
       include RbVHDL::Ast::Statement::Methods::Process
     end
-
   end
 
   def self.entity_declaration(owner, identifier)

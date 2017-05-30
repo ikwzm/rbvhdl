@@ -1,11 +1,13 @@
 module RbVHDL::Ast
 
   module Declaration
-
+    #
+    # subtype_declaration : "subtype" identifier "is" sybtype_indication ":"
+    #
     class SubtypeDecl
       attr_reader   :_owner
-      attr_reader   :_identifier
-      attr_reader   :_subtype_indication
+      attr_reader   :_identifier          # RbVHDL::Ast::Identifer
+      attr_reader   :_subtype_indication  # RbVHDL::Ast::Type::Indication
       attr_reader   :_annotation
 
       def initialize(owner, identifier, subtype_indication)
@@ -14,7 +16,6 @@ module RbVHDL::Ast
         @_subtype_indication = subtype_indication
         @_annotation         = Hash.new
       end
-
     end
   end
 
