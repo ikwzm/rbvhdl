@@ -170,6 +170,22 @@ module RbVHDL::Ast
         end
       end
 
+      module GroupTemplate
+        def _group_template_declaration(identifier, entity_class_list=[])
+          decl = RbVHDL::Ast.group_template_declaration(self, identifier, entity_class_list)
+          @_declarative_item_list.push(decl)
+          return decl
+        end
+      end
+
+      module Group
+        def _group_declaration(identifier, template_name, name_list=[])
+          decl = RbVHDL::Ast.group_declaration(self, identifier, template_name, name_list)
+          @_declarative_item_list.push(decl)
+          return decl
+        end
+      end
+
       module BlockItem
         include SubProgramDecl
         include SubProgramBody
@@ -184,6 +200,8 @@ module RbVHDL::Ast
         include AttributeDecl
         include AttributeSpec
         include UseClause
+        include GroupTemplate
+        include Group
       end
 
       module SubProgramItem
@@ -199,6 +217,8 @@ module RbVHDL::Ast
         include AttributeDecl
         include AttributeSpec
         include UseClause
+        include GroupTemplate
+        include Group
       end
     
       module PackageItem
@@ -214,6 +234,8 @@ module RbVHDL::Ast
         include AttributeDecl
         include AttributeSpec
         include UseClause
+        include GroupTemplate
+        include Group
       end
     
       module PackageBodyItem
@@ -227,6 +249,8 @@ module RbVHDL::Ast
         include Alias
         include File
         include UseClause
+        include GroupTemplate
+        include Group
       end
 
       module EntityItem
@@ -242,6 +266,8 @@ module RbVHDL::Ast
         include AttributeDecl
         include AttributeSpec
         include UseClause
+        include GroupTemplate
+        include Group
       end
 
       module ProcessItem
@@ -257,6 +283,8 @@ module RbVHDL::Ast
         include AttributeDecl
         include AttributeSpec
         include UseClause
+        include GroupTemplate
+        include Group
       end
 
     end

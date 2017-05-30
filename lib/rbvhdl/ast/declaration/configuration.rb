@@ -28,6 +28,7 @@ module RbVHDL::Ast
       end
       include RbVHDL::Ast::Declaration::Methods::UseClause
       include RbVHDL::Ast::Declaration::Methods::AttributeSpec
+      include RbVHDL::Ast::Declaration::Methods::Group
     end
 
     #

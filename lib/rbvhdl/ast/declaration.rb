@@ -16,4 +16,6 @@ module RbVHDL::Ast
   require_relative 'declaration/type'
   require_relative 'declaration/subtype'
   require_relative 'declaration/use_clause'
+  require_relative 'declaration/group'
+  require_relative 'declaration/group_template'
 end
