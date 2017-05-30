@@ -13,6 +13,10 @@ module RbVHDL::Ast
     end
   end
 
+  def self.identifier_or_nil(name)
+    return (name.nil?) ? nil : self.identifier(name)
+  end
+
   def self.identifier_list(list)
     if list.class == Array then
       return list.map{|name| self.identifier(name)}
