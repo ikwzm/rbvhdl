@@ -5,54 +5,64 @@ describe 'RbVHDL::Ast::Declaration::Configuration' do
   describe 'ComponentSpecLabels' do
     context "new" do
 
-      it "new(identifier('component_spec'))" do
-        spec = RbVHDL::Ast::Declaration::ComponentSpecLabels.new(RbVHDL::Ast.identifier('component_spec'))
-        expect(spec.class               ).to eq RbVHDL::Ast::Declaration::ComponentSpecLabels
-        expect(spec._name.class         ).to eq RbVHDL::Ast::Identifier
-        expect(spec._name               ).to eq :component_spec
-        expect(spec._label_list         ).to eq []
+      it "new(name('component_spec'))" do
+        spec = RbVHDL::Ast::Declaration::ComponentSpecLabels.new(RbVHDL::Ast.name('component_spec'))
+        expect(spec.class                     ).to eq RbVHDL::Ast::Declaration::ComponentSpecLabels
+        expect(spec._name.class               ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(spec._name._name.class         ).to eq RbVHDL::Ast::Identifier
+        expect(spec._name._name               ).to eq :component_spec
+        expect(spec._label_list               ).to eq []
       end
 
-      it "new(identifier('component_spec'), [identifier('U0'),identifier('U1')])" do
-        spec = RbVHDL::Ast::Declaration::ComponentSpecLabels.new(RbVHDL::Ast.identifier('component_spec'),[RbVHDL::Ast.identifier('U0'), RbVHDL::Ast.identifier('U1')])
-        expect(spec.class               ).to eq RbVHDL::Ast::Declaration::ComponentSpecLabels
-        expect(spec._name.class         ).to eq RbVHDL::Ast::Identifier
-        expect(spec._name               ).to eq :component_spec
-        expect(spec._label_list.size    ).to eq 2
-        expect(spec._label_list[0].class).to eq RbVHDL::Ast::Identifier
-        expect(spec._label_list[0]      ).to eq :U0
-        expect(spec._label_list[1].class).to eq RbVHDL::Ast::Identifier
-        expect(spec._label_list[1]      ).to eq :U1
+      it "new(name('component_spec'), [label('U0'),label('U1')])" do
+        spec = RbVHDL::Ast::Declaration::ComponentSpecLabels.new(RbVHDL::Ast.name('component_spec'),[RbVHDL::Ast.name('U0'), RbVHDL::Ast.name('U1')])
+        expect(spec.class                     ).to eq RbVHDL::Ast::Declaration::ComponentSpecLabels
+        expect(spec._name.class               ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(spec._name._name.class         ).to eq RbVHDL::Ast::Identifier
+        expect(spec._name._name               ).to eq :component_spec
+        expect(spec._label_list.size          ).to eq 2
+        expect(spec._label_list[0].class      ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(spec._label_list[0]._name.class).to eq RbVHDL::Ast::Identifier
+        expect(spec._label_list[0]._name      ).to eq :U0
+        expect(spec._label_list[1].class      ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(spec._label_list[1]._name.class).to eq RbVHDL::Ast::Identifier
+        expect(spec._label_list[1]._name      ).to eq :U1
       end
 
       it "RbVHDL::Ast.component_specification('component_spec')" do
         spec = RbVHDL::Ast.component_specification('component_spec')
-        expect(spec.class               ).to eq RbVHDL::Ast::Declaration::ComponentSpecLabels
-        expect(spec._name.class         ).to eq RbVHDL::Ast::Identifier
-        expect(spec._name               ).to eq :component_spec
-        expect(spec._label_list         ).to eq []
+        expect(spec.class                     ).to eq RbVHDL::Ast::Declaration::ComponentSpecLabels
+        expect(spec._name.class               ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(spec._name._name.class         ).to eq RbVHDL::Ast::Identifier
+        expect(spec._name._name               ).to eq :component_spec
+        expect(spec._label_list               ).to eq []
       end
         
       it "RbVHDL::Ast.component_specification('component_spec', 'U0')" do
         spec = RbVHDL::Ast.component_specification('component_spec', 'U0')
-        expect(spec.class               ).to eq RbVHDL::Ast::Declaration::ComponentSpecLabels
-        expect(spec._name.class         ).to eq RbVHDL::Ast::Identifier
-        expect(spec._name               ).to eq :component_spec
-        expect(spec._label_list.size    ).to eq 1
-        expect(spec._label_list[0].class).to eq RbVHDL::Ast::Identifier
-        expect(spec._label_list[0]      ).to eq :U0
+        expect(spec.class                     ).to eq RbVHDL::Ast::Declaration::ComponentSpecLabels
+        expect(spec._name.class               ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(spec._name._name.class         ).to eq RbVHDL::Ast::Identifier
+        expect(spec._name._name               ).to eq :component_spec
+        expect(spec._label_list.size          ).to eq 1
+        expect(spec._label_list[0].class      ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(spec._label_list[0]._name.class).to eq RbVHDL::Ast::Identifier
+        expect(spec._label_list[0]._name      ).to eq :U0
       end
         
       it "RbVHDL::Ast.component_specification('component_spec', ['U0', 'U1'])" do
         spec = RbVHDL::Ast.component_specification('component_spec', ['U0', 'U1'])
-        expect(spec.class               ).to eq RbVHDL::Ast::Declaration::ComponentSpecLabels
-        expect(spec._name.class         ).to eq RbVHDL::Ast::Identifier
-        expect(spec._name               ).to eq :component_spec
-        expect(spec._label_list.size    ).to eq 2
-        expect(spec._label_list[0].class).to eq RbVHDL::Ast::Identifier
-        expect(spec._label_list[0]      ).to eq :U0
-        expect(spec._label_list[1].class).to eq RbVHDL::Ast::Identifier
-        expect(spec._label_list[1]      ).to eq :U1
+        expect(spec.class                     ).to eq RbVHDL::Ast::Declaration::ComponentSpecLabels
+        expect(spec._name.class               ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(spec._name._name.class         ).to eq RbVHDL::Ast::Identifier
+        expect(spec._name._name               ).to eq :component_spec
+        expect(spec._label_list.size          ).to eq 2
+        expect(spec._label_list[0].class      ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(spec._label_list[0]._name.class).to eq RbVHDL::Ast::Identifier
+        expect(spec._label_list[0]._name      ).to eq :U0
+        expect(spec._label_list[1].class      ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(spec._label_list[1]._name.class).to eq RbVHDL::Ast::Identifier
+        expect(spec._label_list[1]._name      ).to eq :U1
       end
     end
   end
@@ -60,18 +70,20 @@ describe 'RbVHDL::Ast::Declaration::Configuration' do
   describe 'ComponentSpecOthers' do
     context "new" do
 
-      it "new(identifier('component_spec'))" do
-        spec = RbVHDL::Ast::Declaration::ComponentSpecOthers.new(RbVHDL::Ast.identifier('component_spec'))
-        expect(spec.class      ).to eq RbVHDL::Ast::Declaration::ComponentSpecOthers
-        expect(spec._name.class).to eq RbVHDL::Ast::Identifier
-        expect(spec._name      ).to eq :component_spec
+      it "new(name('component_spec'))" do
+        spec = RbVHDL::Ast::Declaration::ComponentSpecOthers.new(RbVHDL::Ast.name('component_spec'))
+        expect(spec.class               ).to eq RbVHDL::Ast::Declaration::ComponentSpecOthers
+        expect(spec._name.class         ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(spec._name._name.class   ).to eq RbVHDL::Ast::Identifier
+        expect(spec._name._name         ).to eq :component_spec
       end
 
       it "RbVHDL::Ast.component_specification_others('component_spec')" do
         spec = RbVHDL::Ast.component_specification_others('component_spec')
-        expect(spec.class      ).to eq RbVHDL::Ast::Declaration::ComponentSpecOthers
-        expect(spec._name.class).to eq RbVHDL::Ast::Identifier
-        expect(spec._name      ).to eq :component_spec
+        expect(spec.class               ).to eq RbVHDL::Ast::Declaration::ComponentSpecOthers
+        expect(spec._name.class         ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(spec._name._name.class   ).to eq RbVHDL::Ast::Identifier
+        expect(spec._name._name         ).to eq :component_spec
       end
 
     end
@@ -80,18 +92,20 @@ describe 'RbVHDL::Ast::Declaration::Configuration' do
   describe 'ComponentSpecAll' do
     context "new" do
 
-      it "new(identifier('component_spec'))" do
-        spec = RbVHDL::Ast::Declaration::ComponentSpecAll.new(RbVHDL::Ast.identifier('component_spec'))
-        expect(spec.class      ).to eq RbVHDL::Ast::Declaration::ComponentSpecAll
-        expect(spec._name.class).to eq RbVHDL::Ast::Identifier
-        expect(spec._name      ).to eq :component_spec
+      it "new(name('component_spec'))" do
+        spec = RbVHDL::Ast::Declaration::ComponentSpecAll.new(RbVHDL::Ast.name('component_spec'))
+        expect(spec.class               ).to eq RbVHDL::Ast::Declaration::ComponentSpecAll
+        expect(spec._name.class         ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(spec._name._name.class   ).to eq RbVHDL::Ast::Identifier
+        expect(spec._name._name         ).to eq :component_spec
       end
 
       it "RbVHDL::Ast.component_specification_all('component_spec')" do
         spec = RbVHDL::Ast.component_specification_all('component_spec')
-        expect(spec.class      ).to eq RbVHDL::Ast::Declaration::ComponentSpecAll
-        expect(spec._name.class).to eq RbVHDL::Ast::Identifier
-        expect(spec._name      ).to eq :component_spec
+        expect(spec.class               ).to eq RbVHDL::Ast::Declaration::ComponentSpecAll
+        expect(spec._name.class         ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(spec._name._name.class   ).to eq RbVHDL::Ast::Identifier
+        expect(spec._name._name         ).to eq :component_spec
       end
 
     end
@@ -100,46 +114,52 @@ describe 'RbVHDL::Ast::Declaration::Configuration' do
   describe 'EntityBindIndication' do
     context "new" do
 
-      it "new(identifier('entity_name'))" do
-        bind = RbVHDL::Ast::Declaration::EntityBindIndication.new(RbVHDL::Ast.identifier('entity_name'))
-        expect(bind.class                    ).to eq RbVHDL::Ast::Declaration::EntityBindIndication
-        expect(bind._name.class              ).to eq RbVHDL::Ast::Identifier
-        expect(bind._name                    ).to eq :entity_name
-        expect(bind._architecture_name       ).to eq nil
-        expect(bind._generic_association_list).to eq []
-        expect(bind._port_association_list   ).to eq []
+      it "new(name('entity_name'))" do
+        bind = RbVHDL::Ast::Declaration::EntityBindIndication.new(RbVHDL::Ast.name('entity_name'))
+        expect(bind.class                         ).to eq RbVHDL::Ast::Declaration::EntityBindIndication
+        expect(bind._name.class                   ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(bind._name._name.class             ).to eq RbVHDL::Ast::Identifier
+        expect(bind._name._name                   ).to eq :entity_name
+        expect(bind._architecture_name            ).to eq nil
+        expect(bind._generic_association_list     ).to eq []
+        expect(bind._port_association_list        ).to eq []
       end
       
-      it "new(identifier('entity_name'), identifier('arch_name'))" do
-        bind = RbVHDL::Ast::Declaration::EntityBindIndication.new(RbVHDL::Ast.identifier('entity_name'), RbVHDL::Ast.identifier('arch_name'))
-        expect(bind.class                    ).to eq RbVHDL::Ast::Declaration::EntityBindIndication
-        expect(bind._name.class              ).to eq RbVHDL::Ast::Identifier
-        expect(bind._name                    ).to eq :entity_name
-        expect(bind._architecture_name.class ).to eq RbVHDL::Ast::Identifier
-        expect(bind._architecture_name       ).to eq :arch_name
-        expect(bind._generic_association_list).to eq []
-        expect(bind._port_association_list   ).to eq []
+      it "new(name('entity_name'), name('arch_name'))" do
+        bind = RbVHDL::Ast::Declaration::EntityBindIndication.new(RbVHDL::Ast.name('entity_name'), RbVHDL::Ast.name('arch_name'))
+        expect(bind.class                         ).to eq RbVHDL::Ast::Declaration::EntityBindIndication
+        expect(bind._name.class                   ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(bind._name._name.class             ).to eq RbVHDL::Ast::Identifier
+        expect(bind._name._name                   ).to eq :entity_name
+        expect(bind._architecture_name.class      ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(bind._architecture_name._name.class).to eq RbVHDL::Ast::Identifier
+        expect(bind._architecture_name._name      ).to eq :arch_name
+        expect(bind._generic_association_list     ).to eq []
+        expect(bind._port_association_list        ).to eq []
       end
 
       it "RbVHDL::Ast.entity_bind_indication('entity_name')" do
         bind = RbVHDL::Ast.entity_bind_indication('entity_name')
-        expect(bind.class                    ).to eq RbVHDL::Ast::Declaration::EntityBindIndication
-        expect(bind._name.class              ).to eq RbVHDL::Ast::Identifier
-        expect(bind._name                    ).to eq :entity_name
-        expect(bind._architecture_name       ).to eq nil
-        expect(bind._generic_association_list).to eq []
-        expect(bind._port_association_list   ).to eq []
+        expect(bind.class                         ).to eq RbVHDL::Ast::Declaration::EntityBindIndication
+        expect(bind._name.class                   ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(bind._name._name.class             ).to eq RbVHDL::Ast::Identifier
+        expect(bind._name._name                   ).to eq :entity_name
+        expect(bind._architecture_name            ).to eq nil
+        expect(bind._generic_association_list     ).to eq []
+        expect(bind._port_association_list        ).to eq []
       end
       
       it "RbVHDL::Ast.entity_bind_indication('entity_name', 'arch_name')" do
         bind = RbVHDL::Ast.entity_bind_indication('entity_name', 'arch_name')
-        expect(bind.class                    ).to eq RbVHDL::Ast::Declaration::EntityBindIndication
-        expect(bind._name.class              ).to eq RbVHDL::Ast::Identifier
-        expect(bind._name                    ).to eq :entity_name
-        expect(bind._architecture_name.class ).to eq RbVHDL::Ast::Identifier
-        expect(bind._architecture_name       ).to eq :arch_name
-        expect(bind._generic_association_list).to eq []
-        expect(bind._port_association_list   ).to eq []
+        expect(bind.class                         ).to eq RbVHDL::Ast::Declaration::EntityBindIndication
+        expect(bind._name.class                   ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(bind._name._name.class             ).to eq RbVHDL::Ast::Identifier
+        expect(bind._name._name                   ).to eq :entity_name
+        expect(bind._architecture_name.class      ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(bind._architecture_name._name.class).to eq RbVHDL::Ast::Identifier
+        expect(bind._architecture_name._name      ).to eq :arch_name
+        expect(bind._generic_association_list     ).to eq []
+        expect(bind._port_association_list        ).to eq []
       end
       
     end
@@ -150,8 +170,9 @@ describe 'RbVHDL::Ast::Declaration::Configuration' do
         bind = RbVHDL::Ast.entity_bind_indication('entity_name')
         bind._add_generic_associations({'param0' => 1, 'param1' => 2})
         expect(bind.class                    ).to eq RbVHDL::Ast::Declaration::EntityBindIndication
-        expect(bind._name.class              ).to eq RbVHDL::Ast::Identifier
-        expect(bind._name                    ).to eq :entity_name
+        expect(bind._name.class              ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(bind._name._name.class        ).to eq RbVHDL::Ast::Identifier
+        expect(bind._name._name              ).to eq :entity_name
         expect(bind._architecture_name       ).to eq nil
         expect(bind._generic_association_list.size                                ).to eq 2
         expect(bind._generic_association_list[0].class                            ).to eq RbVHDL::Ast::Association    
@@ -182,8 +203,9 @@ describe 'RbVHDL::Ast::Declaration::Configuration' do
         bind = RbVHDL::Ast.entity_bind_indication('entity_name')
         bind._add_port_associations({'port0' => 'sig0', 'port1' => 'sig1'})
         expect(bind.class                    ).to eq RbVHDL::Ast::Declaration::EntityBindIndication
-        expect(bind._name.class              ).to eq RbVHDL::Ast::Identifier
-        expect(bind._name                    ).to eq :entity_name
+        expect(bind._name.class              ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(bind._name._name.class        ).to eq RbVHDL::Ast::Identifier
+        expect(bind._name._name              ).to eq :entity_name
         expect(bind._architecture_name       ).to eq nil
         expect(bind._generic_association_list).to eq []
         expect(bind._port_association_list.size                             ).to eq 2
@@ -213,8 +235,9 @@ describe 'RbVHDL::Ast::Declaration::Configuration' do
         bind = RbVHDL::Ast.entity_bind_indication('entity_name')
         bind._add_port_associations(['sig0', 'sig1'])
         expect(bind.class                    ).to eq RbVHDL::Ast::Declaration::EntityBindIndication
-        expect(bind._name.class              ).to eq RbVHDL::Ast::Identifier
-        expect(bind._name                    ).to eq :entity_name
+        expect(bind._name.class              ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(bind._name._name.class        ).to eq RbVHDL::Ast::Identifier
+        expect(bind._name._name              ).to eq :entity_name
         expect(bind._architecture_name       ).to eq nil
         expect(bind._generic_association_list).to eq []
         expect(bind._port_association_list.size                             ).to eq 2
@@ -243,10 +266,11 @@ describe 'RbVHDL::Ast::Declaration::Configuration' do
     context "new" do
 
       it "new(identifier('config_name'))" do
-        bind = RbVHDL::Ast::Declaration::ConfigurationBindIndication.new(RbVHDL::Ast.identifier('config_name'))
+        bind = RbVHDL::Ast::Declaration::ConfigurationBindIndication.new(RbVHDL::Ast.name('config_name'))
         expect(bind.class                    ).to eq RbVHDL::Ast::Declaration::ConfigurationBindIndication
-        expect(bind._name.class              ).to eq RbVHDL::Ast::Identifier
-        expect(bind._name                    ).to eq :config_name
+        expect(bind._name.class              ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(bind._name._name.class        ).to eq RbVHDL::Ast::Identifier
+        expect(bind._name._name              ).to eq :config_name
         expect(bind._generic_association_list).to eq []
         expect(bind._port_association_list   ).to eq []
       end
@@ -254,8 +278,9 @@ describe 'RbVHDL::Ast::Declaration::Configuration' do
       it "RbVHDL::Ast.configuration_bind_indication('config_name')" do
         bind = RbVHDL::Ast.configuration_bind_indication('config_name')
         expect(bind.class                    ).to eq RbVHDL::Ast::Declaration::ConfigurationBindIndication
-        expect(bind._name.class              ).to eq RbVHDL::Ast::Identifier
-        expect(bind._name                    ).to eq :config_name
+        expect(bind._name.class              ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(bind._name._name.class        ).to eq RbVHDL::Ast::Identifier
+        expect(bind._name._name              ).to eq :config_name
         expect(bind._generic_association_list).to eq []
         expect(bind._port_association_list   ).to eq []
       end
@@ -287,11 +312,12 @@ describe 'RbVHDL::Ast::Declaration::Configuration' do
 
     context "new" do
 
-      it "new(identifier('label'))" do
-        config = RbVHDL::Ast::Declaration::BlockConfiguration.new(RbVHDL::Ast.identifier('label'))
+      it "new(name('label'))" do
+        config = RbVHDL::Ast::Declaration::BlockConfiguration.new(RbVHDL::Ast.name('label'))
         expect(config.class                 ).to eq RbVHDL::Ast::Declaration::BlockConfiguration
-        expect(config._label.class          ).to eq RbVHDL::Ast::Identifier
-        expect(config._label                ).to eq :label
+        expect(config._label.class          ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(config._label._name.class    ).to eq RbVHDL::Ast::Identifier
+        expect(config._label._name          ).to eq :label
         expect(config._declarative_item_list).to eq []
         expect(config._configuration_list   ).to eq []
       end
@@ -299,8 +325,9 @@ describe 'RbVHDL::Ast::Declaration::Configuration' do
       it "RbVHDL::Ast.block_configuration('label')" do
         config = RbVHDL::Ast.block_configuration('label')
         expect(config.class                 ).to eq RbVHDL::Ast::Declaration::BlockConfiguration
-        expect(config._label.class          ).to eq RbVHDL::Ast::Identifier
-        expect(config._label                ).to eq :label
+        expect(config._label.class          ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(config._label._name.class    ).to eq RbVHDL::Ast::Identifier
+        expect(config._label._name          ).to eq :label
         expect(config._declarative_item_list).to eq []
         expect(config._configuration_list   ).to eq []
       end
@@ -313,13 +340,15 @@ describe 'RbVHDL::Ast::Declaration::Configuration' do
         top = RbVHDL::Ast.block_configuration('top')
         sub = top._block_configuration('sub')
         expect(top.class                 ).to eq RbVHDL::Ast::Declaration::BlockConfiguration
-        expect(top._label.class          ).to eq RbVHDL::Ast::Identifier
-        expect(top._label                ).to eq :top
+        expect(top._label.class          ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(top._label._name.class    ).to eq RbVHDL::Ast::Identifier
+        expect(top._label._name          ).to eq :top
         expect(top._declarative_item_list).to eq []
         expect(top._configuration_list   ).to eq [sub]
         expect(sub.class                 ).to eq RbVHDL::Ast::Declaration::BlockConfiguration
-        expect(sub._label.class          ).to eq RbVHDL::Ast::Identifier
-        expect(sub._label                ).to eq :sub
+        expect(sub._label.class          ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(sub._label._name.class    ).to eq RbVHDL::Ast::Identifier
+        expect(sub._label._name          ).to eq :sub
         expect(sub._declarative_item_list).to eq []
         expect(sub._configuration_list   ).to eq []
       end
@@ -331,18 +360,20 @@ describe 'RbVHDL::Ast::Declaration::Configuration' do
       it "_component_configuration(component_specification('sub'))" do
         top = RbVHDL::Ast.block_configuration('top')
         sub = top._component_configuration(RbVHDL::Ast.component_specification('sub'))
-        expect(top.class                      ).to eq RbVHDL::Ast::Declaration::BlockConfiguration
-        expect(top._label.class               ).to eq RbVHDL::Ast::Identifier
-        expect(top._label                     ).to eq :top
-        expect(top._declarative_item_list     ).to eq []
-        expect(top._configuration_list        ).to eq [sub]
-        expect(sub.class                      ).to eq RbVHDL::Ast::Declaration::ComponentConfiguration
-        expect(sub._component_spec.class      ).to eq RbVHDL::Ast::Declaration::ComponentSpecLabels
-        expect(sub._component_spec._name.class).to eq RbVHDL::Ast::Identifier
-        expect(sub._component_spec._name      ).to eq :sub
-        expect(sub._component_spec._label_list).to eq []
-        expect(sub._bind_indication           ).to eq nil
-        expect(sub._block_configuration       ).to eq nil
+        expect(top.class                            ).to eq RbVHDL::Ast::Declaration::BlockConfiguration
+        expect(top._label.class                     ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(top._label._name.class               ).to eq RbVHDL::Ast::Identifier
+        expect(top._label._name                     ).to eq :top
+        expect(top._declarative_item_list           ).to eq []
+        expect(top._configuration_list              ).to eq [sub]
+        expect(sub.class                            ).to eq RbVHDL::Ast::Declaration::ComponentConfiguration
+        expect(sub._component_spec.class            ).to eq RbVHDL::Ast::Declaration::ComponentSpecLabels
+        expect(sub._component_spec._name.class      ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(sub._component_spec._name._name.class).to eq RbVHDL::Ast::Identifier
+        expect(sub._component_spec._name._name      ).to eq :sub
+        expect(sub._component_spec._label_list      ).to eq []
+        expect(sub._bind_indication                 ).to eq nil
+        expect(sub._block_configuration             ).to eq nil
       end
     end
 
@@ -354,24 +385,26 @@ describe 'RbVHDL::Ast::Declaration::Configuration' do
 
       it "new(component_specification('spec'))" do
         config = RbVHDL::Ast::Declaration::ComponentConfiguration.new(RbVHDL::Ast.component_specification('spec'))
-        expect(config.class                      ).to eq RbVHDL::Ast::Declaration::ComponentConfiguration
-        expect(config._component_spec.class      ).to eq RbVHDL::Ast::Declaration::ComponentSpecLabels
-        expect(config._component_spec._name.class).to eq RbVHDL::Ast::Identifier
-        expect(config._component_spec._name      ).to eq :spec
-        expect(config._component_spec._label_list).to eq []
-        expect(config._bind_indication           ).to eq nil
-        expect(config._block_configuration       ).to eq nil
+        expect(config.class                            ).to eq RbVHDL::Ast::Declaration::ComponentConfiguration
+        expect(config._component_spec.class            ).to eq RbVHDL::Ast::Declaration::ComponentSpecLabels
+        expect(config._component_spec._name.class      ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(config._component_spec._name._name.class).to eq RbVHDL::Ast::Identifier
+        expect(config._component_spec._name._name      ).to eq :spec
+        expect(config._component_spec._label_list      ).to eq []
+        expect(config._bind_indication                 ).to eq nil
+        expect(config._block_configuration             ).to eq nil
       end
 
       it "RbVHDL::Ast.component_configuration(component_specification('spec'))" do
         config = RbVHDL::Ast.component_configuration(RbVHDL::Ast.component_specification('spec'))
-        expect(config.class                      ).to eq RbVHDL::Ast::Declaration::ComponentConfiguration
-        expect(config._component_spec.class      ).to eq RbVHDL::Ast::Declaration::ComponentSpecLabels
-        expect(config._component_spec._name.class).to eq RbVHDL::Ast::Identifier
-        expect(config._component_spec._name      ).to eq :spec
-        expect(config._component_spec._label_list).to eq []
-        expect(config._bind_indication           ).to eq nil
-        expect(config._block_configuration       ).to eq nil
+        expect(config.class                            ).to eq RbVHDL::Ast::Declaration::ComponentConfiguration
+        expect(config._component_spec.class            ).to eq RbVHDL::Ast::Declaration::ComponentSpecLabels
+        expect(config._component_spec._name.class      ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(config._component_spec._name._name.class).to eq RbVHDL::Ast::Identifier
+        expect(config._component_spec._name._name      ).to eq :spec
+        expect(config._component_spec._label_list      ).to eq []
+        expect(config._bind_indication                 ).to eq nil
+        expect(config._block_configuration             ).to eq nil
       end
 
     end
@@ -383,13 +416,15 @@ describe 'RbVHDL::Ast::Declaration::Configuration' do
         config._bind_indication = RbVHDL::Ast.entity_bind_indication('entity_name')
         expect(config.class                                     ).to eq RbVHDL::Ast::Declaration::ComponentConfiguration
         expect(config._component_spec.class                     ).to eq RbVHDL::Ast::Declaration::ComponentSpecLabels
-        expect(config._component_spec._name.class               ).to eq RbVHDL::Ast::Identifier
-        expect(config._component_spec._name                     ).to eq :spec
+        expect(config._component_spec._name.class               ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(config._component_spec._name._name.class         ).to eq RbVHDL::Ast::Identifier
+        expect(config._component_spec._name._name               ).to eq :spec
         expect(config._component_spec._label_list               ).to eq []
         expect(config._block_configuration                      ).to eq nil
         expect(config._bind_indication.class                    ).to eq RbVHDL::Ast::Declaration::EntityBindIndication
-        expect(config._bind_indication._name.class              ).to eq RbVHDL::Ast::Identifier
-        expect(config._bind_indication._name                    ).to eq :entity_name
+        expect(config._bind_indication._name.class              ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(config._bind_indication._name._name.class        ).to eq RbVHDL::Ast::Identifier
+        expect(config._bind_indication._name._name              ).to eq :entity_name
         expect(config._bind_indication._architecture_name       ).to eq nil
         expect(config._bind_indication._generic_association_list).to eq []
         expect(config._bind_indication._port_association_list   ).to eq []
@@ -403,13 +438,15 @@ describe 'RbVHDL::Ast::Declaration::Configuration' do
         config._block_configuration = RbVHDL::Ast.block_configuration('label')
         expect(config.class                                      ).to eq RbVHDL::Ast::Declaration::ComponentConfiguration
         expect(config._component_spec.class                      ).to eq RbVHDL::Ast::Declaration::ComponentSpecLabels
-        expect(config._component_spec._name.class                ).to eq RbVHDL::Ast::Identifier
-        expect(config._component_spec._name                      ).to eq :spec
+        expect(config._component_spec._name.class                ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(config._component_spec._name._name.class          ).to eq RbVHDL::Ast::Identifier
+        expect(config._component_spec._name._name                ).to eq :spec
         expect(config._component_spec._label_list                ).to eq []
         expect(config._bind_indication                           ).to eq nil
         expect(config._block_configuration.class                 ).to eq RbVHDL::Ast::Declaration::BlockConfiguration
-        expect(config._block_configuration._label.class          ).to eq RbVHDL::Ast::Identifier
-        expect(config._block_configuration._label                ).to eq :label
+        expect(config._block_configuration._label.class          ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(config._block_configuration._label._name.class    ).to eq RbVHDL::Ast::Identifier
+        expect(config._block_configuration._label._name          ).to eq :label
         expect(config._block_configuration._declarative_item_list).to eq []
         expect(config._block_configuration._configuration_list   ).to eq []
         
@@ -424,22 +461,24 @@ describe 'RbVHDL::Ast::Declaration::Configuration' do
 
       it "new(component_specification('spec'))" do
         spec = RbVHDL::Ast::Declaration::ConfigurationSpec.new(RbVHDL::Ast.component_specification('spec'))
-        expect(spec.class                      ).to eq RbVHDL::Ast::Declaration::ConfigurationSpec
-        expect(spec._component_spec.class      ).to eq RbVHDL::Ast::Declaration::ComponentSpecLabels
-        expect(spec._component_spec._name.class).to eq RbVHDL::Ast::Identifier
-        expect(spec._component_spec._name      ).to eq :spec
-        expect(spec._component_spec._label_list).to eq []
-        expect(spec._bind_indication           ).to eq nil
+        expect(spec.class                            ).to eq RbVHDL::Ast::Declaration::ConfigurationSpec
+        expect(spec._component_spec.class            ).to eq RbVHDL::Ast::Declaration::ComponentSpecLabels
+        expect(spec._component_spec._name.class      ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(spec._component_spec._name._name.class).to eq RbVHDL::Ast::Identifier
+        expect(spec._component_spec._name._name      ).to eq :spec
+        expect(spec._component_spec._label_list      ).to eq []
+        expect(spec._bind_indication                 ).to eq nil
       end
 
       it "RbVHDL::Ast.configuration_specification(component_specification('spec'))" do
         spec = RbVHDL::Ast.configuration_specification(RbVHDL::Ast.component_specification('spec'))
-        expect(spec.class                      ).to eq RbVHDL::Ast::Declaration::ConfigurationSpec
-        expect(spec._component_spec.class      ).to eq RbVHDL::Ast::Declaration::ComponentSpecLabels
-        expect(spec._component_spec._name.class).to eq RbVHDL::Ast::Identifier
-        expect(spec._component_spec._name      ).to eq :spec
-        expect(spec._component_spec._label_list).to eq []
-        expect(spec._bind_indication           ).to eq nil
+        expect(spec.class                            ).to eq RbVHDL::Ast::Declaration::ConfigurationSpec
+        expect(spec._component_spec.class            ).to eq RbVHDL::Ast::Declaration::ComponentSpecLabels
+        expect(spec._component_spec._name.class      ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(spec._component_spec._name._name.class).to eq RbVHDL::Ast::Identifier
+        expect(spec._component_spec._name._name      ).to eq :spec
+        expect(spec._component_spec._label_list      ).to eq []
+        expect(spec._bind_indication                 ).to eq nil
       end
 
     end
@@ -451,12 +490,14 @@ describe 'RbVHDL::Ast::Declaration::Configuration' do
         spec._bind_indication = RbVHDL::Ast.entity_bind_indication('entity_name')
         expect(spec.class                                     ).to eq RbVHDL::Ast::Declaration::ConfigurationSpec
         expect(spec._component_spec.class                     ).to eq RbVHDL::Ast::Declaration::ComponentSpecLabels
-        expect(spec._component_spec._name.class               ).to eq RbVHDL::Ast::Identifier
-        expect(spec._component_spec._name                     ).to eq :spec
+        expect(spec._component_spec._name.class               ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(spec._component_spec._name._name.class         ).to eq RbVHDL::Ast::Identifier
+        expect(spec._component_spec._name._name               ).to eq :spec
         expect(spec._component_spec._label_list               ).to eq []
         expect(spec._bind_indication.class                    ).to eq RbVHDL::Ast::Declaration::EntityBindIndication
-        expect(spec._bind_indication._name.class              ).to eq RbVHDL::Ast::Identifier
-        expect(spec._bind_indication._name                    ).to eq :entity_name
+        expect(spec._bind_indication._name.class              ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(spec._bind_indication._name._name.class        ).to eq RbVHDL::Ast::Identifier
+        expect(spec._bind_indication._name._name              ).to eq :entity_name
         expect(spec._bind_indication._architecture_name       ).to eq nil
         expect(spec._bind_indication._generic_association_list).to eq []
         expect(spec._bind_indication._port_association_list   ).to eq []
@@ -468,26 +509,28 @@ describe 'RbVHDL::Ast::Declaration::Configuration' do
 
     context "new" do
 
-      it "new(nil, identifier('config_name'), identifier('entity_name'))" do
-        config = RbVHDL::Ast::Declaration::Configuration.new(nil, RbVHDL::Ast.identifier('config_name'), RbVHDL::Ast.identifier('entity_name'))
-        expect(config.class                 ).to eq RbVHDL::Ast::Declaration::Configuration
-        expect(config._identifier.class     ).to eq RbVHDL::Ast::Identifier
-        expect(config._identifier           ).to eq :config_name
-        expect(config._entity_name.class    ).to eq RbVHDL::Ast::Identifier
-        expect(config._entity_name          ).to eq :entity_name
-        expect(config._declarative_item_list).to eq []
-        expect(config._block_configuration  ).to eq nil
+      it "new(nil, identifier('config_name'), name('entity_name'))" do
+        config = RbVHDL::Ast::Declaration::Configuration.new(nil, RbVHDL::Ast.identifier('config_name'), RbVHDL::Ast.name('entity_name'))
+        expect(config.class                   ).to eq RbVHDL::Ast::Declaration::Configuration
+        expect(config._identifier.class       ).to eq RbVHDL::Ast::Identifier
+        expect(config._identifier             ).to eq :config_name
+        expect(config._entity_name.class      ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(config._entity_name._name.class).to eq RbVHDL::Ast::Identifier
+        expect(config._entity_name._name      ).to eq :entity_name
+        expect(config._declarative_item_list  ).to eq []
+        expect(config._block_configuration    ).to eq nil
       end
 
       it "RbVHDL::Ast.configuration_declaration(nil, 'config_name', 'entity_name')" do
         config = RbVHDL::Ast.configuration_declaration(nil, 'config_name', 'entity_name')
-        expect(config.class                 ).to eq RbVHDL::Ast::Declaration::Configuration
-        expect(config._identifier.class     ).to eq RbVHDL::Ast::Identifier
-        expect(config._identifier           ).to eq :config_name
-        expect(config._entity_name.class    ).to eq RbVHDL::Ast::Identifier
-        expect(config._entity_name          ).to eq :entity_name
-        expect(config._declarative_item_list).to eq []
-        expect(config._block_configuration  ).to eq nil
+        expect(config.class                   ).to eq RbVHDL::Ast::Declaration::Configuration
+        expect(config._identifier.class       ).to eq RbVHDL::Ast::Identifier
+        expect(config._identifier             ).to eq :config_name
+        expect(config._entity_name.class      ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(config._entity_name._name.class).to eq RbVHDL::Ast::Identifier
+        expect(config._entity_name._name      ).to eq :entity_name
+        expect(config._declarative_item_list  ).to eq []
+        expect(config._block_configuration    ).to eq nil
       end
 
     end
@@ -500,12 +543,14 @@ describe 'RbVHDL::Ast::Declaration::Configuration' do
         expect(config.class                                      ).to eq RbVHDL::Ast::Declaration::Configuration
         expect(config._identifier.class                          ).to eq RbVHDL::Ast::Identifier
         expect(config._identifier                                ).to eq :config_name
-        expect(config._entity_name.class                         ).to eq RbVHDL::Ast::Identifier
-        expect(config._entity_name                               ).to eq :entity_name
+        expect(config._entity_name.class                         ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(config._entity_name._name.class                   ).to eq RbVHDL::Ast::Identifier
+        expect(config._entity_name._name                         ).to eq :entity_name
         expect(config._declarative_item_list                     ).to eq []
         expect(config._block_configuration.class                 ).to eq RbVHDL::Ast::Declaration::BlockConfiguration
-        expect(config._block_configuration._label.class          ).to eq RbVHDL::Ast::Identifier
-        expect(config._block_configuration._label                ).to eq :label
+        expect(config._block_configuration._label.class          ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(config._block_configuration._label._name.class    ).to eq RbVHDL::Ast::Identifier
+        expect(config._block_configuration._label._name          ).to eq :label
         expect(config._block_configuration._declarative_item_list).to eq []
         expect(config._block_configuration._configuration_list   ).to eq []
         

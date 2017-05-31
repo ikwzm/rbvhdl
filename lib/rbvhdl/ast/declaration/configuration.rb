@@ -13,7 +13,7 @@ module RbVHDL::Ast
     class Configuration
       attr_reader   :_owner
       attr_reader   :_identifier            # RbVHDL::Ast::Identifier
-      attr_reader   :_entity_name           # RbVHDL::Ast::Identifier
+      attr_reader   :_entity_name           # RbVHDL::Ast::Expression::SimpleName
       attr_reader   :_declarative_item_list # Array of RbVHDL::Declaration::*
       attr_accessor :_block_configuration   # RbVHDL::Ast::BlockConfiguration | nil
       attr_reader   :_annotation
@@ -65,14 +65,14 @@ module RbVHDL::Ast
     # component_specification     : (label ["," label]* | "others" | "all") ":" component_name
     #
     class ComponentSpec
-      attr_reader   :_name                  # RbVHDL::Ast::Identifier
+      attr_reader   :_name                  # RbVHDL::Ast::Expression::SimpleName
       def initialize(name)
         @_name = name
       end
     end
 
     class ComponentSpecLabels < ComponentSpec
-      attr_reader   :_label_list            # Array of RbVHDL::Ast::Identifier
+      attr_reader   :_label_list            # Array of RbVHDL::Ast::Label
       def initialize(name, label_list=[])
         super(name)
         @_label_list = label_list
@@ -98,7 +98,7 @@ module RbVHDL::Ast
     #                               "end" "for" ";"
     #
     class BlockConfiguration
-      attr_reader   :_label                 # RbVHDL::Ast::Identifier
+      attr_reader   :_label                 # RbVHDL::Ast::Expression::SimpleName
       attr_reader   :_declarative_item_list # Array of RbVHDL::Declaration::UseClause
       attr_reader   :_configuration_list    # Array of RbVHDL::Ast::BlockConfiguration | RbVHDL::Ast::ComponentConfiguration
       def initialize(label)
@@ -139,8 +139,8 @@ module RbVHDL::Ast
     end
 
     class EntityBindIndication < BindIndication
-      attr_reader   :_name               # RbVHDL::Ast::Identifier
-      attr_reader   :_architecture_name  # RbVHDL::Ast::Identifier | nil
+      attr_reader   :_name               # RbVHDL::Ast::Expression::SimpleName
+      attr_reader   :_architecture_name  # RbVHDL::Ast::Expression::SimpleName | nil
       def initialize(name, architecture_name=nil)
         super()
         @_name              = name
@@ -149,7 +149,7 @@ module RbVHDL::Ast
     end
 
     class ConfigurationBindIndication < BindIndication
-      attr_reader   :_name               # RbVHDL::Ast::Identifier
+      attr_reader   :_name               # RbVHDL::Ast::Expression::SimpleName
       def initialize(name)
         super()
         @_name = name
@@ -166,7 +166,7 @@ module RbVHDL::Ast
 
   def self.configuration_declaration(owner, ident, entity)
     identifier  = RbVHDL::Ast.identifier(ident )
-    entity_name = RbVHDL::Ast.identifier(entity)
+    entity_name = RbVHDL::Ast.name(entity)
     return RbVHDL::Ast::Declaration::Configuration.new(owner, identifier, entity_name)
   end
 
@@ -187,37 +187,36 @@ module RbVHDL::Ast
   end
 
   def self.block_configuration(label)
-    return RbVHDL::Ast::Declaration::BlockConfiguration.new(RbVHDL::Ast.identifier(label))
+    return RbVHDL::Ast::Declaration::BlockConfiguration.new(RbVHDL::Ast.name(label))
   end
 
   def self.component_specification(name, labels=nil)
-    _name = RbVHDL::Ast.identifier(name)
+    _name = RbVHDL::Ast.name(name)
     if    labels.nil? then
       return RbVHDL::Ast::Declaration::ComponentSpecLabels.new(_name)
     elsif labels.class == Array then
-      return RbVHDL::Ast::Declaration::ComponentSpecLabels.new(_name, labels.map{ |label| RbVHDL::Ast.identifier(label)})
+      return RbVHDL::Ast::Declaration::ComponentSpecLabels.new(_name, labels.map{ |label| RbVHDL::Ast.name(label)})
     else
-      return RbVHDL::Ast::Declaration::ComponentSpecLabels.new(_name, [RbVHDL::Ast.identifier(labels)])
+      return RbVHDL::Ast::Declaration::ComponentSpecLabels.new(_name, [RbVHDL::Ast.name(labels)])
     end
   end
 
   def self.component_specification_others(name)
-    return RbVHDL::Ast::Declaration::ComponentSpecOthers.new(RbVHDL::Ast.identifier(name))
+    return RbVHDL::Ast::Declaration::ComponentSpecOthers.new(RbVHDL::Ast.name(name))
   end
     
   def self.component_specification_all(name)
-    return RbVHDL::Ast::Declaration::ComponentSpecAll.new(RbVHDL::Ast.identifier(name))
+    return RbVHDL::Ast::Declaration::ComponentSpecAll.new(RbVHDL::Ast.name(name))
   end
     
   def self.entity_bind_indication(name, architecture_name=nil)
-    _name              = RbVHDL::Ast.identifier(name)
-    _architecture_name = RbVHDL::Ast.identifier_or_nil(architecture_name)
+    _name              = RbVHDL::Ast.name(name)
+    _architecture_name = (architecture_name.nil?)? nil : RbVHDL::Ast.name(architecture_name)
     return RbVHDL::Ast::Declaration::EntityBindIndication.new(_name, _architecture_name)
   end
 
   def self.configuration_bind_indication(name)
-    _name = RbVHDL::Ast.identifier(name)
-    return RbVHDL::Ast::Declaration::ConfigurationBindIndication.new(_name)
+    return RbVHDL::Ast::Declaration::ConfigurationBindIndication.new(RbVHDL::Ast.name(name))
   end
 
   def self.open_bind_indication

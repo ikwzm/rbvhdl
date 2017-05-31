@@ -14,7 +14,7 @@ module RbVHDL::Ast
     class ArchitectureBody
       attr_reader   :_owner                 # RbVHDL::Ast::DesignUnit
       attr_reader   :_identifier            # RbVHDL::Ast::Identifier
-      attr_reader   :_entity_name           # RbVHDL::Ast::Identifier
+      attr_reader   :_entity_name           # RbVHDL::Ast::Expression::SimpleName
       attr_reader   :_declarative_item_list # Array of RbVHDL::Declaration::*
       attr_reader   :_statement_list        # Array of RbVHDL::Statement::*
       attr_reader   :_annotation
@@ -35,7 +35,7 @@ module RbVHDL::Ast
 
   def self.architecture_body(owner, ident, entity)
     identifier  = RbVHDL::Ast.identifier(ident )
-    entity_name = RbVHDL::Ast.identifier(entity)
+    entity_name = RbVHDL::Ast.name(entity)
     return RbVHDL::Ast::Declaration::ArchitectureBody.new(owner, identifier, entity_name)
   end
 

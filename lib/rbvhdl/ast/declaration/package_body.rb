@@ -10,8 +10,8 @@ module RbVHDL::Ast
     #
     class PackageBody
       attr_reader   :_owner
-      attr_reader   :_identifier
-      attr_reader   :_declarative_item_list
+      attr_reader   :_identifier                # RbVHDL::Ast::Identifer
+      attr_reader   :_declarative_item_list     # Array of RbVHDL::Ast::Declaration::*
       attr_reader   :_annotation
     
       def initialize(owner, identifier)

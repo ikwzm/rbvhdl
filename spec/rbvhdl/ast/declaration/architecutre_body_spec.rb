@@ -14,12 +14,13 @@ describe 'RbVHDL::Ast::Declaration::ArchitectureBody' do
     sig3_decl   = body._signal_declaration(  'sig3', 'STATE_TYPE', RbVHDL::Ast.name('IDLE_STATE'), nil)
 
     it "body = design_unit._architecture('MODEL', 'TEST')" do
-      expect(body.class             ).to eq RbVHDL::Ast::Declaration::ArchitectureBody
-      expect(body._owner            ).to eq design_unit
-      expect(body._identifier.class ).to eq RbVHDL::Ast::Identifier
-      expect(body._identifier       ).to eq :MODEL
-      expect(body._entity_name.class).to eq RbVHDL::Ast::Identifier
-      expect(body._entity_name      ).to eq :TEST
+      expect(body.class                   ).to eq RbVHDL::Ast::Declaration::ArchitectureBody
+      expect(body._owner                  ).to eq design_unit
+      expect(body._identifier.class       ).to eq RbVHDL::Ast::Identifier
+      expect(body._identifier             ).to eq :MODEL
+      expect(body._entity_name.class      ).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(body._entity_name._name.class).to eq RbVHDL::Ast::Identifier
+      expect(body._entity_name._name      ).to eq :TEST
     end
 
     it "sig1_type = body._integer_type_declaration('INT08_TYPE', RbVHDL::Ast::Type::Range._to(0, 7))" do
