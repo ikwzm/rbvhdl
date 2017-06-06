@@ -151,6 +151,17 @@ describe 'RbVHDL::Ast::Expression::Name' do
         expect(name._suffix.class              ).to eq RbVHDL::Ast::Expression::SimpleName
         expect(name._suffix._name              ).to eq :component_name
       end
+
+      it "name('library_name')._select(name('package_name'))._select_all" do
+        name = RbVHDL::Ast.name('library_name')._select(RbVHDL::Ast.name('package_name'))._select_all
+        expect(name.class                      ).to eq RbVHDL::Ast::Expression::SelectedName
+        expect(name._prefix.class              ).to eq RbVHDL::Ast::Expression::SelectedName
+        expect(name._prefix._prefix.class      ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(name._prefix._prefix._name      ).to eq :library_name
+        expect(name._prefix._suffix.class      ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(name._prefix._suffix._name      ).to eq :package_name
+        expect(name._suffix.class              ).to eq RbVHDL::Ast::Expression::All
+      end
     end
   end
       

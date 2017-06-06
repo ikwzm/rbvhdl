@@ -58,6 +58,12 @@ module RbVHDL::Ast
       end
     end
 
+    class All < Name
+      def initialize
+        super()
+      end
+    end
+
     class AttributeName < Name
       attr_reader   :_name
       attr_reader   :_attribute
@@ -114,6 +120,12 @@ module RbVHDL::Ast
         return name
       end
 
+      def _select_all
+        name = SelectedName.new(self, RbVHDL::Ast.all)
+        name._annotation.merge(self._annotation)
+        return name
+      end
+
       def _call(associations)
         function_call = FunctionCall.new(self)
         function_call._add_parameter_associations(associations)
@@ -138,4 +150,8 @@ module RbVHDL::Ast
     end
   end
 
+  def self.all
+    return RbVHDL::Ast::Expression::All.new
+  end
+  
 end

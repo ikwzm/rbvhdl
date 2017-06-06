@@ -46,12 +46,17 @@ module RbVHDL::Ast
     end
 
     class EnumerationDefinition < Definition
-      attr_reader   :_enum_list # Array of RbVHDL::Ast::Identifier
+      attr_reader   :_enum_list # Array of RbVHDL::Ast::Identifier | RbVHDL::Ast::Expression::CharacterLiteral
       def initialize(enum_list)
         @_enum_list = enum_list
       end
-      def _enum!(identifier)
-        @_enum_list.push(RbVHDL::Ast.identifier(identifier))
+      def _enum!(enum)
+        if enum.class == RbVHDL::Ast::Identifier or
+           enum.class == RbVHDL::Ast::Expression::CharacterLiteral then
+          @_enum_list.push(enum)
+        else
+          @_enum_list.push(RbVHDL::Ast.identifier(enum))
+        end
         return self
       end
     end
@@ -164,12 +169,17 @@ module RbVHDL::Ast
   end
   
   def self.enumeration_type_definition(enum_list=nil)
+    type_def = RbVHDL::Ast::Type::EnumerationDefinition.new([])
     if    enum_list.nil? then
-      return RbVHDL::Ast::Type::EnumerationDefinition.new([])
+      return type_def
     elsif enum_list.class == Array then
-      return RbVHDL::Ast::Type::EnumerationDefinition.new(enum_list.map{|enum| RbVHDL::Ast.identifier(enum)})
+      enum_list.each do |enum|
+        type_def._enum!(enum)
+      end
+      return type_def
     else
-      return RbVHDL::Ast::Type::EnumerationDefinition.new([RbVHDL::Ast.identifier(enum)])
+      type_def._enum!(enum_list)
+      return type_def
     end
   end
 
