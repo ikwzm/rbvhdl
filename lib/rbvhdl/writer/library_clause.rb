@@ -2,7 +2,7 @@ module RbVHDL::Ast
 
   class LibraryClause
     RbVHDL::Writer._write_directive(self, {:keyword   => "library",
-                                           :format    => "%{indent}%{keyword} %{identifier_list};",
+                                           :format    => "%{indent}%<keyword>-7s %{identifier_list};",
                                            :separator => ", "
                                           }
                                    )

@@ -4,8 +4,9 @@ module RbVHDL::Ast
     RbVHDL::Writer._write_directive(self, {:clause_indent => "", :unit_indent => ""})
     
     def _write_line(directive={})
-      write_line = []
-      indent           = directive.fetch(:indent   , "")
+      write_line       = []
+      indent           = directive.fetch(:indent, "")
+
       clause_indent    = directive.fetch(:clause_indent, self.class._write_directive[:clause_indent])
       clause_directive = directive.dup
       clause_directive[:indent] = indent + clause_indent

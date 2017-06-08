@@ -25,9 +25,9 @@ module RbVHDL::Ast::Type
     end
 
     class RangeConstraint  < Constraint
-      attr_reader :_attr_name
-      def initialize(attr_name)
-        @_attr_name = attr_name
+      attr_reader :_range
+      def initialize(_range)
+        @_range = _range
       end
     end
 
@@ -62,6 +62,21 @@ module RbVHDL::Ast::Type
       else
         raise TypeError, "#{self.class}.#{__method__}): @_constraint.class is #{@_constraint.class}"
       end
+      return self
+    end
+
+    def _range_attr(name)
+      @_constraint = RangeConstraint.new(RbVHDL::Ast.range_attr(name))
+      return self
+    end
+
+    def _range_to(l,r)
+      @_constraint = RangeConstraint.new(RbVHDL::Ast.range_to(l,r))
+      return self
+    end
+
+    def _range_downto(l,r)
+      @_constraint = RangeConstraint.new(RbVHDL::Ast.range_downto(l,r))
       return self
     end
 

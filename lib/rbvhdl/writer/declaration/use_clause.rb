@@ -2,7 +2,7 @@ module RbVHDL::Ast::Declaration
 
   class UseClause
     RbVHDL::Writer._write_directive(self, {:keyword   => "use    ",
-                                           :format    => "%{indent}%{keyword} %{name_list};",
+                                           :format    => "%{indent}%<keyword>-7s %{name_list};",
                                            :separator => ", "
                                           }
                                    )
