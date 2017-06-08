@@ -1,24 +1,26 @@
 module RbVHDL::Ast::Declaration
 
   class Variable
-    RbVHDL::Writer._write_directive(self, {:keyword              => "variable",
-                                           :format               => "%{indent}%{keyword}%{identifier}:  %{type}%{value};",
-                                           :keyword_format       => "%<keyword>-10s",
-                                           :identifier_format    => "%{identifier}",
-                                           :identifier_separator => ",",
-                                           :identifier_align     => true,
-                                           :type_format          => "%{type}",
-                                           :value_format         => " := %{expression}",
-                                          }
-                                   )
+
+    WRITE_DIRECTIVE = {
+      :keyword              => "variable",
+      :format               => "%{indent}%{keyword}%{identifier}:  %{type}%{value};",
+      :keyword_format       => "%<keyword>-10s",
+      :identifier_format    => "%{identifier}",
+      :identifier_separator => ",",
+      :identifier_align     => true,
+      :type_format          => "%{type}",
+      :value_format         => " := %{expression}",
+    }
+
     def _write_line(directive={})
       indent            = directive.fetch(:indent   , "")
-      format            = directive.fetch(:format           , self.class._write_directive[:format            ])
-      keyword_format    = directive.fetch(:keyword_format   , self.class._write_directive[:keyword_format    ])
-      identifier_format = directive.fetch(:identifier_format, self.class._write_directive[:identifier_format ])
-      type_format       = directive.fetch(:type_format      , self.class._write_directive[:type_format       ])
-      value_format      = directive.fetch(:value_format     , self.class._write_directive[:value_format      ])
-      variable_keyword  = directive.fetch(:variable_keyword , self.class._write_directive[:keyword           ])
+      format            = directive.fetch(:format           , WRITE_DIRECTIVE[:format            ])
+      keyword_format    = directive.fetch(:keyword_format   , WRITE_DIRECTIVE[:keyword_format    ])
+      identifier_format = directive.fetch(:identifier_format, WRITE_DIRECTIVE[:identifier_format ])
+      type_format       = directive.fetch(:type_format      , WRITE_DIRECTIVE[:type_format       ])
+      value_format      = directive.fetch(:value_format     , WRITE_DIRECTIVE[:value_format      ])
+      variable_keyword  = directive.fetch(:variable_keyword , WRITE_DIRECTIVE[:keyword           ])
       keyword           = keyword_format    % {:keyword    => variable_keyword                   }
       identifier        = identifier_format % {:identifier => _write_identifier_string(directive)}
       type              = type_format       % {:type       => _write_type_string(directive)      }
@@ -27,7 +29,7 @@ module RbVHDL::Ast::Declaration
     end
 
     def _write_identifier_string(directive={})
-      identifier_separator = directive.fetch(:identifier_separator , self.class._write_directive[:identifier_separator])
+      identifier_separator = directive.fetch(:identifier_separator , WRITE_DIRECTIVE[:identifier_separator])
       return @_identifier_list.map{|identifier| identifier._write_string}.join(identifier_separator)
     end
 

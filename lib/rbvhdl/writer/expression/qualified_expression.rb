@@ -3,10 +3,10 @@ module RbVHDL::Ast
   class Expression
 
     class QualifiedExpression
-      RbVHDL::Writer._write_directive(self, {:format => "%{type_mark}'%{argument}"})
+      WRITE_DIRECTIVE = {:format => "%{type_mark}'%{argument}"}
 
       def _write_string(directive={})
-        format    = directive.fetch(:format, self.class._write_directive[:format])
+        format    = directive.fetch(:format, WRITE_DIRECTIVE[:format])
         type_mark = @_type_mark._write_string
         if @_argument.class == RbVHDL::Ast::Expression::Aggregate then
           argument = @_argument._write_string
@@ -18,10 +18,10 @@ module RbVHDL::Ast
     end
 
     class NewQualifiedExpression
-      RbVHDL::Writer._write_directive(self, {:format => "new %{type_mark}'%{argument}"})
+      WRITE_DIRECTIVE = {:format => "new %{type_mark}'%{argument}"}
 
       def _write_string(directive={})
-        format    = directive.fetch(:format, self.class._write_directive[:format])
+        format    = directive.fetch(:format, WRITE_DIRECTIVE[:format])
         type_mark = @_type_mark._write_string
         if @_argument.class == RbVHDL::Ast::Expression::Aggregate then
           argument = @_argument._write_string

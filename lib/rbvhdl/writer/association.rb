@@ -1,93 +1,93 @@
 module RbVHDL::Ast
   
   class Association
-    RbVHDL::Writer._write_directive(self, {:format => "%{formal}%{actual}"})
+    WRITE_DIRECTIVE = {:format => "%{formal}%{actual}"}
 
     def _write_string(directive={})
-      format      = directive.fetch(:format, self.class._write_directive[:format])
+      format      = directive.fetch(:format, WRITE_DIRECTIVE[:format])
       formal_part = @_formal_part._write_string
       actual_part = @_actual_part._write_string
       return format % {actual: actual_part, formal: formal_part}
     end
 
     class FormalIndex
-      RbVHDL::Writer._write_directive(self, {:format => ""})
+      WRITE_DIRECTIVE = {:format => ""}
 
       def _write_string(directive={})
-        format = directive.fetch(:format, self.class._write_directive[:format])
+        format = directive.fetch(:format, WRITE_DIRECTIVE[:format])
         return format % {index: @_index.to_s}
       end
     end
 
     class FormalName
-      RbVHDL::Writer._write_directive(self, {:format => "%{name} => "})
+      WRITE_DIRECTIVE = {:format => "%{name} => "}
     
       def _write_string(directive={})
-        format = directive.fetch(:format, self.class._write_directive[:format])
+        format = directive.fetch(:format, WRITE_DIRECTIVE[:format])
         return format % {name: @_name._write_string}
       end
     end
 
     class FormalFunction
-      RbVHDL::Writer._write_directive(self, {:format => "%{name}(%{designator}) => "})
+      WRITE_DIRECTIVE = {:format => "%{name}(%{designator}) => "}
 
       def _write_string(directive={})
-        format = directive.fetch(:format, self.class._write_directive[:format])
+        format = directive.fetch(:format, WRITE_DIRECTIVE[:format])
         return format % {name: @_name._write_string, designator: @_designator._write_string}
       end
     end
     
     class FormalTypeMark
-      RbVHDL::Writer._write_directive(self, {:format => "%{type_mark}(%{designator}) => "})
+      WRITE_DIRECTIVE = {:format => "%{type_mark}(%{designator}) => "}
 
       def _write_string(directive={})
-        format = directive.fetch(:format, self.class._write_directive[:format])
+        format = directive.fetch(:format, WRITE_DIRECTIVE[:format])
         return format % {type_mark: @_type_mark._write_string, designator: @_designator._write_string}
       end
     end
 
     class ActualName
-      RbVHDL::Writer._write_directive(self, {:format => "%{name}"})
+      WRITE_DIRECTIVE = {:format => "%{name}"}
 
       def _write_string(directive={})
-        format = directive.fetch(:format, self.class._write_directive[:format])
+        format = directive.fetch(:format, WRITE_DIRECTIVE[:format])
         return format % {name: @_name._write_string}
       end
     end
 
     class ActualFunction
-      RbVHDL::Writer._write_directive(self, {:format => "%{name}(%{designator})"})
+      WRITE_DIRECTIVE = {:format => "%{name}(%{designator})"}
 
       def _write_string(directive={})
-        format = directive.fetch(:format, self.class._write_directive[:format])
+        format = directive.fetch(:format, WRITE_DIRECTIVE[:format])
         return format % {name: @_name._write_string, designator: @_designator._write_string}
       end
     end
 
     class ActualTypeMark < ActualPart
-      RbVHDL::Writer._write_directive(self, {:format => "%{type_mark}(%{designator})"})
+      WRITE_DIRECTIVE = {:format => "%{type_mark}(%{designator})"}
 
       def _write_string(directive={})
-        format = directive.fetch(:format, self.class._write_directive[:format])
+        format = directive.fetch(:format, WRITE_DIRECTIVE[:format])
         return format % {type_mark: @_type_mark._write_string, designator: @_designator._write_string}
       end
     end
 
     class ActualExpression < ActualPart
-      RbVHDL::Writer._write_directive(self, {:format => "%{expression}"})
+      WRITE_DIRECTIVE = {:format => "%{expression}"}
 
       def _write_string(directive={})
-        format = directive.fetch(:format, self.class._write_directive[:format])
+        format = directive.fetch(:format, WRITE_DIRECTIVE[:format])
         return format % {expression: @_expression._write_string}
       end
     end
 
     class ActualOpen < ActualPart
-      RbVHDL::Writer._write_directive(self, {:format => "%{keyword}", :keyword => "open"})
+      WRITE_DIRECTIVE = {:format => "%{keyword}", :keyword => "open"}
 
       def _write_string(directive={})
-        format  = directive.fetch(:format , self.class._write_directive[:format ])
-        keyword = directive.fetch(:keyword, self.class._write_directive[:keyword])
+        format  = directive.fetch(:format , WRITE_DIRECTIVE[:format ])
+        keyword = directive.fetch(:keyword, WRITE_DIRECTIVE[:keyword])
         return format % {keyword: keyword}
       end
     end

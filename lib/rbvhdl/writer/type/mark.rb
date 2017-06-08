@@ -1,9 +1,9 @@
 module RbVHDL::Ast
   module Type
     class Mark
-      RbVHDL::Writer._write_directive(self, {:format => "%{type_mark}"})
+      WRITE_DIRECTIVE = {:format => "%{type_mark}"}
       def _write_string(directive={})
-        format = directive.fetch(:format, self.class._write_directive[:format])
+        format = directive.fetch(:format, WRITE_DIRECTIVE[:format])
         return format % {type_mark: self.to_s}
       end
     end

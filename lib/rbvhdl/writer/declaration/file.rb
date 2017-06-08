@@ -1,28 +1,30 @@
 module RbVHDL::Ast::Declaration
 
   class File
-    RbVHDL::Writer._write_directive(self, {:keyword              => "file",
-                                           :format               => "%{indent}%{keyword}%{identifier}:  %{type}%{value};",
-                                           :keyword_format       => "%<keyword>-10s",
-                                           :identifier_format    => "%{identifier}",
-                                           :identifier_separator => ",",
-                                           :identifier_align     => true,
-                                           :type_format          => "%{type}",
-                                           :is_keyword           => "is",
-                                           :open_keyword         => "open",
-                                           :value_format         => " %{file_open_kind_expression}%{is_keyword} %{string_expression}",
-                                          }
-                                   )
+
+    WRITE_DIRECTIVE = {
+      :keyword              => "file",
+      :format               => "%{indent}%{keyword}%{identifier}:  %{type}%{value};",
+      :keyword_format       => "%<keyword>-10s",
+      :identifier_format    => "%{identifier}",
+      :identifier_separator => ",",
+      :identifier_align     => true,
+      :type_format          => "%{type}",
+      :is_keyword           => "is",
+      :open_keyword         => "open",
+      :value_format         => " %{file_open_kind_expression}%{is_keyword} %{string_expression}",
+    }
+
     def _write_line(directive={})
       indent            = directive.fetch(:indent   , "")
-      format            = directive.fetch(:format           , self.class._write_directive[:format            ])
-      keyword_format    = directive.fetch(:keyword_format   , self.class._write_directive[:keyword_format    ])
-      identifier_format = directive.fetch(:identifier_format, self.class._write_directive[:identifier_format ])
-      type_format       = directive.fetch(:type_format      , self.class._write_directive[:type_format       ])
-      value_format      = directive.fetch(:value_format     , self.class._write_directive[:value_format      ])
-      file_keyword      = directive.fetch(:file_keyword     , self.class._write_directive[:keyword           ])
-      is_keyword        = directive.fetch(:is_keyword       , self.class._write_directive[:is_keyword        ])
-      open_keyword      = directive.fetch(:open_keyword     , self.class._write_directive[:open_keyword      ])
+      format            = directive.fetch(:format           , WRITE_DIRECTIVE[:format            ])
+      keyword_format    = directive.fetch(:keyword_format   , WRITE_DIRECTIVE[:keyword_format    ])
+      identifier_format = directive.fetch(:identifier_format, WRITE_DIRECTIVE[:identifier_format ])
+      type_format       = directive.fetch(:type_format      , WRITE_DIRECTIVE[:type_format       ])
+      value_format      = directive.fetch(:value_format     , WRITE_DIRECTIVE[:value_format      ])
+      file_keyword      = directive.fetch(:file_keyword     , WRITE_DIRECTIVE[:keyword           ])
+      is_keyword        = directive.fetch(:is_keyword       , WRITE_DIRECTIVE[:is_keyword        ])
+      open_keyword      = directive.fetch(:open_keyword     , WRITE_DIRECTIVE[:open_keyword      ])
       keyword           = keyword_format    % {:keyword    => file_keyword                   }
       identifier        = identifier_format % {:identifier => _write_identifier_string(directive)}
       type              = type_format       % {:type       => _write_type_string(directive)      }
@@ -43,7 +45,7 @@ module RbVHDL::Ast::Declaration
     end
 
     def _write_identifier_string(directive={})
-      identifier_separator = directive.fetch(:identifier_separator , self.class._write_directive[:identifier_separator])
+      identifier_separator = directive.fetch(:identifier_separator , WRITE_DIRECTIVE[:identifier_separator])
       return @_identifier_list.map{|identifier| identifier._write_string}.join(identifier_separator)
     end
 

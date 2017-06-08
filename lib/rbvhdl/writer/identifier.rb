@@ -1,10 +1,10 @@
 module RbVHDL::Ast
 
   class Identifier
-    RbVHDL::Writer._write_directive(self, {:format => "%{identifier}"})
+    WRITE_DIRECTIVE = {:format => "%{identifier}"}
 
     def _write_string(directive={})
-      format = directive.fetch(:format, self.class._write_directive[:format])
+      format = directive.fetch(:format, WRITE_DIRECTIVE[:format])
       return format % {identifier: self.to_s}
     end
   end

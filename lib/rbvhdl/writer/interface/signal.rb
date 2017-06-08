@@ -1,21 +1,19 @@
 require_relative '../interface/methods'
 
-module RbVHDL::Ast
-  module Interface
+module RbVHDL::Ast::Interface
 
-    class Signal
-      RbVHDL::Writer._write_directive(self, {:keyword              => "signal",
-                                             :format               => "%{indent}%{keyword}%{identifier}%{mode}%{type}%{value}%{separator}",
-                                             :keyword_format       => "%<keyword>-8s",
-                                             :identifier_format    => "%{identifier}",
-                                             :identifier_separator => ",",
-                                             :mode_format          => " : %{mode} ", 
-                                             :type_format          => "%{type}",
-                                             :value_format         => " := %{expression}",
-                                            }
-                                     )
-      include RbVHDL::Writer::Interface::Methods::WriteLine
-    end
+  class Signal
+    WRITE_DIRECTIVE = {
+      :keyword              => "signal",
+      :format               => "%{indent}%{keyword}%{identifier}%{mode}%{type}%{value}%{separator}",
+      :keyword_format       => "%<keyword>-8s",
+      :identifier_format    => "%{identifier}",
+      :identifier_separator => ",",
+      :mode_format          => " : %{mode} ", 
+      :type_format          => "%{type}",
+      :value_format         => " := %{expression}",
+    }
+    include RbVHDL::Writer::Interface::Methods::WriteLine
   end
 end
 

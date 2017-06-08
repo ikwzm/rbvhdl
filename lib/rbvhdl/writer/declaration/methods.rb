@@ -7,8 +7,8 @@ module RbVHDL::Writer
           write_line = []
           if @_declarative_item_list.size > 0 then
             indent                = directive.fetch(:indent, "")
-            declaration_indent    = directive.fetch(:declaration_indent          , self.class._write_directive[:declaration_indent])
-            identifier_align      = directive.fetch(:declaration_identifier_align, self.class._write_directive[:declaration_identifier_align])
+            declaration_indent    = directive.fetch(:declaration_indent          , self.class::WRITE_DIRECTIVE[:declaration_indent])
+            identifier_align      = directive.fetch(:declaration_identifier_align, self.class::WRITE_DIRECTIVE[:declaration_identifier_align])
 
             declaration_directive = directive.clone
             declaration_directive[:indent] = indent + declaration_indent
@@ -17,7 +17,7 @@ module RbVHDL::Writer
               identifier_field_max_size  = 0
               type_field_max_size        = 0
               @_declarative_item_list.each do |decl|
-                if decl.class._write_directive.fetch(:identifier_align, nil) == true then
+                if decl.class::WRITE_DIRECTIVE.fetch(:identifier_align, nil) == true then
                   identifier_field_size     = decl._write_identifier_string.size
                   identifier_field_max_size = identifier_field_size if(identifier_field_size > identifier_field_max_size)
                 end
@@ -27,7 +27,7 @@ module RbVHDL::Writer
             end
   
             @_declarative_item_list.each do |decl|
-              if identifier_align == true and decl.class._write_directive.fetch(:identifier_align, nil) == true then
+              if identifier_align == true and decl.class::WRITE_DIRECTIVE.fetch(:identifier_align, nil) == true then
                 write_line.concat(decl._write_line(identifier_aligned_directive))
               else
                 write_line.concat(decl._write_line(declaration_directive))

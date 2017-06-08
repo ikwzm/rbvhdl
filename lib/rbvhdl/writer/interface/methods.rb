@@ -7,13 +7,13 @@ module RbVHDL::Writer
         def _write_line(directive={})
           indent               = directive.fetch(:indent   , "")
           separator            = directive.fetch(:separator, ";")
-          format               = directive.fetch(:format           , self.class._write_directive[:format            ])
-          keyword_format       = directive.fetch(:keyword_format   , self.class._write_directive[:keyword_format    ])
-          identifier_format    = directive.fetch(:identifier_format, self.class._write_directive[:identifier_format ])
-          mode_format          = directive.fetch(:mode_format      , self.class._write_directive[:mode_format       ])
-          type_format          = directive.fetch(:type_format      , self.class._write_directive[:type_format       ])
-          value_format         = directive.fetch(:value_format     , self.class._write_directive[:value_format      ])
-          keyword              = keyword_format    % {:keyword    => self.class._write_directive[:keyword]}
+          format               = directive.fetch(:format           , self.class::WRITE_DIRECTIVE[:format            ])
+          keyword_format       = directive.fetch(:keyword_format   , self.class::WRITE_DIRECTIVE[:keyword_format    ])
+          identifier_format    = directive.fetch(:identifier_format, self.class::WRITE_DIRECTIVE[:identifier_format ])
+          mode_format          = directive.fetch(:mode_format      , self.class::WRITE_DIRECTIVE[:mode_format       ])
+          type_format          = directive.fetch(:type_format      , self.class::WRITE_DIRECTIVE[:type_format       ])
+          value_format         = directive.fetch(:value_format     , self.class::WRITE_DIRECTIVE[:value_format      ])
+          keyword              = keyword_format    % {:keyword    => self.class::WRITE_DIRECTIVE[:keyword]}
           identifier           = identifier_format % {:identifier => _write_identifier_string(directive)  }
           mode                 = mode_format       % {:mode       => _write_mode_string(directive)        }
           type                 = type_format       % {:type       => _write_type_string(directive)        }
@@ -22,7 +22,7 @@ module RbVHDL::Writer
         end
 
         def _write_identifier_string(directive={})
-          identifier_separator = directive.fetch(:identifier_separator , self.class._write_directive[:identifier_separator])
+          identifier_separator = directive.fetch(:identifier_separator , self.class::WRITE_DIRECTIVE[:identifier_separator])
           return @_identifier_list.map{|identifier| identifier._write_string}.join(identifier_separator)
         end
 
@@ -41,12 +41,12 @@ module RbVHDL::Writer
           write_line = []
           if @_generic_interface_list.size > 0 then
             indent                     = directive.fetch(:indent, "")
-            generic_keyword            = directive.fetch(:generic_keyword         , self.class._write_directive[:generic_keyword         ])
-            generic_begin_format       = directive.fetch(:generic_begin_format    , self.class._write_directive[:generic_begin_format    ])
-            generic_end_format         = directive.fetch(:generic_end_format      , self.class._write_directive[:generic_end_format      ])
-            generic_indent             = directive.fetch(:generic_indent          , self.class._write_directive[:generic_indent          ])
-            generic_interface_indent   = directive.fetch(:generic_interface_indent, self.class._write_directive[:generic_interface_indent])
-            generic_separator          = directive.fetch(:generic_separator       , self.class._write_directive[:generic_separator       ])
+            generic_keyword            = directive.fetch(:generic_keyword         , self.class::WRITE_DIRECTIVE[:generic_keyword         ])
+            generic_begin_format       = directive.fetch(:generic_begin_format    , self.class::WRITE_DIRECTIVE[:generic_begin_format    ])
+            generic_end_format         = directive.fetch(:generic_end_format      , self.class::WRITE_DIRECTIVE[:generic_end_format      ])
+            generic_indent             = directive.fetch(:generic_indent          , self.class::WRITE_DIRECTIVE[:generic_indent          ])
+            generic_interface_indent   = directive.fetch(:generic_interface_indent, self.class::WRITE_DIRECTIVE[:generic_interface_indent])
+            generic_separator          = directive.fetch(:generic_separator       , self.class::WRITE_DIRECTIVE[:generic_separator       ])
 
             write_line.push(generic_begin_format % {indent: indent, generic_indent: generic_indent, generic_keyword: generic_keyword})
 
@@ -88,12 +88,12 @@ module RbVHDL::Writer
           write_line = []
           if @_port_interface_list.size > 0 then
             indent                     = directive.fetch(:indent, "")
-            port_keyword               = directive.fetch(:port_keyword         , self.class._write_directive[:port_keyword         ])
-            port_begin_format          = directive.fetch(:port_begin_format    , self.class._write_directive[:port_begin_format    ])
-            port_end_format            = directive.fetch(:port_end_format      , self.class._write_directive[:port_end_format      ])
-            port_indent                = directive.fetch(:port_indent          , self.class._write_directive[:port_indent          ])
-            port_interface_indent      = directive.fetch(:port_interface_indent, self.class._write_directive[:port_interface_indent])
-            port_separator             = directive.fetch(:port_separator       , self.class._write_directive[:port_separator       ])
+            port_keyword               = directive.fetch(:port_keyword         , self.class::WRITE_DIRECTIVE[:port_keyword         ])
+            port_begin_format          = directive.fetch(:port_begin_format    , self.class::WRITE_DIRECTIVE[:port_begin_format    ])
+            port_end_format            = directive.fetch(:port_end_format      , self.class::WRITE_DIRECTIVE[:port_end_format      ])
+            port_indent                = directive.fetch(:port_indent          , self.class::WRITE_DIRECTIVE[:port_indent          ])
+            port_interface_indent      = directive.fetch(:port_interface_indent, self.class::WRITE_DIRECTIVE[:port_interface_indent])
+            port_separator             = directive.fetch(:port_separator       , self.class::WRITE_DIRECTIVE[:port_separator       ])
 
             write_line.push(port_begin_format % {indent: indent, port_indent: port_indent, port_keyword: port_keyword})
 
