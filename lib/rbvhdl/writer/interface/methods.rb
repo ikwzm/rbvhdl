@@ -35,7 +35,7 @@ module RbVHDL::Writer
         end
       end
 
-      module Generic
+      module GenericInterfaceList
 
         def _write_generic_interface(directive={})
           write_line = []
@@ -82,7 +82,7 @@ module RbVHDL::Writer
         end
       end
 
-      module Port
+      module PortInterfaceList
 
         def _write_port_interface(directive={})
           write_line = []
