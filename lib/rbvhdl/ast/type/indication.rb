@@ -1,4 +1,3 @@
-require_relative 'mark'
 require_relative 'range'
 
 module RbVHDL::Ast::Type
@@ -31,7 +30,7 @@ module RbVHDL::Ast::Type
       end
     end
 
-    attr_reader   :_type_mark   # RbVHDL::Ast::Type::Mark
+    attr_reader   :_type_mark   # RbVHDL::Ast::Expression::Name
     attr_accessor :_constraint  # RbVHDL::Ast::Type::Indication::Constraint or nil
     attr_accessor :_resolution  # T.B.D
 

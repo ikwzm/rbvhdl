@@ -19,8 +19,8 @@ describe 'RbVHDL::Ast::Declaration::Entity' do
     expect(entity._generic_interface_list[0]._identifier_list[0].class           ).to eq RbVHDL::Ast::Identifier
     expect(entity._generic_interface_list[0]._identifier_list[0]                 ).to eq :width
     expect(entity._generic_interface_list[0]._subtype_indication.class           ).to eq RbVHDL::Ast::Type::Indication
-    expect(entity._generic_interface_list[0]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-    expect(entity._generic_interface_list[0]._subtype_indication._type_mark      ).to eq :integer
+    expect(entity._generic_interface_list[0]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+    expect(entity._generic_interface_list[0]._subtype_indication._type_mark._name).to eq :integer
     expect(entity._generic_interface_list[0]._mode                               ).to eq nil
     expect(entity._generic_interface_list[0]._static_expression.class            ).to eq RbVHDL::Ast::Expression::DecimalLiteral
     expect(entity._generic_interface_list[0]._static_expression._integer         ).to eq 5

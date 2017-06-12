@@ -222,8 +222,8 @@ describe 'RbVHDL::Ast::Declaration::ArrayType' do
       expect(decl._type_definition._range_list[0]._r_expr.class        ).to eq RbVHDL::Ast::Expression::DecimalLiteral
       expect(decl._type_definition._range_list[0]._r_expr._integer     ).to eq 7
       expect(decl._type_definition._subtype_indication.class           ).to eq RbVHDL::Ast::Type::Indication
-      expect(decl._type_definition._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-      expect(decl._type_definition._subtype_indication._type_mark      ).to eq :test_type
+      expect(decl._type_definition._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(decl._type_definition._subtype_indication._type_mark._name).to eq :test_type
     end
 
     it "RbVHDL::Ast.array_type_declaration(nil, 'test_vector', RbVHDL::Ast.range_to(0, 7), 'test_type')" do
@@ -240,8 +240,8 @@ describe 'RbVHDL::Ast::Declaration::ArrayType' do
       expect(decl._type_definition._range_list[0]._r_expr.class        ).to eq RbVHDL::Ast::Expression::DecimalLiteral
       expect(decl._type_definition._range_list[0]._r_expr._integer     ).to eq 7
       expect(decl._type_definition._subtype_indication.class           ).to eq RbVHDL::Ast::Type::Indication
-      expect(decl._type_definition._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-      expect(decl._type_definition._subtype_indication._type_mark      ).to eq :test_type
+      expect(decl._type_definition._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(decl._type_definition._subtype_indication._type_mark._name).to eq :test_type
     end
 
   end
@@ -263,14 +263,14 @@ describe 'RbVHDL::Ast::Declaration::RecordType' do
       expect(decl._type_definition._field_list[0]._identifier.class                   ).to eq RbVHDL::Ast::Identifier
       expect(decl._type_definition._field_list[0]._identifier                         ).to eq :data0
       expect(decl._type_definition._field_list[0]._subtype_indication.class           ).to eq RbVHDL::Ast::Type::Indication
-      expect(decl._type_definition._field_list[0]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-      expect(decl._type_definition._field_list[0]._subtype_indication._type_mark      ).to eq :std_logic
+      expect(decl._type_definition._field_list[0]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(decl._type_definition._field_list[0]._subtype_indication._type_mark._name).to eq :std_logic
       expect(decl._type_definition._field_list[1].class                               ).to eq RbVHDL::Ast::Type::RecordDefinition::Field
       expect(decl._type_definition._field_list[1]._identifier.class                   ).to eq RbVHDL::Ast::Identifier
       expect(decl._type_definition._field_list[1]._identifier                         ).to eq :data1
       expect(decl._type_definition._field_list[1]._subtype_indication.class           ).to eq RbVHDL::Ast::Type::Indication
-      expect(decl._type_definition._field_list[1]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-      expect(decl._type_definition._field_list[1]._subtype_indication._type_mark      ).to eq :integer
+      expect(decl._type_definition._field_list[1]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(decl._type_definition._field_list[1]._subtype_indication._type_mark._name).to eq :integer
     end
 
     it "RbVHDL::Ast.record_type_declaration(nil, 'data_type', {'data0' => 'std_logic', 'data1' => 'integer'})" do
@@ -285,14 +285,14 @@ describe 'RbVHDL::Ast::Declaration::RecordType' do
       expect(decl._type_definition._field_list[0]._identifier.class                   ).to eq RbVHDL::Ast::Identifier
       expect(decl._type_definition._field_list[0]._identifier                         ).to eq :data0
       expect(decl._type_definition._field_list[0]._subtype_indication.class           ).to eq RbVHDL::Ast::Type::Indication
-      expect(decl._type_definition._field_list[0]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-      expect(decl._type_definition._field_list[0]._subtype_indication._type_mark      ).to eq :std_logic
+      expect(decl._type_definition._field_list[0]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(decl._type_definition._field_list[0]._subtype_indication._type_mark._name).to eq :std_logic
       expect(decl._type_definition._field_list[1].class                               ).to eq RbVHDL::Ast::Type::RecordDefinition::Field
       expect(decl._type_definition._field_list[1]._identifier.class                   ).to eq RbVHDL::Ast::Identifier
       expect(decl._type_definition._field_list[1]._identifier                         ).to eq :data1
       expect(decl._type_definition._field_list[1]._subtype_indication.class           ).to eq RbVHDL::Ast::Type::Indication
-      expect(decl._type_definition._field_list[1]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-      expect(decl._type_definition._field_list[1]._subtype_indication._type_mark      ).to eq :integer
+      expect(decl._type_definition._field_list[1]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(decl._type_definition._field_list[1]._subtype_indication._type_mark._name).to eq :integer
     end
   end
 
@@ -309,14 +309,14 @@ describe 'RbVHDL::Ast::Declaration::RecordType' do
       expect(decl._type_definition._field_list[0]._identifier.class                   ).to eq RbVHDL::Ast::Identifier
       expect(decl._type_definition._field_list[0]._identifier                         ).to eq :data0
       expect(decl._type_definition._field_list[0]._subtype_indication.class           ).to eq RbVHDL::Ast::Type::Indication
-      expect(decl._type_definition._field_list[0]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-      expect(decl._type_definition._field_list[0]._subtype_indication._type_mark      ).to eq :std_logic
+      expect(decl._type_definition._field_list[0]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(decl._type_definition._field_list[0]._subtype_indication._type_mark._name).to eq :std_logic
       expect(decl._type_definition._field_list[1].class                               ).to eq RbVHDL::Ast::Type::RecordDefinition::Field
       expect(decl._type_definition._field_list[1]._identifier.class                   ).to eq RbVHDL::Ast::Identifier
       expect(decl._type_definition._field_list[1]._identifier                         ).to eq :data1
       expect(decl._type_definition._field_list[1]._subtype_indication.class           ).to eq RbVHDL::Ast::Type::Indication
-      expect(decl._type_definition._field_list[1]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-      expect(decl._type_definition._field_list[1]._subtype_indication._type_mark      ).to eq :integer
+      expect(decl._type_definition._field_list[1]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(decl._type_definition._field_list[1]._subtype_indication._type_mark._name).to eq :integer
     end
   end
 end
@@ -332,8 +332,8 @@ describe 'RbVHDL::Ast::Declaration::FileType' do
       expect(decl._identifier.class                ).to eq RbVHDL::Ast::Identifier
       expect(decl._identifier                      ).to eq :file_type
       expect(decl._type_definition.class           ).to eq RbVHDL::Ast::Type::FileDefinition
-      expect(decl._type_definition._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-      expect(decl._type_definition._type_mark      ).to eq :string
+      expect(decl._type_definition._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(decl._type_definition._type_mark._name).to eq :string
     end
 
     it "RbVHDL::Ast.file_type_declaration(nil, 'file_type', 'string')" do
@@ -343,8 +343,8 @@ describe 'RbVHDL::Ast::Declaration::FileType' do
       expect(decl._identifier.class                ).to eq RbVHDL::Ast::Identifier
       expect(decl._identifier                      ).to eq :file_type
       expect(decl._type_definition.class           ).to eq RbVHDL::Ast::Type::FileDefinition
-      expect(decl._type_definition._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-      expect(decl._type_definition._type_mark      ).to eq :string
+      expect(decl._type_definition._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(decl._type_definition._type_mark._name).to eq :string
     end
 
   end
@@ -362,8 +362,8 @@ describe 'RbVHDL::Ast::Declaration::AccessType' do
       expect(decl._identifier                                          ).to eq :line
       expect(decl._type_definition.class                               ).to eq RbVHDL::Ast::Type::AccessDefinition
       expect(decl._type_definition._subtype_indication.class           ).to eq RbVHDL::Ast::Type::Indication
-      expect(decl._type_definition._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-      expect(decl._type_definition._subtype_indication._type_mark      ).to eq :string
+      expect(decl._type_definition._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(decl._type_definition._subtype_indication._type_mark._name).to eq :string
     end
     
     it "RbVHDL::Ast.access_type_declaration(nil, 'line', 'string')" do
@@ -374,8 +374,8 @@ describe 'RbVHDL::Ast::Declaration::AccessType' do
       expect(decl._identifier                                          ).to eq :line
       expect(decl._type_definition.class                               ).to eq RbVHDL::Ast::Type::AccessDefinition
       expect(decl._type_definition._subtype_indication.class           ).to eq RbVHDL::Ast::Type::Indication
-      expect(decl._type_definition._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-      expect(decl._type_definition._subtype_indication._type_mark      ).to eq :string
+      expect(decl._type_definition._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(decl._type_definition._subtype_indication._type_mark._name).to eq :string
     end
 
   end

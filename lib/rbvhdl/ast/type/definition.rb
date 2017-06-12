@@ -1,4 +1,3 @@
-require_relative 'mark'
 require_relative 'range'
 
 module RbVHDL::Ast
@@ -37,7 +36,7 @@ module RbVHDL::Ast
     end
 
     class ArrayDefinition       < Definition
-      attr_reader   :_range_list         # Array of (RbVHDL::Ast::Type::Mark or RbVHDL::Ast::Type::Range)
+      attr_reader   :_range_list         # Array of (RbVHDL::Ast::Expression::Name or RbVHDL::Ast::Type::Range)
       attr_reader   :_subtype_indication # RbVHDL::Ast::Type::Indication
       def initialize(range_list, subtype_indication)
         @_range_list         = range_list
@@ -87,7 +86,7 @@ module RbVHDL::Ast
     end
 
     class FileDefinition        < Definition
-      attr_reader   :_type_mark # RbVHDL::Ast::Type::Mark
+      attr_reader   :_type_mark # RbVHDL::Ast::Expression::Name
       def initialize(type_mark)
         @_type_mark = type_mark
       end
@@ -198,7 +197,7 @@ module RbVHDL::Ast
   end
   
   def self.file_type_definition(type)
-    type_mark = RbVHDL::Ast.type_mark(type)
+    type_mark = RbVHDL::Ast.name(type)
     return RbVHDL::Ast::Type::FileDefinition.new(type_mark)
   end
 

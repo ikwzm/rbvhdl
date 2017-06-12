@@ -7,7 +7,7 @@ module RbVHDL::Ast
     class Alias
       attr_reader   :_owner
       attr_reader   :_identifier          # RbVHDL::Ast::Identifer | RbVHDL::Ast::Expression::CharacterLiteral
-      attr_reader   :_subtype_indication  # RbVHDL::Ast::Type::Indication
+      attr_reader   :_subtype_indication  # RbVHDL::Ast::Type::Indication | nil
       attr_reader   :_name                # RbVHDL::Ast::Expression::Name
       attr_accessor :_signature
       attr_reader   :_annotation

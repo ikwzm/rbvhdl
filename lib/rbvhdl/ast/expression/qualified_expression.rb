@@ -1,6 +1,5 @@
 require_relative 'primary'
 require_relative 'aggregate'
-require_relative '../type/mark'
 
 module RbVHDL::Ast
 
@@ -23,13 +22,13 @@ module RbVHDL::Ast
   end
 
   def self.qualified_expression(name, arg)
-    type_mark = self.type_mark(name)
+    type_mark = self.name(name)
     argument  = self.expression(arg)
     return RbVHDL::Ast::Expression::QualifiedExpression.new(type_mark, argument)
   end
 
   def self.new_qualified_expression(name, arg)
-    type_mark = self.type_mark(name)
+    type_mark = self.name(name)
     argument  = self.expression(arg)
     return RbVHDL::Ast::Expression::NewQualifiedExpression.new(type_mark, argument)
   end

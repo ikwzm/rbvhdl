@@ -21,8 +21,8 @@ describe 'RbVHDL::Ast::Declaration::ProcedureDecl' do
       expect(proc._parameter_interface_list[0].class                               ).to eq RbVHDL::Ast::Interface::Variable
       expect(proc._parameter_interface_list[0]._identifier_list                    ).to eq [:param0]
       expect(proc._parameter_interface_list[0]._subtype_indication.class           ).to eq RbVHDL::Ast::Type::Indication
-      expect(proc._parameter_interface_list[0]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-      expect(proc._parameter_interface_list[0]._subtype_indication._type_mark      ).to eq :integer
+      expect(proc._parameter_interface_list[0]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(proc._parameter_interface_list[0]._subtype_indication._type_mark._name).to eq :integer
       expect(proc._parameter_interface_list[0]._subtype_indication._constraint     ).to eq nil
       expect(proc._parameter_interface_list[0]._mode                               ).to eq nil
       expect(proc._parameter_interface_list[0]._static_expression.class            ).to eq RbVHDL::Ast::Expression::DecimalLiteral
@@ -31,8 +31,8 @@ describe 'RbVHDL::Ast::Declaration::ProcedureDecl' do
       expect(proc._parameter_interface_list[1].class                               ).to eq RbVHDL::Ast::Interface::Signal
       expect(proc._parameter_interface_list[1]._identifier_list                    ).to eq [:param1]
       expect(proc._parameter_interface_list[1]._subtype_indication.class           ).to eq RbVHDL::Ast::Type::Indication
-      expect(proc._parameter_interface_list[1]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-      expect(proc._parameter_interface_list[1]._subtype_indication._type_mark      ).to eq :std_logic_vector
+      expect(proc._parameter_interface_list[1]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(proc._parameter_interface_list[1]._subtype_indication._type_mark._name).to eq :std_logic_vector
       expect(proc._parameter_interface_list[1]._subtype_indication._constraint     ).to eq nil
       expect(proc._parameter_interface_list[1]._mode                               ).to eq :In
       expect(proc._parameter_interface_list[1]._static_expression                  ).to eq nil
@@ -40,8 +40,8 @@ describe 'RbVHDL::Ast::Declaration::ProcedureDecl' do
       expect(proc._parameter_interface_list[2].class                               ).to eq RbVHDL::Ast::Interface::Signal
       expect(proc._parameter_interface_list[2]._identifier_list                    ).to eq [:param2]
       expect(proc._parameter_interface_list[2]._subtype_indication.class           ).to eq RbVHDL::Ast::Type::Indication
-      expect(proc._parameter_interface_list[2]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-      expect(proc._parameter_interface_list[2]._subtype_indication._type_mark      ).to eq :std_logic_vector
+      expect(proc._parameter_interface_list[2]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(proc._parameter_interface_list[2]._subtype_indication._type_mark._name).to eq :std_logic_vector
       expect(proc._parameter_interface_list[2]._subtype_indication._constraint     ).to eq nil
       expect(proc._parameter_interface_list[2]._mode                               ).to eq :Out
       expect(proc._parameter_interface_list[2]._static_expression                  ).to eq nil
@@ -71,8 +71,8 @@ describe 'RbVHDL::Ast::Declaration::PureFuncionDecl' do
       expect(func._parameter_interface_list[0].class                               ).to eq RbVHDL::Ast::Interface::Variable
       expect(func._parameter_interface_list[0]._identifier_list                    ).to eq [:param0]
       expect(func._parameter_interface_list[0]._subtype_indication.class           ).to eq RbVHDL::Ast::Type::Indication
-      expect(func._parameter_interface_list[0]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-      expect(func._parameter_interface_list[0]._subtype_indication._type_mark      ).to eq :integer
+      expect(func._parameter_interface_list[0]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(func._parameter_interface_list[0]._subtype_indication._type_mark._name).to eq :integer
       expect(func._parameter_interface_list[0]._subtype_indication._constraint     ).to eq nil
       expect(func._parameter_interface_list[0]._mode                               ).to eq nil
       expect(func._parameter_interface_list[0]._static_expression.class            ).to eq RbVHDL::Ast::Expression::DecimalLiteral
@@ -81,8 +81,8 @@ describe 'RbVHDL::Ast::Declaration::PureFuncionDecl' do
       expect(func._parameter_interface_list[1].class                               ).to eq RbVHDL::Ast::Interface::Variable
       expect(func._parameter_interface_list[1]._identifier_list                    ).to eq [:param1]
       expect(func._parameter_interface_list[1]._subtype_indication.class           ).to eq RbVHDL::Ast::Type::Indication
-      expect(func._parameter_interface_list[1]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-      expect(func._parameter_interface_list[1]._subtype_indication._type_mark      ).to eq :std_logic_vector
+      expect(func._parameter_interface_list[1]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(func._parameter_interface_list[1]._subtype_indication._type_mark._name).to eq :std_logic_vector
       expect(func._parameter_interface_list[1]._subtype_indication._constraint     ).to eq nil
       expect(func._parameter_interface_list[1]._mode                               ).to eq nil
       expect(func._parameter_interface_list[1]._static_expression                  ).to eq nil
@@ -90,8 +90,8 @@ describe 'RbVHDL::Ast::Declaration::PureFuncionDecl' do
       expect(func._parameter_interface_list[2].class                               ).to eq RbVHDL::Ast::Interface::Signal
       expect(func._parameter_interface_list[2]._identifier_list                    ).to eq [:param2]
       expect(func._parameter_interface_list[2]._subtype_indication.class           ).to eq RbVHDL::Ast::Type::Indication
-      expect(func._parameter_interface_list[2]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-      expect(func._parameter_interface_list[2]._subtype_indication._type_mark      ).to eq :std_logic_vector
+      expect(func._parameter_interface_list[2]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(func._parameter_interface_list[2]._subtype_indication._type_mark._name).to eq :std_logic_vector
       expect(func._parameter_interface_list[2]._subtype_indication._constraint     ).to eq nil
       expect(func._parameter_interface_list[2]._mode                               ).to eq nil
       expect(func._parameter_interface_list[2]._static_expression                  ).to eq nil
@@ -120,8 +120,8 @@ describe 'RbVHDL::Ast::Declaration::ImpureFuncionDecl' do
       expect(func._parameter_interface_list[0].class                               ).to eq RbVHDL::Ast::Interface::Variable
       expect(func._parameter_interface_list[0]._identifier_list                    ).to eq [:param0]
       expect(func._parameter_interface_list[0]._subtype_indication.class           ).to eq RbVHDL::Ast::Type::Indication
-      expect(func._parameter_interface_list[0]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-      expect(func._parameter_interface_list[0]._subtype_indication._type_mark      ).to eq :integer
+      expect(func._parameter_interface_list[0]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(func._parameter_interface_list[0]._subtype_indication._type_mark._name).to eq :integer
       expect(func._parameter_interface_list[0]._subtype_indication._constraint     ).to eq nil
       expect(func._parameter_interface_list[0]._mode                               ).to eq nil
       expect(func._parameter_interface_list[0]._static_expression.class            ).to eq RbVHDL::Ast::Expression::DecimalLiteral
@@ -130,8 +130,8 @@ describe 'RbVHDL::Ast::Declaration::ImpureFuncionDecl' do
       expect(func._parameter_interface_list[1].class                               ).to eq RbVHDL::Ast::Interface::Variable
       expect(func._parameter_interface_list[1]._identifier_list                    ).to eq [:param1]
       expect(func._parameter_interface_list[1]._subtype_indication.class           ).to eq RbVHDL::Ast::Type::Indication
-      expect(func._parameter_interface_list[1]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-      expect(func._parameter_interface_list[1]._subtype_indication._type_mark      ).to eq :std_logic_vector
+      expect(func._parameter_interface_list[1]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(func._parameter_interface_list[1]._subtype_indication._type_mark._name).to eq :std_logic_vector
       expect(func._parameter_interface_list[1]._subtype_indication._constraint     ).to eq nil
       expect(func._parameter_interface_list[1]._mode                               ).to eq nil
       expect(func._parameter_interface_list[1]._static_expression                  ).to eq nil
@@ -139,8 +139,8 @@ describe 'RbVHDL::Ast::Declaration::ImpureFuncionDecl' do
       expect(func._parameter_interface_list[2].class                               ).to eq RbVHDL::Ast::Interface::Variable
       expect(func._parameter_interface_list[2]._identifier_list                    ).to eq [:param2]
       expect(func._parameter_interface_list[2]._subtype_indication.class           ).to eq RbVHDL::Ast::Type::Indication
-      expect(func._parameter_interface_list[2]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-      expect(func._parameter_interface_list[2]._subtype_indication._type_mark      ).to eq :std_logic_vector
+      expect(func._parameter_interface_list[2]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(func._parameter_interface_list[2]._subtype_indication._type_mark._name).to eq :std_logic_vector
       expect(func._parameter_interface_list[2]._subtype_indication._constraint     ).to eq nil
       expect(func._parameter_interface_list[2]._mode                               ).to eq nil
       expect(func._parameter_interface_list[2]._static_expression                  ).to eq nil
