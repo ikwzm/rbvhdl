@@ -62,7 +62,7 @@ module RbVHDL::Writer
             generic_directive = directive.dup
             generic_directive[:indent           ] = indent + generic_indent + generic_interface_indent
             generic_directive[:keyword_format   ] = ""
-            generic_directive[:identifier_format] = "%<identifier>-#{((identifier_field_max_size.to_f/8).ceil)*8}s"
+            generic_directive[:identifier_format] = "%<identifier>-#{((((identifier_field_max_size+1).to_f/8).ceil)*8)-1}s"
             generic_directive[:mode_format      ] = " :  "
             generic_directive[:type_format      ] = "%<type>-#{type_field_max_size}s"
 
@@ -110,9 +110,9 @@ module RbVHDL::Writer
             end
 
             port_directive = directive.dup
-            port_directive[:indent           ]    = indent + port_indent + port_interface_indent
+            port_directive[:indent           ] = indent + port_indent + port_interface_indent
             port_directive[:keyword_format   ] = ""
-            port_directive[:identifier_format] = "%<identifier>-#{((identifier_field_max_size.to_f/8).ceil)*8}s"
+            port_directive[:identifier_format] = "%<identifier>-#{((((identifier_field_max_size+1).to_f/8).ceil)*8)-1}s"
             port_directive[:mode_format      ] = " :  %<mode>-#{mode_field_max_size+1}s"
             port_directive[:type_format      ] = "%{type}"
 
