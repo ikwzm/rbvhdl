@@ -1,6 +1,7 @@
 require_relative '../declaration/methods'
-require_relative '../interface/methods'
 require_relative '../statement/methods'
+require_relative '../interface/generic'
+require_relative '../interface/port'
 
 module RbVHDL::Ast::Declaration
 
@@ -12,25 +13,12 @@ module RbVHDL::Ast::Declaration
       :end_keyword              => "end",
       :entity_begin_format      => "%{indent}%<keyword>-7s %{identifier} %{is_keyword}",
       :entity_end_format        => "%{indent}%<end_keyword>-7s %{identifier};",
-      :generic_keyword          => "generic",
-      :generic_begin_format     => "%{indent}%{generic_indent}%{generic_keyword}(" , 
-      :generic_end_format       => "%{indent}%{generic_indent});", 
-      :generic_indent           => "    ",
-      :generic_interface_format => "%{indent}%<identifier>-15s :  %{type}%{value}%{separator}",
-      :generic_interface_indent => "    ",
-      :generic_separator        => ";"   ,
-      :port_keyword             => "port",
-      :port_begin_format        => "%{indent}%{port_indent}%{port_keyword}(",
-      :port_end_format          => "%{indent}%{port_indent});",
-      :port_indent              => "    ",
-      :port_interface_format    => "%{indent}%<identifier>-15s :  %{mode} %{type}%{value}%{separator}",
-      :port_interface_indent    => "    ",
-      :port_separator           => ";"   ,
       :declaration_indent       => "    ",
       :begin_keyword            => "begin",
       :statement_begin_format   => "%{indent}%{begin_keyword}",
       :statement_indent         => "    ",
-    }
+    }.merge( RbVHDL::Writer::Interface::Generic::WRITE_DIRECTIVE )
+     .merge( RbVHDL::Writer::Interface::Port::WRITE_DIRECTIVE    )
 
     def _write_line(directive={})
       write_line = []
@@ -42,18 +30,19 @@ module RbVHDL::Ast::Declaration
       end_keyword         = directive.fetch(:end_keyword        , WRITE_DIRECTIVE[:end_keyword        ])
       entity_begin_format = directive.fetch(:entity_begin_format, WRITE_DIRECTIVE[:entity_begin_format])
       entity_end_format   = directive.fetch(:entity_end_format  , WRITE_DIRECTIVE[:entity_end_format  ])
+
       write_line.push(entity_begin_format % {indent: indent, keyword: keyword, identifier: identifier, is_keyword: is_keyword})
 
       write_line.concat(_write_generic_interface(directive))
       write_line.concat(_write_port_interface(directive))
 
-      write_line.push(entity_end_format   % {indent: indent, end_keyword: end_keyword, keyword: keyword, identifier: identifier})
+      write_line.push(entity_end_format   % {indent: indent, keyword: keyword, identifier: identifier, end_keyword: end_keyword})
 
       return write_line
     end
       
-    include RbVHDL::Writer::Interface::Methods::GenericInterfaceList
-    include RbVHDL::Writer::Interface::Methods::PortInterfaceList
+    include RbVHDL::Writer::Interface::Generic::WriteInterface
+    include RbVHDL::Writer::Interface::Port::WriteInterface
     include RbVHDL::Writer::Declaration::Methods::DeclarativeItemList
     include RbVHDL::Writer::Statement::Methods::StatementList
   end
