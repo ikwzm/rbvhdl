@@ -4,8 +4,8 @@ module RbVHDL::Ast::Declaration
     
     WRITE_DIRECTIVE = {
       :keyword              => "constant",
-      :format               => "%{indent}%{keyword}%{identifier}:  %{type}%{value};",
-      :keyword_format       => "%<keyword>-10s",
+      :format               => "%{indent}%{keyword} %{identifier} :  %{type}%{value};",
+      :keyword_format       => "%<keyword>-9s",
       :identifier_format    => "%{identifier}",
       :identifier_separator => ",",
       :identifier_align     => true,

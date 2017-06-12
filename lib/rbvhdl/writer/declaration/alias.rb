@@ -4,8 +4,8 @@ module RbVHDL::Ast::Declaration
 
     WRITE_DIRECTIVE = {
       :keyword              => "alias",
-      :format               => "%{indent}%{keyword}%{identifier}%{type}%{name};",
-      :keyword_format       => "%<keyword>-10s",
+      :format               => "%{indent}%{keyword} %{identifier} %{type}%{name};",
+      :keyword_format       => "%<keyword>-9s",
       :identifier_format    => "%{identifier}",
       :identifier_align     => true,
       :type_format          => ":  %{type} ",
@@ -19,8 +19,8 @@ module RbVHDL::Ast::Declaration
       identifier_format = directive.fetch(:identifier_format, WRITE_DIRECTIVE[:identifier_format ])
       type_format       = directive.fetch(:type_format      , WRITE_DIRECTIVE[:type_format       ])
       name_format       = directive.fetch(:name_format      , WRITE_DIRECTIVE[:name_format       ])
-      constant_keyword  = directive.fetch(:constant_keyword , WRITE_DIRECTIVE[:keyword           ])
-      keyword           = keyword_format    % {:keyword    => constant_keyword                   }
+      alias_keyword     = directive.fetch(:alias_keyword    , WRITE_DIRECTIVE[:keyword           ])
+      keyword           = keyword_format    % {:keyword    => alias_keyword                      }
       identifier        = identifier_format % {:identifier => _write_identifier_string(directive)}
       type              = (@_subtype_indication.nil?)? "" : type_format % {:type => _write_type_string(directive)}
       name              = name_format       % {:name       => @_name._write_string               }

@@ -23,7 +23,7 @@ module RbVHDL::Writer
                 end
               end
               identifier_aligned_directive = declaration_directive.dup
-              identifier_aligned_directive[:identifier_format] = "%<identifier>-#{((identifier_field_max_size.to_f/8).ceil)*8}s"
+              identifier_aligned_directive[:identifier_format] = "%<identifier>-#{((((identifier_field_max_size+1).to_f/8).ceil)*8)-1}s"
             end
   
             @_declarative_item_list.each do |decl|
