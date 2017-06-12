@@ -40,7 +40,7 @@ module RbVHDL::Ast
     end
   end
 
-  def self.attrbute_declaration(owner, ident, type)
+  def self.attribute_declaration(owner, ident, type)
     identifier = RbVHDL::Ast.identifier(ident)
     type_mark  = RbVHDL::Ast.type_mark(type)
     return RbVHDL::Ast::Declaration::AttributeDecl.new(owner, identifier, type_mark)
@@ -50,7 +50,7 @@ module RbVHDL::Ast
     identifier       = RbVHDL::Ast.identifier(ident)
     entity_name_list = RbVHDL::Ast.identifier_list(entity_name)
     value_expression = RbVHDL::Ast.expression(value)
-    return RbVHDL::Ast::Declaration::AttributeSpec(owner, identifier, entity_name_list, entity_class, value_expression)
+    return RbVHDL::Ast::Declaration::AttributeSpec.new(owner, identifier, entity_name_list, entity_class, value_expression)
   end
   
 end
