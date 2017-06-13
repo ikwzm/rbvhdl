@@ -7,30 +7,44 @@ describe 'RbVHDL::Ast::Declaration::Package' do
     it do
       design_unit = RbVHDL::Ast::DesignUnit.new
       package     = design_unit._package('TEST')
-      width_decl  = package._constant_declaration(   'WIDTH' , 'integer'  , 8)
-      comp_decl   = package._component_declaration(  'SUB_0')
-      comp_decl._generic_interface('WIDTH', RbVHDL::Ast.subtype_indication('integer'  )._range_to(1,8), 5)
-      comp_decl._generic_interface('SIZE' , RbVHDL::Ast.subtype_indication('integer'  ), 8)
-      comp_decl._port_interface(   'CLK'  , RbVHDL::Ast.subtype_indication('std_logic'), :in)
-      comp_decl._port_interface(   'RST'  , RbVHDL::Ast.subtype_indication('std_logic'), :in)
-      comp_decl._port_interface(   'D'    , RbVHDL::Ast.subtype_indication('std_logic_vector')._downto(RbVHDL::Ast.subtraction(RbVHDL::Ast.name(:WIDTH),1),0), :in)
-      comp_decl._port_interface(   'Q'    , RbVHDL::Ast.subtype_indication('std_logic_vector')._downto(RbVHDL::Ast.subtraction(RbVHDL::Ast.name(:WIDTH),1),0), :out)
+      package._constant_declaration(   'DATA_WIDTH', 'integer'  , 8)
+
+      package._record_type_declaration('DATA_TYPE')
+        ._field!('DATA' , RbVHDL::Ast.subtype_indication('std_logic_vector')._downto(RbVHDL::Ast.subtraction(RbVHDL::Ast.name(:DATA_WIDTH),1),0))
+        ._field!('STRB' , RbVHDL::Ast.subtype_indication('std_logic_vector')._downto(RbVHDL::Ast.subtraction(8,1), 0))
+        ._field!('VALID', 'boolean')
+
+      package._physical_type_declaration('resistance', RbVHDL::Ast.range_to(0, 1e15), 'ohm')
+        ._unit!('kohm', 1000, 'ohm' )
+        ._unit!('Mohm', 1000, 'kohm')
+
+      package._enumeration_type_declaration('logic_level')
+        ._enum!('unknown')
+        ._enum!('low')
+        ._enum!('undriven')
+        ._enum!('high')
+
+      package._integer_type_declaration('year', RbVHDL::Ast.range_to(0, 2100))
+
+      package._floating_type_declaration('input_level', RbVHDL::Ast.range_to(-10.0, 10.0))
+
       line        = package._write_line
 
       expect(line.shift).to eq "package TEST is"
-      expect(line.shift).to eq "    constant  WIDTH   :  integer := 8;"
-      expect(line.shift).to eq "    component SUB_0 is"
-      expect(line.shift).to eq "        generic("
-      expect(line.shift).to eq "              WIDTH   :  integer range 1 to 8 := 5;"
-      expect(line.shift).to eq "              SIZE    :  integer              := 8"
-      expect(line.shift).to eq "        );"
-      expect(line.shift).to eq "        port("
-      expect(line.shift).to eq "              CLK     :  in  std_logic;"
-      expect(line.shift).to eq "              RST     :  in  std_logic;"
-      expect(line.shift).to eq "              D       :  in  std_logic_vector(WIDTH-1 downto 0);"
-      expect(line.shift).to eq "              Q       :  out std_logic_vector(WIDTH-1 downto 0)"
-      expect(line.shift).to eq "        );"
-      expect(line.shift).to eq "    end component;"
+      expect(line.shift).to eq "    constant  DATA_WIDTH      :  integer := 8;"
+      expect(line.shift).to eq "    type      DATA_TYPE       is record"
+      expect(line.shift).to eq "              DATA            :  std_logic_vector(DATA_WIDTH-1 downto 0);"
+      expect(line.shift).to eq "              STRB            :  std_logic_vector(8-1 downto 0);"
+      expect(line.shift).to eq "              VALID           :  boolean;"
+      expect(line.shift).to eq "    end record;"
+      expect(line.shift).to eq "    type      resistance      is range 0 to 1.0E+15 units"
+      expect(line.shift).to eq "              ohm;"
+      expect(line.shift).to eq "              kohm = 1000 ohm;"
+      expect(line.shift).to eq "              Mohm = 1000 kohm;"
+      expect(line.shift).to eq "    end units;"
+      expect(line.shift).to eq "    type      logic_level     is (unknown, low, undriven, high);"
+      expect(line.shift).to eq "    type      year            is range 0 to 2100;"
+      expect(line.shift).to eq "    type      input_level     is range -10.0 to 10.0;"
       expect(line.shift).to eq "end TEST;"
     end
   end
