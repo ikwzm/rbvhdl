@@ -14,18 +14,37 @@ describe 'RbVHDL::Ast::Declaration::ArchitectureBody' do
       alias_decl  = body._alias_declaration(      'OPCODE', nil, RbVHDL::Ast.name('instr')._downto(15,12))
       attr_decl   = body._attribute_declaration(  'attr_0', 'string')
       attr_spec   = body._attribute_specification('attr_0', 'valid', :signal, RbVHDL::Ast.string_literal("true"))
+      comp_decl   = body._component_declaration(  'SUB_0')
+      comp_decl._generic_interface('WIDTH', RbVHDL::Ast.subtype_indication('integer'  )._range_to(1,8), 5)
+      comp_decl._generic_interface('SIZE' , RbVHDL::Ast.subtype_indication('integer'  ), 8)
+      comp_decl._port_interface(   'CLK'  , RbVHDL::Ast.subtype_indication('std_logic'), :in)
+      comp_decl._port_interface(   'RST'  , RbVHDL::Ast.subtype_indication('std_logic'), :in)
+      comp_decl._port_interface(   'D'    , RbVHDL::Ast.subtype_indication('std_logic_vector')._downto(RbVHDL::Ast.subtraction(RbVHDL::Ast.name(:WIDTH),1),0), :in)
+      comp_decl._port_interface(   'Q'    , RbVHDL::Ast.subtype_indication('std_logic_vector')._downto(RbVHDL::Ast.subtraction(RbVHDL::Ast.name(:WIDTH),1),0), :out)
       line        = body._write_line
 
-      expect(line[ 0]).to eq "architecture MODEL of TEST is"
-      expect(line[ 1]).to eq "    constant  WIDTH   :  integer := 8;"
-      expect(line[ 2]).to eq "    signal    valid   :  std_logic;"
-      expect(line[ 3]).to eq "    signal    ready   :  std_logic := '0';"
-      expect(line[ 4]).to eq "    signal    instr   :  std_logic_vector(15 downto 0);"
-      expect(line[ 5]).to eq "    alias     OPCODE  is instr(15 downto 12);"
-      expect(line[ 6]).to eq "    attribute attr_0  :  string;"
-      expect(line[ 7]).to eq "    attribute attr_0  of valid : signal is \"true\";"
-      expect(line[ 8]).to eq "begin"
-      expect(line[ 9]).to eq "end     MODEL;"
+      expect(line.shift).to eq "architecture MODEL of TEST is"
+      expect(line.shift).to eq "    constant  WIDTH   :  integer := 8;"
+      expect(line.shift).to eq "    signal    valid   :  std_logic;"
+      expect(line.shift).to eq "    signal    ready   :  std_logic := '0';"
+      expect(line.shift).to eq "    signal    instr   :  std_logic_vector(15 downto 0);"
+      expect(line.shift).to eq "    alias     OPCODE  is instr(15 downto 12);"
+      expect(line.shift).to eq "    attribute attr_0  :  string;"
+      expect(line.shift).to eq "    attribute attr_0  of valid : signal is \"true\";"
+      expect(line.shift).to eq "    component SUB_0 is"
+      expect(line.shift).to eq "        generic("
+      expect(line.shift).to eq "              WIDTH   :  integer range 1 to 8 := 5;"
+      expect(line.shift).to eq "              SIZE    :  integer              := 8"
+      expect(line.shift).to eq "        );"
+      expect(line.shift).to eq "        port("
+      expect(line.shift).to eq "              CLK     :  in  std_logic;"
+      expect(line.shift).to eq "              RST     :  in  std_logic;"
+      expect(line.shift).to eq "              D       :  in  std_logic_vector(WIDTH-1 downto 0);"
+      expect(line.shift).to eq "              Q       :  out std_logic_vector(WIDTH-1 downto 0)"
+      expect(line.shift).to eq "        );"
+      expect(line.shift).to eq "    end component;"
+      expect(line.shift).to eq "begin"
+      expect(line.shift).to eq "end     MODEL;"
     end
     
   end

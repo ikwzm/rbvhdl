@@ -42,7 +42,7 @@ module RbVHDL::Writer
             generic_directive[:indent           ] = indent + generic_indent + generic_interface_indent
             generic_directive[:keyword_format   ] = ""
             generic_directive[:identifier_format] = "%<identifier>-#{((((identifier_field_max_size+1).to_f/8).ceil)*8)-1}s"
-            generic_directive[:mode_format      ] = " :  "
+            generic_directive[:mode_format      ] = ":  "
             generic_directive[:type_format      ] = "%<type>-#{type_field_max_size}s"
 
             generic_last_index         = @_generic_interface_list.size - 1

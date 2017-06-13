@@ -13,6 +13,10 @@ module RbVHDL::Ast::Declaration
       :component_end_format     => "%{indent}%{end_keyword} %{keyword};",
     }.merge( RbVHDL::Writer::Interface::Generic::WRITE_DIRECTIVE )
      .merge( RbVHDL::Writer::Interface::Port::WRITE_DIRECTIVE    )
+     .merge( {
+      :generic_interface_indent => "      ",
+      :port_interface_indent    => "      ",
+    })
 
     def _write_line(directive={})
       write_line = []

@@ -45,7 +45,7 @@ module RbVHDL::Writer
             port_directive[:indent           ] = indent + port_indent + port_interface_indent
             port_directive[:keyword_format   ] = ""
             port_directive[:identifier_format] = "%<identifier>-#{((((identifier_field_max_size+1).to_f/8).ceil)*8)-1}s"
-            port_directive[:mode_format      ] = " :  %<mode>-#{mode_field_max_size+1}s"
+            port_directive[:mode_format      ] = ":  %<mode>-#{mode_field_max_size+1}s"
             port_directive[:type_format      ] = "%{type}"
 
             port_last_index            = @_port_interface_list.size - 1

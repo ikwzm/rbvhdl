@@ -7,7 +7,7 @@ module RbVHDL::Writer
       :keyword_format        => "%<keyword>-10s",
       :identifier_format     => "%{identifier}",
       :identifier_separator  => ",",
-      :mode_format           => " : %{mode} ", 
+      :mode_format           => ": %{mode} ", 
       :type_format           => "%{type}",
       :value_format          => " := %{expression}",
     }
