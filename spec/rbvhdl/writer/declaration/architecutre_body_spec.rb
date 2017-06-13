@@ -4,9 +4,10 @@ describe 'RbVHDL::Ast::Declaration::ArchitectureBody' do
 
   context "_write_line" do
 
-    it "" do
+    it do
       design_unit = RbVHDL::Ast::DesignUnit.new
       body        = design_unit._architecture('MODEL', 'TEST')
+      itype_decl  = body._subtype_declaration(    'I_TYPE', RbVHDL::Ast.subtype_indication('std_logic_vector')._downto(31,0))
       width_decl  = body._constant_declaration(   'WIDTH' , 'integer'  , 8)
       valid_decl  = body._signal_declaration(     'valid' , 'std_logic')
       ready_decl  = body._signal_declaration(     'ready' , 'std_logic', RbVHDL::Ast.character_literal('0'))
@@ -24,6 +25,7 @@ describe 'RbVHDL::Ast::Declaration::ArchitectureBody' do
       line        = body._write_line
 
       expect(line.shift).to eq "architecture MODEL of TEST is"
+      expect(line.shift).to eq "    subtype   I_TYPE  is std_logic_vector(31 downto 0);"
       expect(line.shift).to eq "    constant  WIDTH   :  integer := 8;"
       expect(line.shift).to eq "    signal    valid   :  std_logic;"
       expect(line.shift).to eq "    signal    ready   :  std_logic := '0';"
