@@ -23,15 +23,20 @@ module RbVHDL::Ast
 
     class PhysicalDefinition    < Definition
       attr_reader   :_range     # RbVHDL::Ast::Type::Range
-      attr_reader   :_unit      # RbVHDL::Identifier
-      attr_reader   :_unit_list # Array of [ RbVHDL::Identifier, RbVHDL::Expression::PhysicalLiteral ]
+      attr_reader   :_unit      # RbVHDL::Ast::Identifier
+      attr_reader   :_unit_list # Array of [ RbVHDL::Ast::Identifier, RbVHDL::Ast::Expression::PhysicalLiteral ]
       def initialize(range, unit, unit_list)
         @_range     = range
         @_unit      = unit
         @_unit_list = unit_list
       end
-      def _unit!(ident, name)
-        @_unit_list.push([RbVHDL.identifier(ident), name])
+      def _unit!(ident, arg0, arg1=nil)
+        if arg0.class == RbVHDL::Ast::Expression::PhysicalLiteral then
+          literal = arg0
+        else
+          literal = RbVHDL::Ast.physical_literal(arg0, arg1)
+        end
+        @_unit_list.push([RbVHDL::Ast.identifier(ident), literal])
       end
     end
 

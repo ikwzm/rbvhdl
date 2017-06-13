@@ -16,8 +16,8 @@ module RbVHDL::Ast
           return decl
         end
 
-        def _physical_type_declaration(identifier, range, pyhsical_identifier)
-          decl = RbVHDL::Ast.physical_type_declaration(self, identifier, range, pyhsical_identifier)
+        def _physical_type_declaration(identifier, range, pyhsical_identifier, unit_list=nil)
+          decl = RbVHDL::Ast.physical_type_declaration(self, identifier, range, pyhsical_identifier, unit_list)
           @_declarative_item_list.push(decl)
           return decl
         end
@@ -28,7 +28,7 @@ module RbVHDL::Ast
           return decl
         end
 
-        def _enumeration_type_declaration(identifier, enum_list)
+        def _enumeration_type_declaration(identifier, enum_list=nil)
           decl = RbVHDL::Ast.enumeration_type_declaration(self, identifier, enum_list)
           @_declarative_item_list.push(decl)
           return decl

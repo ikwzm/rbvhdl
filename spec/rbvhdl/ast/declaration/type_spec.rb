@@ -127,12 +127,12 @@ describe 'RbVHDL::Ast::Declaration::PhysicalType' do
 
   context "new" do
 
-    it "new(identifier('registance'), physical_type_definition(range_to(decimal_literal(0), decimal_literal(1),_exponent!(9)), identifier('ohm')))" do
-      decl = RbVHDL::Ast::Declaration::PhysicalType.new(nil, RbVHDL::Ast.identifier('registance'), RbVHDL::Ast.physical_type_definition(RbVHDL::Ast.range_to(RbVHDL::Ast.decimal_literal(0), RbVHDL::Ast.decimal_literal(1)._exponent!(9)), RbVHDL::Ast.identifier('ohm')))
+    it "new(identifier('resistance'), physical_type_definition(range_to(decimal_literal(0), decimal_literal(1),_exponent!(9)), identifier('ohm')))" do
+      decl = RbVHDL::Ast::Declaration::PhysicalType.new(nil, RbVHDL::Ast.identifier('resistance'), RbVHDL::Ast.physical_type_definition(RbVHDL::Ast.range_to(RbVHDL::Ast.decimal_literal(0), RbVHDL::Ast.decimal_literal(1)._exponent!(9)), RbVHDL::Ast.identifier('ohm')))
       expect(decl.class                                              ).to eq RbVHDL::Ast::Declaration::PhysicalType
       expect(decl._owner                                             ).to eq nil
       expect(decl._identifier.class                                  ).to eq RbVHDL::Ast::Identifier
-      expect(decl._identifier                                        ).to eq :registance
+      expect(decl._identifier                                        ).to eq :resistance
       expect(decl._type_definition.class                             ).to eq RbVHDL::Ast::Type::PhysicalDefinition
       expect(decl._type_definition._range.class                      ).to eq RbVHDL::Ast::Type::RangeTo
       expect(decl._type_definition._range._l_expr.class              ).to eq RbVHDL::Ast::Expression::DecimalLiteral
@@ -146,12 +146,12 @@ describe 'RbVHDL::Ast::Declaration::PhysicalType' do
       expect(decl._type_definition._unit                             ).to eq :ohm
     end
 
-    it "RbVHDL::Ast.physical_type_declaration(nil, 'registance', range_to(decimal_literal(0), decimal_literal(1)._exponent!(9)), 'ohm')" do
-      decl = RbVHDL::Ast.physical_type_declaration(nil, 'registance', RbVHDL::Ast.range_to(RbVHDL::Ast.decimal_literal(0), RbVHDL::Ast.decimal_literal(1)._exponent!(9)), 'ohm')
+    it "RbVHDL::Ast.physical_type_declaration(nil, 'resistance', range_to(decimal_literal(0), decimal_literal(1)._exponent!(9)), 'ohm')" do
+      decl = RbVHDL::Ast.physical_type_declaration(nil, 'resistance', RbVHDL::Ast.range_to(RbVHDL::Ast.decimal_literal(0), RbVHDL::Ast.decimal_literal(1)._exponent!(9)), 'ohm')
       expect(decl.class                                              ).to eq RbVHDL::Ast::Declaration::PhysicalType
       expect(decl._owner                                             ).to eq nil
       expect(decl._identifier.class                                  ).to eq RbVHDL::Ast::Identifier
-      expect(decl._identifier                                        ).to eq :registance
+      expect(decl._identifier                                        ).to eq :resistance
       expect(decl._type_definition.class                             ).to eq RbVHDL::Ast::Type::PhysicalDefinition
       expect(decl._type_definition._range.class                      ).to eq RbVHDL::Ast::Type::RangeTo
       expect(decl._type_definition._range._l_expr.class              ).to eq RbVHDL::Ast::Expression::DecimalLiteral
@@ -165,12 +165,50 @@ describe 'RbVHDL::Ast::Declaration::PhysicalType' do
       expect(decl._type_definition._unit                             ).to eq :ohm
     end
 
-    it "RbVHDL::Ast.physical_type_declaration(nil, 'registance', range_to(decimal_literal(0), decimal_literal(1)._exponent!(9)), 'ohm', [...])" do
-      decl = RbVHDL::Ast.physical_type_declaration(nil, 'registance', RbVHDL::Ast.range_to(RbVHDL::Ast.decimal_literal(0), RbVHDL::Ast.decimal_literal(1)._exponent!(9)), 'ohm', [['Kohm', RbVHDL::Ast.physical_literal(RbVHDL::Ast.decimal_literal(1000), 'ohm')],['Mohm', RbVHDL::Ast.decimal_literal(1000), 'Kohm']])
+    it "RbVHDL::Ast.physical_type_declaration(nil, 'resistance', range_to(decimal_literal(0), decimal_literal(1)._exponent!(9)), 'ohm', [...])" do
+      decl = RbVHDL::Ast.physical_type_declaration(nil, 'resistance', RbVHDL::Ast.range_to(RbVHDL::Ast.decimal_literal(0), RbVHDL::Ast.decimal_literal(1)._exponent!(9)), 'ohm', [['Kohm', RbVHDL::Ast.physical_literal(RbVHDL::Ast.decimal_literal(1000), 'ohm')],['Mohm', RbVHDL::Ast.decimal_literal(1000), 'Kohm']])
       expect(decl.class                                              ).to eq RbVHDL::Ast::Declaration::PhysicalType
       expect(decl._owner                                             ).to eq nil
       expect(decl._identifier.class                                  ).to eq RbVHDL::Ast::Identifier
-      expect(decl._identifier                                        ).to eq :registance
+      expect(decl._identifier                                        ).to eq :resistance
+      expect(decl._type_definition.class                             ).to eq RbVHDL::Ast::Type::PhysicalDefinition
+      expect(decl._type_definition._range.class                      ).to eq RbVHDL::Ast::Type::RangeTo
+      expect(decl._type_definition._range._l_expr.class              ).to eq RbVHDL::Ast::Expression::DecimalLiteral
+      expect(decl._type_definition._range._l_expr._integer           ).to eq 0
+      expect(decl._type_definition._range._r_expr.class              ).to eq RbVHDL::Ast::Expression::DecimalLiteral
+      expect(decl._type_definition._range._r_expr._integer           ).to eq 1
+      expect(decl._type_definition._range._r_expr._exponent.class    ).to eq RbVHDL::Ast::Expression::Exponent
+      expect(decl._type_definition._range._r_expr._exponent._number  ).to eq 9
+      expect(decl._type_definition._range._r_expr._exponent._sign    ).to eq nil
+      expect(decl._type_definition._unit.class                       ).to eq RbVHDL::Ast::Identifier
+      expect(decl._type_definition._unit                             ).to eq :ohm
+      expect(decl._type_definition._unit_list.size                   ).to eq 2
+      expect(decl._type_definition._unit_list[0].size                ).to eq 2
+      expect(decl._type_definition._unit_list[0][0].class            ).to eq RbVHDL::Ast::Identifier
+      expect(decl._type_definition._unit_list[0][0]                  ).to eq :Kohm
+      expect(decl._type_definition._unit_list[0][1].class            ).to eq RbVHDL::Ast::Expression::PhysicalLiteral
+      expect(decl._type_definition._unit_list[0][1]._decimal.class   ).to eq RbVHDL::Ast::Expression::DecimalLiteral
+      expect(decl._type_definition._unit_list[0][1]._decimal._integer).to eq 1000
+      expect(decl._type_definition._unit_list[0][1]._unit_name.class ).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(decl._type_definition._unit_list[0][1]._unit_name._name ).to eq :ohm
+      expect(decl._type_definition._unit_list[1].size                ).to eq 2
+      expect(decl._type_definition._unit_list[1][0].class            ).to eq RbVHDL::Ast::Identifier
+      expect(decl._type_definition._unit_list[1][0]                  ).to eq :Mohm
+      expect(decl._type_definition._unit_list[1][1].class            ).to eq RbVHDL::Ast::Expression::PhysicalLiteral
+      expect(decl._type_definition._unit_list[1][1]._decimal.class   ).to eq RbVHDL::Ast::Expression::DecimalLiteral
+      expect(decl._type_definition._unit_list[1][1]._decimal._integer).to eq 1000
+      expect(decl._type_definition._unit_list[1][1]._unit_name.class ).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(decl._type_definition._unit_list[1][1]._unit_name._name ).to eq :Kohm
+    end
+
+    it "RbVHDL::Ast.physical_type_declaration(nil, 'resistance', range_to(0, decimal_literal(1)._exponent!(9)), 'ohm', [...])" do
+      decl = RbVHDL::Ast.physical_type_declaration(nil, 'resistance', RbVHDL::Ast.range_to(0, RbVHDL::Ast.decimal_literal(1)._exponent!(9)), 'ohm')
+      decl._unit!('Kohm', 1000, 'ohm')
+      decl._unit!('Mohm', 1000, 'Kohm')
+      expect(decl.class                                              ).to eq RbVHDL::Ast::Declaration::PhysicalType
+      expect(decl._owner                                             ).to eq nil
+      expect(decl._identifier.class                                  ).to eq RbVHDL::Ast::Identifier
+      expect(decl._identifier                                        ).to eq :resistance
       expect(decl._type_definition.class                             ).to eq RbVHDL::Ast::Type::PhysicalDefinition
       expect(decl._type_definition._range.class                      ).to eq RbVHDL::Ast::Type::RangeTo
       expect(decl._type_definition._range._l_expr.class              ).to eq RbVHDL::Ast::Expression::DecimalLiteral
