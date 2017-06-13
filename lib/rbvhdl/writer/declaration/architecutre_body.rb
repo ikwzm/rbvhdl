@@ -1,3 +1,5 @@
+require_relative '../declaration/write_declarative_item_list'
+
 module RbVHDL::Ast::Declaration
 
   class ArchitectureBody
@@ -10,11 +12,9 @@ module RbVHDL::Ast::Declaration
       :end_keyword                  => "end",
       :architecture_begin_format    => "%{indent}%<keyword>-7s %{identifier} %{of_keyword} %{entity_name} %{is_keyword}",
       :architecture_end_format      => "%{indent}%<end_keyword>-7s %{identifier};",
-      :declaration_indent           => "    ",
-      :declaration_identifier_align => true,
       :statement_begin_format       => "%{indent}%{begin_keyword}",
       :statement_indent             => "    ",
-    }
+    }.merge( RbVHDL::Writer::Declaration::WRITE_DIRECTIVE )
 
     def _write_line(directive={})
       write_line  = []
@@ -51,7 +51,7 @@ module RbVHDL::Ast::Declaration
 
       return write_line
     end
-    include RbVHDL::Writer::Declaration::Methods::DeclarativeItemList
+    include RbVHDL::Writer::Declaration::WriteDeclarativeItemList
     include RbVHDL::Writer::Statement::Methods::StatementList
   end
 end

@@ -1,5 +1,7 @@
 module RbVHDL::Writer
+
   module Declaration
+
     module Methods
 
       module DeclarativeItemList

@@ -1,4 +1,4 @@
-require_relative '../declaration/methods'
+require_relative '../declaration/write_declarative_item_list'
 require_relative '../statement/methods'
 require_relative '../interface/generic'
 require_relative '../interface/port'
@@ -13,12 +13,12 @@ module RbVHDL::Ast::Declaration
       :end_keyword              => "end",
       :entity_begin_format      => "%{indent}%<keyword>-7s %{identifier} %{is_keyword}",
       :entity_end_format        => "%{indent}%<end_keyword>-7s %{identifier};",
-      :declaration_indent       => "    ",
       :begin_keyword            => "begin",
       :statement_begin_format   => "%{indent}%{begin_keyword}",
       :statement_indent         => "    ",
     }.merge( RbVHDL::Writer::Interface::Generic::WRITE_DIRECTIVE )
      .merge( RbVHDL::Writer::Interface::Port::WRITE_DIRECTIVE    )
+     .merge( RbVHDL::Writer::Declaration::WRITE_DIRECTIVE        )
 
     def _write_line(directive={})
       write_line = []
@@ -43,7 +43,7 @@ module RbVHDL::Ast::Declaration
       
     include RbVHDL::Writer::Interface::Generic::WriteInterface
     include RbVHDL::Writer::Interface::Port::WriteInterface
-    include RbVHDL::Writer::Declaration::Methods::DeclarativeItemList
+    include RbVHDL::Writer::Declaration::WriteDeclarativeItemList
     include RbVHDL::Writer::Statement::Methods::StatementList
   end
 end
