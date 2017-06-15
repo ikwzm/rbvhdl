@@ -34,7 +34,7 @@ describe 'RbVHDL::Ast::Declaration::ProcedureDecl' do
       expect(proc._parameter_interface_list[1]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
       expect(proc._parameter_interface_list[1]._subtype_indication._type_mark._name).to eq :std_logic_vector
       expect(proc._parameter_interface_list[1]._subtype_indication._constraint     ).to eq nil
-      expect(proc._parameter_interface_list[1]._mode                               ).to eq :In
+      expect(proc._parameter_interface_list[1]._mode.class                         ).to eq RbVHDL::Ast::Interface::Mode::In
       expect(proc._parameter_interface_list[1]._static_expression                  ).to eq nil
 
       expect(proc._parameter_interface_list[2].class                               ).to eq RbVHDL::Ast::Interface::Signal
@@ -43,7 +43,7 @@ describe 'RbVHDL::Ast::Declaration::ProcedureDecl' do
       expect(proc._parameter_interface_list[2]._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
       expect(proc._parameter_interface_list[2]._subtype_indication._type_mark._name).to eq :std_logic_vector
       expect(proc._parameter_interface_list[2]._subtype_indication._constraint     ).to eq nil
-      expect(proc._parameter_interface_list[2]._mode                               ).to eq :Out
+      expect(proc._parameter_interface_list[2]._mode.class                         ).to eq RbVHDL::Ast::Interface::Mode::Out
       expect(proc._parameter_interface_list[2]._static_expression                  ).to eq nil
     end
     
