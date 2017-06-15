@@ -30,6 +30,10 @@ module RbVHDL::Ast
       return [ format % {indent: indent, keyword: keyword, identifier: identifier, mode: mode, type: type, value: value, separator: separator} ]
     end
 
+    def _write_keyword_string(directive={})
+      return ""
+    end
+
     def _write_identifier_string(directive={})
       identifier_separator = directive.fetch(:identifier_separator, self.class::WRITE_DIRECTIVE[:identifier_separator])
       return @_identifier_list.map{|identifier| identifier._write_string}.join(identifier_separator)

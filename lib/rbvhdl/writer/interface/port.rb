@@ -29,13 +29,16 @@ module RbVHDL::Writer
   
             write_line.push(port_begin_format % {indent: indent, port_indent: port_indent, port_keyword: port_keyword})
 
+            keyword_field_max_size     = 0
             identifier_field_max_size  = 0
             type_field_max_size        = 0
             mode_field_max_size        = 3
             @_port_interface_list.each do |interface|
-              identifier_field_size     = interface._write_identifier_string.size
-              type_field_size           = interface._write_type_string.size
-              mode_field_size           = interface._write_mode_string.size
+              keyword_field_size        = interface._write_keyword_string(directive).size
+              identifier_field_size     = interface._write_identifier_string(directive).size
+              type_field_size           = interface._write_type_string(directive).size
+              mode_field_size           = interface._write_mode_string(directive).size
+              keyword_field_max_size    = keyword_field_size    if(keyword_field_size    > keyword_field_max_size   )
               identifier_field_max_size = identifier_field_size if(identifier_field_size > identifier_field_max_size)
               type_field_max_size       = type_field_size       if(type_field_size       > type_field_max_size      )
               mode_field_max_size       = mode_field_size       if(mode_field_size       > mode_field_max_size      )
@@ -43,7 +46,7 @@ module RbVHDL::Writer
 
             port_directive = directive.dup
             port_directive[:indent           ] = indent + port_indent + port_interface_indent
-            port_directive[:keyword_format   ] = ""
+            port_directive[:keyword_format   ] = (keyword_field_max_size > 0)? "%<keyword>-#{keyword_field_max_size+1}s" : ""
             port_directive[:identifier_format] = "%<identifier>-#{((((identifier_field_max_size+1).to_f/8).ceil)*8)-1}s"
             port_directive[:mode_format      ] = ":  %<mode>-#{mode_field_max_size+1}s"
             port_directive[:type_format      ] = "%{type}"
