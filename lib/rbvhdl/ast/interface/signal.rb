@@ -1,21 +1,10 @@
 module RbVHDL::Ast
-  module Interface
 
-    class Signal
-      attr_reader   :_owner
-      attr_reader   :_identifier_list
-      attr_reader   :_subtype_indication
-      attr_reader   :_mode
-      attr_reader   :_static_expression
-      attr_reader   :_annotation
+  class Interface
 
+    class Signal < Interface
       def initialize(owner, identifier_list, subtype_indication, mode, static_expression)
-        @_owner              = owner
-        @_identifier_list    = identifier_list
-        @_subtype_indication = subtype_indication
-        @_mode               = mode
-        @_static_expression  = static_expression
-        @_annotation         = Hash.new
+        super(owner, identifier_list, subtype_indication, mode, static_expression)
       end
     end
   end

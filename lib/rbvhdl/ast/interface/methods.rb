@@ -1,10 +1,12 @@
 module RbVHDL::Ast
-  module Interface
+
+  class Interface
+
     module Methods
 
       module Generic
         def _generic_interface(identifier, type, value=nil)
-          interface = RbVHDL::Ast.interface_constant_declaration(self, identifier, type, nil, value)
+          interface = RbVHDL::Ast.interface_declaration(self, identifier, type, nil, value)
           @_generic_interface_list.push(interface)
           return interface
         end
@@ -12,7 +14,7 @@ module RbVHDL::Ast
 
       module Port
         def _port_interface(identifier, type, mode=nil, value=nil)
-          interface = RbVHDL::Ast.interface_signal_declaration(self, identifier, type, mode, value)
+          interface = RbVHDL::Ast.interface_declaration(self, identifier, type, mode, value)
           @_port_interface_list.push(interface)
           return interface
         end
@@ -21,7 +23,7 @@ module RbVHDL::Ast
       module ProcedureParameter
 
         def _parameter_interface(identifier, type, mode=nil, value=nil)
-          interface = RbVHDL::Ast.interface_variable_declaration(self, identifier, type, mode, value)
+          interface = RbVHDL::Ast.interface_declaration(self, identifier, type, mode, value)
           @_parameter_interface_list.push(interface)
           return interface
         end
@@ -54,7 +56,7 @@ module RbVHDL::Ast
       module FunctionParameter
 
         def _parameter_interface(identifier, type, value=nil)
-          interface = RbVHDL::Ast.interface_variable_declaration(self, identifier, type, nil, value)
+          interface = RbVHDL::Ast.interface_declaration(self, identifier, type, nil, value)
           @_parameter_interface_list.push(interface)
           return interface
         end

@@ -1,3 +1,4 @@
+
 module RbVHDL::Writer
 
   module Declaration

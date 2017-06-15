@@ -1,12 +1,10 @@
-module RbVHDL::Ast::Interface
+module RbVHDL::Ast
 
-  class Variable
+  class Interface
 
-    WRITE_DIRECTIVE = {
-      :keyword => "variable",
-    }.merge(RbVHDL::Writer::Interface::WRITE_DIRECTIVE)
-
-    include RbVHDL::Writer::Interface::WriteMethods
+    class Variable
+      WRITE_DIRECTIVE = RbVHDL::Ast::Interface::WRITE_DIRECTIVE.dup.merge({:keyword => "variable"})
+    end
   end
 end
 

@@ -14,7 +14,7 @@ describe 'RbVHDL::Ast::Declaration::Entity' do
   it "generic_interface('width', 'integer', 5)" do
     entity._generic_interface('width', 'integer', 5)
     expect(entity._generic_interface_list.size                                   ).to eq 1
-    expect(entity._generic_interface_list[0].class                               ).to eq RbVHDL::Ast::Interface::Constant
+    expect(entity._generic_interface_list[0].class                               ).to eq RbVHDL::Ast::Interface
     expect(entity._generic_interface_list[0]._identifier_list.size               ).to eq 1
     expect(entity._generic_interface_list[0]._identifier_list[0].class           ).to eq RbVHDL::Ast::Identifier
     expect(entity._generic_interface_list[0]._identifier_list[0]                 ).to eq :width

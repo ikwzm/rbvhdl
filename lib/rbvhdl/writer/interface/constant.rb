@@ -1,12 +1,10 @@
-module RbVHDL::Ast::Interface
+module RbVHDL::Ast
 
-  class Constant
+  class Interface
 
-    WRITE_DIRECTIVE = {
-      :keyword => "constant",
-    }.merge(RbVHDL::Writer::Interface::WRITE_DIRECTIVE)
-
-    include RbVHDL::Writer::Interface::WriteMethods
+    class Constant
+      WRITE_DIRECTIVE = RbVHDL::Ast::Interface::WRITE_DIRECTIVE.dup.merge({:keyword => "constant"})
+    end
   end
 end
 
