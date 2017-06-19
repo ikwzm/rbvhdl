@@ -16,12 +16,12 @@ module RbVHDL::Ast
     def _write_line(directive={})
       indent            = directive.fetch(:indent   , "" )
       separator         = directive.fetch(:separator, ";")
-      format            = directive.fetch(:format              , self.class::WRITE_DIRECTIVE[:format              ])
-      keyword_format    = directive.fetch(:keyword_format      , self.class::WRITE_DIRECTIVE[:keyword_format      ])
-      identifier_format = directive.fetch(:identifier_format   , self.class::WRITE_DIRECTIVE[:identifier_format   ])
-      mode_format       = directive.fetch(:mode_format         , self.class::WRITE_DIRECTIVE[:mode_format         ])
-      type_format       = directive.fetch(:type_format         , self.class::WRITE_DIRECTIVE[:type_format         ])
-      value_format      = directive.fetch(:value_format        , self.class::WRITE_DIRECTIVE[:value_format        ])
+      format            = directive.fetch(:format           , self.class::WRITE_DIRECTIVE[:format           ])
+      keyword_format    = directive.fetch(:keyword_format   , self.class::WRITE_DIRECTIVE[:keyword_format   ])
+      identifier_format = directive.fetch(:identifier_format, self.class::WRITE_DIRECTIVE[:identifier_format])
+      mode_format       = directive.fetch(:mode_format      , self.class::WRITE_DIRECTIVE[:mode_format      ])
+      type_format       = directive.fetch(:type_format      , self.class::WRITE_DIRECTIVE[:type_format      ])
+      value_format      = directive.fetch(:value_format     , self.class::WRITE_DIRECTIVE[:value_format     ])
       keyword           = keyword_format    % {:keyword    => self.class::WRITE_DIRECTIVE[:keyword]}
       identifier        = identifier_format % {:identifier => _write_identifier_string(directive)  }
       mode              = mode_format       % {:mode       => _write_mode_string(directive)        }

@@ -9,7 +9,6 @@ module RbVHDL::Writer
         :port_begin_format        => "%{indent}%{port_indent}%{port_keyword}(",
         :port_end_format          => "%{indent}%{port_indent});",
         :port_indent              => "    ",
-        :port_interface_format    => "%{indent}%<identifier>-15s :  %{mode} %{type}%{value}%{separator}",
         :port_interface_indent    => "    ",
         :port_separator           => ";"   ,
       }

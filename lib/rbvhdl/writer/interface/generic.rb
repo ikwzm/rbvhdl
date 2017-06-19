@@ -9,7 +9,6 @@ module RbVHDL::Writer
         :generic_begin_format     => "%{indent}%{generic_indent}%{generic_keyword}(" , 
         :generic_end_format       => "%{indent}%{generic_indent});", 
         :generic_indent           => "    ",
-        :generic_interface_format => "%{indent}%<identifier>-15s :  %{type}%{value}%{separator}",
         :generic_interface_indent => "    ",
         :generic_separator        => ";"   ,
       }
@@ -29,16 +28,16 @@ module RbVHDL::Writer
 
             write_line.push(generic_begin_format % {indent: indent, generic_indent: generic_indent, generic_keyword: generic_keyword})
 
-            keyword_field__size      = @_generic_interface_list.map{|interface| interface._write_keyword_string(   directive).size}.max
-            identifier_field__size   = @_generic_interface_list.map{|interface| interface._write_identifier_string(directive).size}.max
-            type_field__size         = @_generic_interface_list.map{|interface| interface._write_type_string(      directive).size}.max
+            keyword_field_size       = @_generic_interface_list.map{|interface| interface._write_keyword_string(   directive).size}.max
+            identifier_field_size    = @_generic_interface_list.map{|interface| interface._write_identifier_string(directive).size}.max
+            type_field_size          = @_generic_interface_list.map{|interface| interface._write_type_string(      directive).size}.max
 
             generic_directive = directive.dup
             generic_directive[:indent           ] = indent + generic_indent + generic_interface_indent
-            generic_directive[:keyword_format   ] = (keyword_field__size > 0)? "%<keyword>-#{keyword_field__size+1}s" : ""
-            generic_directive[:identifier_format] = "%<identifier>-#{((((identifier_field__size+1).to_f/8).ceil)*8)-1}s"
+            generic_directive[:keyword_format   ] = (keyword_field_size > 0)? "%<keyword>-#{keyword_field_size+1}s" : ""
+            generic_directive[:identifier_format] = "%<identifier>-#{((((identifier_field_size+1).to_f/8).ceil)*8)-1}s"
             generic_directive[:mode_format      ] = ":  "
-            generic_directive[:type_format      ] = "%<type>-#{type_field__size}s"
+            generic_directive[:type_format      ] = "%<type>-#{type_field_size}s"
 
             generic_last_index       = @_generic_interface_list.size - 1
             @_generic_interface_list.each_with_index do |interface, index|
