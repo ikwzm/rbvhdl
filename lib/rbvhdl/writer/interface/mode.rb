@@ -25,6 +25,6 @@ module RbVHDL::Ast
         end
       end
     end
+
   end
 end
-

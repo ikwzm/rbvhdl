@@ -1,4 +1,3 @@
-
 module RbVHDL::Writer
 
   module Declaration
@@ -53,79 +52,82 @@ module RbVHDL::Writer
   end
 end
 
-module RbVHDL::Ast::Declaration
+module RbVHDL::Ast
 
-  class IntegerType
-    WRITE_DIRECTIVE = {}.merge(RbVHDL::Writer::Declaration::Type::WRITE_DIRECTIVE)
-    include RbVHDL::Writer::Declaration::Type::WriteLine
-    include RbVHDL::Writer::Declaration::Type::WriteIdentifier
-    include RbVHDL::Writer::Declaration::Type::WriteSimpleTypeDefinition
-  end
+  module Declaration
 
-  class FloatingType
-    WRITE_DIRECTIVE = {}.merge(RbVHDL::Writer::Declaration::Type::WRITE_DIRECTIVE)
-    include RbVHDL::Writer::Declaration::Type::WriteLine
-    include RbVHDL::Writer::Declaration::Type::WriteIdentifier
-    include RbVHDL::Writer::Declaration::Type::WriteSimpleTypeDefinition
-  end
-
-  class PhysicalType
-    WRITE_DIRECTIVE = {}.merge(RbVHDL::Writer::Declaration::Type::WRITE_DIRECTIVE)
-    include RbVHDL::Writer::Declaration::Type::WriteLine
-    include RbVHDL::Writer::Declaration::Type::WriteIdentifier
-    def _write_type_definition(directive={})
-      indent         = directive.fetch(:indent   , "" )
-      format         = directive.fetch(:type_definition_format, self.class::WRITE_DIRECTIVE[:type_definition_format])
-      is_keyword     = directive.fetch(:is_keyword            , self.class::WRITE_DIRECTIVE[:is_keyword            ])
-      keyword_format = directive.fetch(:keyword_format        , self.class::WRITE_DIRECTIVE[:keyword_format        ])
-      type_directive = directive.dup
-      type_directive[:primary_indent  ] = keyword_format % {keyword: ""} + " "
-      type_directive[:secondary_indent] = type_directive[:primary_indent] 
-      return format % {is_keyword: is_keyword, type_definition: @_type_definition._write_string(type_directive)}
+    class IntegerType
+      WRITE_DIRECTIVE = {}.merge(RbVHDL::Writer::Declaration::Type::WRITE_DIRECTIVE)
+      include RbVHDL::Writer::Declaration::Type::WriteLine
+      include RbVHDL::Writer::Declaration::Type::WriteIdentifier
+      include RbVHDL::Writer::Declaration::Type::WriteSimpleTypeDefinition
     end
-  end
 
-  class ArrayType
-    WRITE_DIRECTIVE = {}.merge(RbVHDL::Writer::Declaration::Type::WRITE_DIRECTIVE)
-    include RbVHDL::Writer::Declaration::Type::WriteLine
-    include RbVHDL::Writer::Declaration::Type::WriteIdentifier
-    include RbVHDL::Writer::Declaration::Type::WriteSimpleTypeDefinition
-  end
-
-  class EnumerationType
-    WRITE_DIRECTIVE = {}.merge(RbVHDL::Writer::Declaration::Type::WRITE_DIRECTIVE)
-    include RbVHDL::Writer::Declaration::Type::WriteLine
-    include RbVHDL::Writer::Declaration::Type::WriteIdentifier
-    include RbVHDL::Writer::Declaration::Type::WriteSimpleTypeDefinition
-  end
-
-  class RecordType
-    WRITE_DIRECTIVE = {}.merge(RbVHDL::Writer::Declaration::Type::WRITE_DIRECTIVE)
-    include RbVHDL::Writer::Declaration::Type::WriteLine
-    include RbVHDL::Writer::Declaration::Type::WriteIdentifier
-    def _write_type_definition(directive={})
-      indent         = directive.fetch(:indent   , "" )
-      format         = directive.fetch(:type_definition_format, self.class::WRITE_DIRECTIVE[:type_definition_format])
-      is_keyword     = directive.fetch(:is_keyword            , self.class::WRITE_DIRECTIVE[:is_keyword            ])
-      keyword_format = directive.fetch(:keyword_format        , self.class::WRITE_DIRECTIVE[:keyword_format        ])
-      type_directive = directive.dup
-      type_directive[:field_indent] = keyword_format % {keyword: ""} + " "
-      return format % {is_keyword: is_keyword, type_definition: @_type_definition._write_string(type_directive)}
+    class FloatingType
+      WRITE_DIRECTIVE = {}.merge(RbVHDL::Writer::Declaration::Type::WRITE_DIRECTIVE)
+      include RbVHDL::Writer::Declaration::Type::WriteLine
+      include RbVHDL::Writer::Declaration::Type::WriteIdentifier
+      include RbVHDL::Writer::Declaration::Type::WriteSimpleTypeDefinition
     end
-  end
-      
-  class FileType
-    WRITE_DIRECTIVE = {}.merge(RbVHDL::Writer::Declaration::Type::WRITE_DIRECTIVE)
-    include RbVHDL::Writer::Declaration::Type::WriteLine
-    include RbVHDL::Writer::Declaration::Type::WriteIdentifier
-    include RbVHDL::Writer::Declaration::Type::WriteSimpleTypeDefinition
-  end
-      
-  class AccessType
-    WRITE_DIRECTIVE = {}.merge(RbVHDL::Writer::Declaration::Type::WRITE_DIRECTIVE)
-    include RbVHDL::Writer::Declaration::Type::WriteLine
-    include RbVHDL::Writer::Declaration::Type::WriteIdentifier
-    include RbVHDL::Writer::Declaration::Type::WriteSimpleTypeDefinition
-  end
 
+    class PhysicalType
+      WRITE_DIRECTIVE = {}.merge(RbVHDL::Writer::Declaration::Type::WRITE_DIRECTIVE)
+      include RbVHDL::Writer::Declaration::Type::WriteLine
+      include RbVHDL::Writer::Declaration::Type::WriteIdentifier
+      def _write_type_definition(directive={})
+        indent         = directive.fetch(:indent   , "" )
+        format         = directive.fetch(:type_definition_format, self.class::WRITE_DIRECTIVE[:type_definition_format])
+        is_keyword     = directive.fetch(:is_keyword            , self.class::WRITE_DIRECTIVE[:is_keyword            ])
+        keyword_format = directive.fetch(:keyword_format        , self.class::WRITE_DIRECTIVE[:keyword_format        ])
+        type_directive = directive.dup
+        type_directive[:primary_indent  ] = keyword_format % {keyword: ""} + " "
+        type_directive[:secondary_indent] = type_directive[:primary_indent] 
+        return format % {is_keyword: is_keyword, type_definition: @_type_definition._write_string(type_directive)}
+      end
+    end
+
+    class ArrayType
+      WRITE_DIRECTIVE = {}.merge(RbVHDL::Writer::Declaration::Type::WRITE_DIRECTIVE)
+      include RbVHDL::Writer::Declaration::Type::WriteLine
+      include RbVHDL::Writer::Declaration::Type::WriteIdentifier
+      include RbVHDL::Writer::Declaration::Type::WriteSimpleTypeDefinition
+    end
+
+    class EnumerationType
+      WRITE_DIRECTIVE = {}.merge(RbVHDL::Writer::Declaration::Type::WRITE_DIRECTIVE)
+      include RbVHDL::Writer::Declaration::Type::WriteLine
+      include RbVHDL::Writer::Declaration::Type::WriteIdentifier
+      include RbVHDL::Writer::Declaration::Type::WriteSimpleTypeDefinition
+    end
+
+    class RecordType
+      WRITE_DIRECTIVE = {}.merge(RbVHDL::Writer::Declaration::Type::WRITE_DIRECTIVE)
+      include RbVHDL::Writer::Declaration::Type::WriteLine
+      include RbVHDL::Writer::Declaration::Type::WriteIdentifier
+      def _write_type_definition(directive={})
+        indent         = directive.fetch(:indent   , "" )
+        format         = directive.fetch(:type_definition_format, self.class::WRITE_DIRECTIVE[:type_definition_format])
+        is_keyword     = directive.fetch(:is_keyword            , self.class::WRITE_DIRECTIVE[:is_keyword            ])
+        keyword_format = directive.fetch(:keyword_format        , self.class::WRITE_DIRECTIVE[:keyword_format        ])
+        type_directive = directive.dup
+        type_directive[:field_indent] = keyword_format % {keyword: ""} + " "
+        return format % {is_keyword: is_keyword, type_definition: @_type_definition._write_string(type_directive)}
+      end
+    end
+      
+    class FileType
+      WRITE_DIRECTIVE = {}.merge(RbVHDL::Writer::Declaration::Type::WRITE_DIRECTIVE)
+      include RbVHDL::Writer::Declaration::Type::WriteLine
+      include RbVHDL::Writer::Declaration::Type::WriteIdentifier
+      include RbVHDL::Writer::Declaration::Type::WriteSimpleTypeDefinition
+    end
+      
+    class AccessType
+      WRITE_DIRECTIVE = {}.merge(RbVHDL::Writer::Declaration::Type::WRITE_DIRECTIVE)
+      include RbVHDL::Writer::Declaration::Type::WriteLine
+      include RbVHDL::Writer::Declaration::Type::WriteIdentifier
+      include RbVHDL::Writer::Declaration::Type::WriteSimpleTypeDefinition
+    end
+
+  end
 end

@@ -10,5 +10,6 @@ module RbVHDL::Ast
         return format % {expression: @_expr._write_string}
       end
     end
+
   end
 end

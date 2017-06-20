@@ -1,7 +1,6 @@
 require_relative '../interface/parameter'
 require_relative '../declaration/write_declarative_item_list'
 
-
 module RbVHDL::Writer
 
   module Declaration
@@ -153,6 +152,7 @@ module RbVHDL::Writer
 end
 
 module RbVHDL::Ast
+
   module Declaration
 
     class ProcedureDecl
@@ -224,5 +224,6 @@ module RbVHDL::Ast
       include RbVHDL::Writer::Declaration::Function::WriteSpec
       include RbVHDL::Writer::Declaration::SubProgram::WriteBody
     end
+
   end
 end

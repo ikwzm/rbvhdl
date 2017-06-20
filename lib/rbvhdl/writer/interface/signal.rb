@@ -8,6 +8,6 @@ module RbVHDL::Ast
         return directive.fetch(:signal_keyword, self.class::WRITE_DIRECTIVE[:keyword])
       end
     end
+
   end
 end
-

@@ -34,5 +34,6 @@ module RbVHDL::Ast
         return format % {left: left, keyword: keyword, right: right}
       end
     end
+
   end
 end

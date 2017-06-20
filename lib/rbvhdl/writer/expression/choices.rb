@@ -49,5 +49,6 @@ module RbVHDL::Ast
         return format % {keyword: keyword}
       end
     end
+
   end
 end

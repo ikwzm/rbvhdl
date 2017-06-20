@@ -55,6 +55,7 @@ module RbVHDL::Writer
         end
       end
     end
+
   end
 end
 
