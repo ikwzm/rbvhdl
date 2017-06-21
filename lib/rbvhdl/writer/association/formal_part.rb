@@ -12,7 +12,7 @@ module RbVHDL::Ast
     end
 
     class FormalName
-      WRITE_DIRECTIVE = {:format => "%{name} => "}
+      WRITE_DIRECTIVE = {:format => "%{name}"}
     
       def _write_string(directive={})
         format = directive.fetch(:format, WRITE_DIRECTIVE[:format])
@@ -21,7 +21,7 @@ module RbVHDL::Ast
     end
 
     class FormalFunction
-      WRITE_DIRECTIVE = {:format => "%{name}(%{designator}) => "}
+      WRITE_DIRECTIVE = {:format => "%{name}(%{designator})"}
 
       def _write_string(directive={})
         format = directive.fetch(:format, WRITE_DIRECTIVE[:format])
@@ -30,7 +30,7 @@ module RbVHDL::Ast
     end
     
     class FormalTypeMark
-      WRITE_DIRECTIVE = {:format => "%{type_mark}(%{designator}) => "}
+      WRITE_DIRECTIVE = {:format => "%{type_mark}(%{designator})"}
 
       def _write_string(directive={})
         format = directive.fetch(:format, WRITE_DIRECTIVE[:format])

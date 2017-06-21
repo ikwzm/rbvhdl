@@ -1,5 +1,6 @@
 require_relative '../interface/parameter'
 require_relative '../declaration/write_declarative_item_list'
+require_relative '../statement/write_statement_list'
 
 module RbVHDL::Writer
 
@@ -163,12 +164,15 @@ module RbVHDL::Ast
     end
 
     class ProcedureBody
-      WRITE_DIRECTIVE = {}.merge(RbVHDL::Writer::Declaration::Procedure::WRITE_DIRECTIVE)
+      WRITE_DIRECTIVE = {
+      }.merge( RbVHDL::Writer::Declaration::Procedure::WRITE_DIRECTIVE)
+       .merge( RbVHDL::Writer::Declaration::WRITE_DIRECTIVE           )
+       .merge( RbVHDL::Writer::Statement::WRITE_DIRECTIVE             )
       include RbVHDL::Writer::Interface::Parameter::WriteInterface
       include RbVHDL::Writer::Declaration::Procedure::WriteSpec
-      include RbVHDL::Writer::Declaration::WriteDeclarativeItemList
       include RbVHDL::Writer::Declaration::SubProgram::WriteBody
-      include RbVHDL::Writer::Statement::Methods::StatementList
+      include RbVHDL::Writer::Declaration::WriteDeclarativeItemList
+      include RbVHDL::Writer::Statement::WriteStatementList
     end
   
     class FunctionDecl
@@ -179,10 +183,15 @@ module RbVHDL::Ast
     end
   
     class FunctionBody
-      WRITE_DIRECTIVE = {}.merge(RbVHDL::Writer::Declaration::Function::WRITE_DIRECTIVE)
+      WRITE_DIRECTIVE = {
+      }.merge( RbVHDL::Writer::Declaration::Function::WRITE_DIRECTIVE )
+       .merge( RbVHDL::Writer::Declaration::WRITE_DIRECTIVE           )
+       .merge( RbVHDL::Writer::Statement::WRITE_DIRECTIVE             )
       include RbVHDL::Writer::Interface::Parameter::WriteInterface
       include RbVHDL::Writer::Declaration::Function::WriteSpec
       include RbVHDL::Writer::Declaration::SubProgram::WriteBody
+      include RbVHDL::Writer::Declaration::WriteDeclarativeItemList
+      include RbVHDL::Writer::Statement::WriteStatementList
     end
 
     class PureFunctionDecl
@@ -209,20 +218,28 @@ module RbVHDL::Ast
       WRITE_DIRECTIVE = {
         :prefix_keyword => :pure_keyword,
         :pure_keyword   => "pure",
-      }.merge(RbVHDL::Writer::Declaration::Function::WRITE_DIRECTIVE)
+      }.merge( RbVHDL::Writer::Declaration::Function::WRITE_DIRECTIVE )
+       .merge( RbVHDL::Writer::Declaration::WRITE_DIRECTIVE           )
+       .merge( RbVHDL::Writer::Statement::WRITE_DIRECTIVE             )
       include RbVHDL::Writer::Interface::Parameter::WriteInterface
       include RbVHDL::Writer::Declaration::Function::WriteSpec
       include RbVHDL::Writer::Declaration::SubProgram::WriteBody
+      include RbVHDL::Writer::Declaration::WriteDeclarativeItemList
+      include RbVHDL::Writer::Statement::WriteStatementList
     end
 
     class ImpureFunctionBody
       WRITE_DIRECTIVE = {
         :prefix_keyword => :impure_keyword,
         :impure_keyword => "impure",
-      }.merge(RbVHDL::Writer::Declaration::Function::WRITE_DIRECTIVE)
+      }.merge( RbVHDL::Writer::Declaration::Function::WRITE_DIRECTIVE )
+       .merge( RbVHDL::Writer::Declaration::WRITE_DIRECTIVE           )
+       .merge( RbVHDL::Writer::Statement::WRITE_DIRECTIVE             )
       include RbVHDL::Writer::Interface::Parameter::WriteInterface
       include RbVHDL::Writer::Declaration::Function::WriteSpec
       include RbVHDL::Writer::Declaration::SubProgram::WriteBody
+      include RbVHDL::Writer::Declaration::WriteDeclarativeItemList
+      include RbVHDL::Writer::Statement::WriteStatementList
     end
 
   end

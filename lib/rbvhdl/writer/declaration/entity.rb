@@ -1,7 +1,7 @@
-require_relative '../declaration/write_declarative_item_list'
-require_relative '../statement/methods'
 require_relative '../interface/generic'
 require_relative '../interface/port'
+require_relative '../declaration/write_declarative_item_list'
+require_relative '../statement/write_statement_list'
 
 module RbVHDL::Ast
 
@@ -21,6 +21,7 @@ module RbVHDL::Ast
       }.merge( RbVHDL::Writer::Interface::Generic::WRITE_DIRECTIVE )
        .merge( RbVHDL::Writer::Interface::Port::WRITE_DIRECTIVE    )
        .merge( RbVHDL::Writer::Declaration::WRITE_DIRECTIVE        )
+       .merge( RbVHDL::Writer::Statement::WRITE_DIRECTIVE          )
 
       def _write_line(directive={})
         write_line = []
@@ -46,7 +47,7 @@ module RbVHDL::Ast
       include RbVHDL::Writer::Interface::Generic::WriteInterface
       include RbVHDL::Writer::Interface::Port::WriteInterface
       include RbVHDL::Writer::Declaration::WriteDeclarativeItemList
-      include RbVHDL::Writer::Statement::Methods::StatementList
+      include RbVHDL::Writer::Statement::WriteStatementList
     end
 
   end

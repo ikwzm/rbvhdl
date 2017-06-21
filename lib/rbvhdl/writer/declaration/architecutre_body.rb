@@ -1,4 +1,5 @@
 require_relative '../declaration/write_declarative_item_list'
+require_relative '../statement/write_statement_list'
 
 module RbVHDL::Ast
 
@@ -17,6 +18,7 @@ module RbVHDL::Ast
         :statement_begin_format       => "%{indent}%{begin_keyword}",
         :statement_indent             => "    ",
       }.merge( RbVHDL::Writer::Declaration::WRITE_DIRECTIVE )
+       .merge( RbVHDL::Writer::Statement::WRITE_DIRECTIVE   )
 
       def _write_line(directive={})
         write_line  = []
@@ -54,7 +56,7 @@ module RbVHDL::Ast
         return write_line
       end
       include RbVHDL::Writer::Declaration::WriteDeclarativeItemList
-      include RbVHDL::Writer::Statement::Methods::StatementList
+      include RbVHDL::Writer::Statement::WriteStatementList
     end
 
   end

@@ -22,6 +22,15 @@ describe 'RbVHDL::Ast::Declaration::ArchitectureBody' do
       comp_decl._port_interface(   'RST'  , RbVHDL::Ast.subtype_indication('std_logic'), :in)
       comp_decl._port_interface(   'D'    , RbVHDL::Ast.subtype_indication('std_logic_vector')._downto(RbVHDL::Ast.subtraction(RbVHDL::Ast.name(:WIDTH),1),0), :in)
       comp_decl._port_interface(   'Q'    , RbVHDL::Ast.subtype_indication('std_logic_vector')._downto(RbVHDL::Ast.subtraction(RbVHDL::Ast.name(:WIDTH),1),0), :out)
+
+      comp_stmt  = body._component_instantiation_statement('U_0', 'SUB_0')
+      comp_stmt._generic_association('WIDTH', 32)
+      comp_stmt._generic_association('SIZE' , 15)
+      comp_stmt._port_association(   'CLK'  , 'CLK')
+      comp_stmt._port_association(   'RST'  , 'RST')
+      comp_stmt._port_association(   'D'    , 'i_data')
+      comp_stmt._port_association(   'Q'    , 'q_data')
+      
       line        = body._write_line
 
       expect(line.shift).to eq "architecture MODEL of TEST is"
@@ -46,6 +55,17 @@ describe 'RbVHDL::Ast::Declaration::ArchitectureBody' do
       expect(line.shift).to eq "        );"
       expect(line.shift).to eq "    end component;"
       expect(line.shift).to eq "begin"
+      expect(line.shift).to eq "    U_0: SUB_0"
+      expect(line.shift).to eq "        generic map("
+      expect(line.shift).to eq "            WIDTH   => 32      ,"
+      expect(line.shift).to eq "            SIZE    => 15      "
+      expect(line.shift).to eq "        )"
+      expect(line.shift).to eq "        port map("
+      expect(line.shift).to eq "            CLK     => CLK     ,"
+      expect(line.shift).to eq "            RST     => RST     ,"
+      expect(line.shift).to eq "            D       => i_data  ,"
+      expect(line.shift).to eq "            Q       => q_data  "
+      expect(line.shift).to eq "        );"
       expect(line.shift).to eq "end     MODEL;"
     end
     
