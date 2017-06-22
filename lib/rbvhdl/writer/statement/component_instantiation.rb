@@ -1,7 +1,6 @@
 require_relative '../association/generic'
 require_relative '../association/port'
 
-
 module RbVHDL::Writer
 
   module Statement
@@ -60,8 +59,8 @@ module RbVHDL::Ast
         :keyword           => "component",
         :keyword_format    => "",
         :format            => "%{indent}%{label}: %{keyword}%{name}%{separator}",
-      }.merge( RbVHDL::Writer::Association::Generic::WRITE_DIRECTIVE )
-       .merge( RbVHDL::Writer::Association::Port::WRITE_DIRECTIVE    )
+      }.merge( RbVHDL::Writer::Association::Generic::WRITE_DIRECTIVE ){|key, base_val, default_val| base_val}
+       .merge( RbVHDL::Writer::Association::Port::WRITE_DIRECTIVE    ){|key, base_val, default_val| base_val}
       include RbVHDL::Writer::Statement::ComponentInstantiation
       include RbVHDL::Writer::Association::Generic::WriteAssociation
       include RbVHDL::Writer::Association::Port::WriteAssociation
@@ -72,8 +71,8 @@ module RbVHDL::Ast
         :keyword           => "entity",
         :keyword_format    => "%{keyword} ",
         :format            => "%{indent}%{label}: %{keyword}%{name}%{separator}",
-      }.merge( RbVHDL::Writer::Association::Generic::WRITE_DIRECTIVE )
-       .merge( RbVHDL::Writer::Association::Port::WRITE_DIRECTIVE    )
+      }.merge( RbVHDL::Writer::Association::Generic::WRITE_DIRECTIVE ){|key, base_val, default_val| base_val}
+       .merge( RbVHDL::Writer::Association::Port::WRITE_DIRECTIVE    ){|key, base_val, default_val| base_val}
       include RbVHDL::Writer::Statement::ComponentInstantiation
       include RbVHDL::Writer::Association::Generic::WriteAssociation
       include RbVHDL::Writer::Association::Port::WriteAssociation

@@ -1,3 +1,5 @@
+require_relative '../association/parameter'
+
 module RbVHDL::Ast
 
   class Expression
@@ -12,23 +14,23 @@ module RbVHDL::Ast
     end
 
     class FunctionCall
-      WRITE_DIRECTIVE = {:format => "%{name}%{parameter}", :parameter_format => "(%{parameter_list})", :parameter_separator => ", "}
+      WRITE_DIRECTIVE = {
+        :format                              => "%{name}%{parameter}",
+        :parameter_format                    => "%{parameter}",
+        :parameter_begin_format              => "(",
+        :parameter_end_format                => ")",
+        :parameter_association_indent        => "",
+        :parameter_association_separator     => ", ",
+        :parameter_association_formal_format => "%{formal} => ",
+        :parameter_association_actual_format => "%{actual}",
+      }.merge( RbVHDL::Writer::Association::Parameter::WRITE_DIRECTIVE ){|key, base_val, default_val| base_val}
+      include  RbVHDL::Writer::Association::Parameter::WriteAssociation
 
       def _write_string(directive={})
         name   = @_name._write_string
-        format = directive.fetch(:format, WRITE_DIRECTIVE[:format])
-        return format % {name: name, parameter: _write_parameter_string(directive)}
-      end
-
-      def _write_parameter_string(directive={})
-        if @_parameter_association_list.size > 0 then
-          parameter_format    = directive.fetch(:parameter_format   , WRITE_DIRECTIVE[:parameter_format   ])
-          parameter_separator = directive.fetch(:parameter_separator, WRITE_DIRECTIVE[:parameter_separator])
-          parameter_list      = @_parameter_association_list.map{ |param| param._write_string}.join(parameter_separator)
-          return parameter_format % {parameter_list: parameter_list}
-        else
-          return ""
-        end
+        format           = directive.fetch(:format          , WRITE_DIRECTIVE[:format          ])
+        parameter_format = directive.fetch(:parameter_format, WRITE_DIRECTIVE[:parameter_format])
+        return format % {name: name, parameter: parameter_format % {parameter: _write_parameter_association.join}}
       end
     end
     

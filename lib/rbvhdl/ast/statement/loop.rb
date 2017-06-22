@@ -53,7 +53,7 @@ module RbVHDL::Ast
       def initialize(owner)
         @_owner      = owner
         @_label      = nil
-        @_loop_label = nil
+        @_next_label = nil
         @_condition  = nil
         @_annotation = Hash.new
       end
@@ -117,7 +117,8 @@ module RbVHDL::Ast
 
   def self.for_loop_statement(owner, index_identifier, index_range)
     _index_identifier = RbVHDL::Ast.identifier(index_identifier)
-    if index_range.class < RbVHDL::Ast::Type::Range then
+    if index_range.class <  RbVHDL::Ast::Type::Range or
+       index_range.class == RbVHDL::Ast::Expression::AttributeName then
       return RbVHDL::Ast::Statement::ForLoop.new(owner, _index_identifier, index_range)
     else
       raise ArgumentError, "#{self.inspect}.#{__method__}(#{index_range.inspect}:#{index_range.class})"
