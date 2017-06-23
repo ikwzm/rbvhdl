@@ -10,7 +10,7 @@ module RbVHDL::Ast
         :loop_keyword       => "loop",
         :end_keyword        => "end" ,
         :label_format       => "%{label}: ",
-        :loop_begin_format  => "%{indent}%{label}%{loop_keyword}",
+        :loop_begin_format  => "%{indent}%{label?}%{loop_keyword}",
         :loop_end_format    => "%{indent}%{end_keyword} %{loop_keyword};",
       }.merge( RbVHDL::Writer::Statement::WRITE_DIRECTIVE   )
 
@@ -24,9 +24,9 @@ module RbVHDL::Ast
         end_keyword       = directive.fetch(:end_keyword      , WRITE_DIRECTIVE[:end_keyword      ])
         begin_label       = (@_label.nil?)? "" : label_format % {:label => @_label._write_string}
         end_label         = (@_label.nil?)? "" : @_label._write_string
-        write_line.push(loop_begin_format % {indent: indent, loop_keyword: loop_keyword, label: begin_label})
+        write_line.push(loop_begin_format % {:indent => indent, :loop_keyword => loop_keyword, :label? => begin_label})
         write_line.concat(_write_statement_list(directive))
-        write_line.push(loop_end_format   % {indent: indent, loop_keyword: loop_keyword, label: end_label, end_keyword: end_keyword})
+        write_line.push(loop_end_format   % {:indent => indent, :loop_keyword => loop_keyword, :label? => end_label, :end_keyword => end_keyword})
         return write_line
       end
 
@@ -40,7 +40,7 @@ module RbVHDL::Ast
         :loop_keyword       => "loop",
         :end_keyword        => "end" ,
         :label_format       => "%{label}: ",
-        :loop_begin_format  => "%{indent}%{label}%{while_keyword} %{condition} %{loop_keyword}",
+        :loop_begin_format  => "%{indent}%{label?}%{while_keyword} %{condition} %{loop_keyword}",
         :loop_end_format    => "%{indent}%{end_keyword} %{loop_keyword};",
         :condition_format   => "%{expression}",
       }.merge( RbVHDL::Writer::Statement::WRITE_DIRECTIVE   )
@@ -60,13 +60,13 @@ module RbVHDL::Ast
         condition         = condition_format % {expression: @_condition._write_string}
         write_line.push(loop_begin_format % {:indent        => indent,
                                              :loop_keyword  => loop_keyword,
-                                             :label         => begin_label,
+                                             :label?        => begin_label,
                                              :while_keyword => while_keyword,
                                              :condition     => condition})
         write_line.concat(_write_statement_list(directive))
         write_line.push(loop_end_format   % {:indent        =>indent,
                                              :loop_keyword  => loop_keyword,
-                                             :label         => end_label,
+                                             :label?        => end_label,
                                              :end_keyword   => end_keyword})
         return write_line
       end
@@ -82,7 +82,7 @@ module RbVHDL::Ast
         :loop_keyword       => "loop",
         :end_keyword        => "end" ,
         :label_format       => "%{label}: ",
-        :loop_begin_format  => "%{indent}%{label}%{for_keyword} %{identifier} %{in_keyword} %{range} %{loop_keyword}",
+        :loop_begin_format  => "%{indent}%{label?}%{for_keyword} %{identifier} %{in_keyword} %{range} %{loop_keyword}",
         :loop_end_format    => "%{indent}%{end_keyword} %{loop_keyword};",
       }.merge( RbVHDL::Writer::Statement::WRITE_DIRECTIVE   )
 
@@ -102,7 +102,7 @@ module RbVHDL::Ast
         
         write_line.push(loop_begin_format % {:indent        => indent,
                                              :loop_keyword  => loop_keyword,
-                                             :label         => begin_label,
+                                             :label?        => begin_label,
                                              :for_keyword   => for_keyword,
                                              :identifier    => @_index_identifier._write_string,
                                              :in_keyword    => in_keyword,
@@ -110,7 +110,7 @@ module RbVHDL::Ast
         write_line.concat(_write_statement_list(directive))
         write_line.push(loop_end_format   % {:indent        =>indent,
                                              :loop_keyword  => loop_keyword,
-                                             :label         => end_label,
+                                             :label?        => end_label,
                                              :end_keyword   => end_keyword})
         return write_line
       end
@@ -122,7 +122,7 @@ module RbVHDL::Ast
 
       WRITE_DIRECTIVE = {
         :keyword              => "next",
-        :format               => "%{indent}%{label}%{keyword}%{next_label}%{condition};",
+        :format               => "%{indent}%{label?}%{keyword}%{next_label?}%{condition?};",
         :label_format         => "%{label}: ",
         :keyword_format       => "%{keyword}",
         :next_label_format    => " %{label}",
@@ -145,7 +145,7 @@ module RbVHDL::Ast
         next_label = (@_next_label.nil?)? "" : next_label_format % {:label => @_next_label._write_string}
         condition  = (@_condition .nil?)? "" : condition_format  % {:when_keyword => when_keyword, :expression => @_condition._write_string}
 
-        return [ format % {indent: indent, label: label, keyword: keyword, next_label: next_label, condition: condition} ]
+        return [ format % {:indent => indent, :label? => label, :keyword => keyword, :next_label? => next_label, :condition? => condition} ]
       end
     end
 
@@ -153,7 +153,7 @@ module RbVHDL::Ast
 
       WRITE_DIRECTIVE = {
         :keyword              => "exit",
-        :format               => "%{indent}%{label}%{keyword}%{exit_label}%{condition};",
+        :format               => "%{indent}%{label?}%{keyword}%{exit_label?}%{condition?};",
         :label_format         => "%{label}: ",
         :keyword_format       => "%{keyword}",
         :exit_label_format    => " %{label}",
@@ -176,7 +176,7 @@ module RbVHDL::Ast
         exit_label = (@_exit_label.nil?)? "" : exit_label_format % {:label => @_exit_label._write_string}
         condition  = (@_condition .nil?)? "" : condition_format  % {:when_keyword => when_keyword, :expression => @_condition._write_string}
 
-        return [ format % {indent: indent, label: label, keyword: keyword, exit_label: exit_label, condition: condition} ]
+        return [ format % {:indent => indent, :label? => label, :keyword => keyword, :exit_label? => exit_label, :condition? => condition} ]
       end
     end
 

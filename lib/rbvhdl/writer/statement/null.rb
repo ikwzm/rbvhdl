@@ -5,7 +5,7 @@ module RbVHDL::Ast
     class Null
       WRITE_DIRECTIVE = {
         :keyword              => "null",
-        :format               => "%{indent}%{label}%{keyword};",
+        :format               => "%{indent}%{label?}%{keyword};",
         :label_format         => "%{label}: ",
         :keyword_format       => "%{keyword}",
       }
@@ -20,7 +20,7 @@ module RbVHDL::Ast
         keyword = keyword_format % {:keyword => null_keyword}
         label   = (@_label.nil?)? "" : label_format % {:label => @_label._write_string}
 
-        return [ format % {indent: indent, label: label, keyword: keyword} ]
+        return [ format % {:indent => indent, :label? => label, :keyword => keyword} ]
       end
     end
 

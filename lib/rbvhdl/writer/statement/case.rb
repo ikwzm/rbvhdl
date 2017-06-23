@@ -35,7 +35,7 @@ module RbVHDL::Ast
         :case_keyword       => "case",
         :is_keyword         => "is",
         :label_format       => "%{label}: ",
-        :case_begin_format  => "%{indent}%{label}%{case_keyword} %{expression} %{is_keyword}",
+        :case_begin_format  => "%{indent}%{label?}%{case_keyword} %{expression} %{is_keyword}",
         :case_end_format    => "%{indent}%{end_keyword} %{case_keyword};",
         :when_indent        => "    ",
       }
@@ -60,7 +60,7 @@ module RbVHDL::Ast
         when_directive[:indent]         = indent + when_indent
           
         write_line.push( case_begin_format  % {:indent       => indent,
-                                               :label        => begin_label,
+                                               :label?       => begin_label,
                                                :case_keyword => case_keyword,
                                                :expression   => expression,
                                                :is_keyword   => is_keyword })
@@ -68,7 +68,7 @@ module RbVHDL::Ast
           write_line.concat( _when._write_line(when_directive) )
         end
         write_line.push( case_end_format    % {:indent       => indent,
-                                               :label        => end_label,
+                                               :label?       => end_label,
                                                :case_keyword => case_keyword,
                                                :end_keyword  => end_keyword })
         return write_line

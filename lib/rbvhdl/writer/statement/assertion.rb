@@ -5,7 +5,7 @@ module RbVHDL::Ast
     class Assertion
       WRITE_DIRECTIVE = {
         :keyword              => "assert",
-        :format               => "%{indent}%{label}%{keyword} %{condition}%{report}%{severity};",
+        :format               => "%{indent}%{label?}%{keyword} %{condition}%{report?}%{severity?};",
         :label_format         => "%{label}: ",
         :keyword_format       => "%{keyword}",
         :condition_format     => "%{expression}",
@@ -33,7 +33,7 @@ module RbVHDL::Ast
         report    = (@_report  .nil?)? "" : report_format   % {:report_keyword   => report_keyword  , :expression => @_report._write_string  }
         severity  = (@_severity.nil?)? "" : severity_format % {:severity_keyword => severity_keyword, :expression => @_severity._write_string}
 
-        return [ format % {indent: indent, label: label, keyword: keyword, condition: condition, report: report, severity: severity} ]
+        return [ format % {:indent => indent, :label? => label, :keyword => keyword, :condition => condition, :report? => report, :severity? => severity} ]
       end
     end
     

@@ -5,7 +5,7 @@ module RbVHDL::Ast
     class Report
       WRITE_DIRECTIVE = {
         :keyword              => "report",
-        :format               => "%{indent}%{label}%{keyword} %{expression}%{severity};",
+        :format               => "%{indent}%{label?}%{keyword} %{expression}%{severity?};",
         :label_format         => "%{label}: ",
         :keyword_format       => "%{keyword}",
         :expression_format    => "%{expression}",
@@ -28,7 +28,7 @@ module RbVHDL::Ast
         label     = (@_label   .nil?)? "" : label_format    % {:label => @_label._write_string}
         severity  = (@_severity.nil?)? "" : severity_format % {:severity_keyword => severity_keyword, :expression => @_severity._write_string}
 
-        return [ format % {indent: indent, label: label, keyword: keyword, expression: expression, severity: severity} ]
+        return [ format % {:indent => indent, :label? => label, :keyword => keyword, :expression => expression, :severity? => severity} ]
       end
     end
 

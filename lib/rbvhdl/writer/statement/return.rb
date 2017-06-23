@@ -5,10 +5,10 @@ module RbVHDL::Ast
     class Return
       WRITE_DIRECTIVE = {
         :keyword              => "return",
-        :format               => "%{indent}%{label}%{keyword} %{expression};",
+        :format               => "%{indent}%{label?}%{keyword}%{expression?};",
         :label_format         => "%{label}: ",
         :keyword_format       => "%{keyword}",
-        :expression_format    => "%{expression}",
+        :expression_format    => " %{expression}",
       }
 
       def _write_line(directive={})
@@ -20,10 +20,10 @@ module RbVHDL::Ast
         label_format      = directive.fetch(:label_format     , WRITE_DIRECTIVE[:label_format      ])
 
         keyword    = keyword_format    % {:keyword    => return_keyword}
-        expression = expression_format % {:expression => @_expression._write_string}
-        label      = (@_label.nil?)? "" : label_format % {:label => @_label._write_string}
+        label      = (@_label.nil?     )? "" : label_format      % {:label      => @_label._write_string     }
+        expression = (@_expression.nil?)? "" : expression_format % {:expression => @_expression._write_string}
 
-        return [ format % {indent: indent, label: label, keyword: keyword, expression: expression} ]
+        return [ format % {:indent => indent, :label? => label, keyword: keyword, :expression? => expression} ]
       end
     end
 
