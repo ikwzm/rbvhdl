@@ -31,7 +31,6 @@ module RbVHDL::Ast
         block_begin_format     = directive.fetch(:block_begin_format    , WRITE_DIRECTIVE[:block_begin_format    ])
         block_end_format       = directive.fetch(:block_end_format      , WRITE_DIRECTIVE[:block_end_format      ])
         statement_begin_format = directive.fetch(:statement_begin_format, WRITE_DIRECTIVE[:statement_begin_format])
-        statement_indent       = directive.fetch(:statement_indent      , WRITE_DIRECTIVE[:statement_indent      ])
         block_keyword          = directive.fetch(:block_keyword         , WRITE_DIRECTIVE[:keyword               ])
         is_keyword             = directive.fetch(:is_keyword            , WRITE_DIRECTIVE[:is_keyword            ])
         begin_keyword          = directive.fetch(:begin_keyword         , WRITE_DIRECTIVE[:begin_keyword         ])

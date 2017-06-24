@@ -13,6 +13,7 @@ module RbVHDL::Ast
         :loop_begin_format  => "%{indent}%{label?}%{loop_keyword}",
         :loop_end_format    => "%{indent}%{end_keyword} %{loop_keyword};",
       }.merge( RbVHDL::Writer::Statement::WRITE_DIRECTIVE   )
+      include  RbVHDL::Writer::Statement::WriteStatementList
 
       def _write_line(directive={})
         write_line = []
@@ -29,8 +30,6 @@ module RbVHDL::Ast
         write_line.push(loop_end_format   % {:indent => indent, :loop_keyword => loop_keyword, :label? => end_label, :end_keyword => end_keyword})
         return write_line
       end
-
-      include RbVHDL::Writer::Statement::WriteStatementList
     end
 
     class WhileLoop
@@ -44,6 +43,7 @@ module RbVHDL::Ast
         :loop_end_format    => "%{indent}%{end_keyword} %{loop_keyword};",
         :condition_format   => "%{expression}",
       }.merge( RbVHDL::Writer::Statement::WRITE_DIRECTIVE   )
+      include  RbVHDL::Writer::Statement::WriteStatementList
 
       def _write_line(directive={})
         write_line = []
@@ -70,8 +70,6 @@ module RbVHDL::Ast
                                              :end_keyword   => end_keyword})
         return write_line
       end
-
-      include RbVHDL::Writer::Statement::WriteStatementList
     end
 
     class ForLoop
@@ -85,6 +83,7 @@ module RbVHDL::Ast
         :loop_begin_format  => "%{indent}%{label?}%{for_keyword} %{identifier} %{in_keyword} %{range} %{loop_keyword}",
         :loop_end_format    => "%{indent}%{end_keyword} %{loop_keyword};",
       }.merge( RbVHDL::Writer::Statement::WRITE_DIRECTIVE   )
+      include  RbVHDL::Writer::Statement::WriteStatementList
 
       def _write_line(directive={})
         write_line = []
@@ -114,8 +113,6 @@ module RbVHDL::Ast
                                              :end_keyword   => end_keyword})
         return write_line
       end
-
-      include RbVHDL::Writer::Statement::WriteStatementList
     end
 
     class Next

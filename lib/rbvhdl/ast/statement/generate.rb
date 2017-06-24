@@ -27,7 +27,7 @@ module RbVHDL::Ast
     class IfGenerate < Generate
       attr_reader   :_condition
       def initialize(owner, label, condition)
-        super(owner, label, condition)
+        super(owner, label)
         @_condition = condition
       end
     end
