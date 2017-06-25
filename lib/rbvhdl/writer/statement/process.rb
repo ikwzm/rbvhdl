@@ -18,7 +18,6 @@ module RbVHDL::Ast
         :postponed_format             => "%{postponed_keyword} ",
         :postponed_keyword            => "postponed",
         :statement_begin_format       => "%{indent}%{begin_keyword}",
-        :statement_indent             => "    ",
       }.merge( RbVHDL::Writer::Declaration::WRITE_DIRECTIVE ){|key, base_val, default_val| base_val}
        .merge( RbVHDL::Writer::Statement::WRITE_DIRECTIVE   ){|key, base_val, default_val| base_val}
       include  RbVHDL::Writer::Declaration::WriteDeclarativeItemList
