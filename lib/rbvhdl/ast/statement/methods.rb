@@ -129,17 +129,22 @@ module RbVHDL::Ast
       end
 
       module SignalAssignment
-        def _simple_signal_assignment_statement(target, waveform)
+        def _signal_assignment_statement(target, waveform=nil)
+          stmt = RbVHDL::Ast.signal_assignment_statement(self, target, waveform)
+          @_statement_list.push(stmt)
+          return stmt
+        end
+        def _simple_signal_assignment_statement(target, waveform=nil)
           stmt = RbVHDL::Ast.simple_signal_assignment_statement(self, target, waveform)
           @_statement_list.push(stmt)
           return stmt
         end
-        def _conditional_signal_assignment_statement(target, waveform)
-          stmt = RbVHDL::Ast.conditional_signal_assignment(self, target, waveform)
+        def _conditional_signal_assignment_statement(target, waveform=nil)
+          stmt = RbVHDL::Ast.conditional_signal_assignment_statement(self, target, waveform)
           @_statement_list.push(stmt)
           return stmt
         end
-        def _selected_signal_assignment_statement(expression, target, waveform, choices)
+        def _selected_signal_assignment_statement(expression, target, waveform=nil, choices=nil)
           stmt = RbVHDL::Ast.selected_signal_assignment_statement(self, expression, target, waveform, choices)
           @_statement_list.push(stmt)
           return stmt
@@ -147,17 +152,22 @@ module RbVHDL::Ast
       end
 
       module VariableAssignment
-        def _simple_variable_assignment_statement(target, value)
+        def _variable_assignment_statement(target, value=nil)
+          stmt = RbVHDL::Ast.variable_assignment_statement(self, target, value)
+          @_statement_list.push(stmt)
+          return stmt
+        end
+        def _simple_variable_assignment_statement(target, value=nil)
           stmt = RbVHDL::Ast.simple_variable_assignment_statement(self, target, value)
           @_statement_list.push(stmt)
           return stmt
         end
-        def _conditional_variable_assignment_statement(target, value)
+        def _conditional_variable_assignment_statement(target, value=nil)
           stmt = RbVHDL::Ast.conditional_variable_assignment_statement(self, target, value)
           @_statement_list.push(stmt)
           return stmt
         end
-        def _selected_variable_assignment_statement(expression, target, value, choices)
+        def _selected_variable_assignment_statement(expression, target, value=nil, choices=nil)
           stmt = RbVHDL::Ast.selected_variable_assignment_statement(self, expression, target, value, choices)
           @_statement_list.push(stmt)
           return stmt
