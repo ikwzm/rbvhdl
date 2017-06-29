@@ -3,7 +3,8 @@ module RbVHDL::Ast
   class Interface
 
     WRITE_DIRECTIVE = {
-      :keyword               => "",
+      :class                 => nil,
+      :reserved_words        => RbVHDL::Writer::RESERVED_WORDS,
       :format                => "%{indent}%{keyword}%{identifier} %{mode}%{type}%{value}%{separator}",
       :keyword_format        => "%<keyword>-10s",
       :identifier_format     => "%{identifier}",
@@ -22,16 +23,29 @@ module RbVHDL::Ast
       mode_format       = directive.fetch(:mode_format      , self.class::WRITE_DIRECTIVE[:mode_format      ])
       type_format       = directive.fetch(:type_format      , self.class::WRITE_DIRECTIVE[:type_format      ])
       value_format      = directive.fetch(:value_format     , self.class::WRITE_DIRECTIVE[:value_format     ])
-      keyword           = keyword_format    % {:keyword    => self.class::WRITE_DIRECTIVE[:keyword]}
+
+      keyword           = keyword_format    % {:keyword    => _write_keyword_string(directive)     }
       identifier        = identifier_format % {:identifier => _write_identifier_string(directive)  }
       mode              = mode_format       % {:mode       => _write_mode_string(directive)        }
       type              = type_format       % {:type       => _write_type_string(directive)        }
       value             = (@_static_expression.nil?)?  "" : value_format % {:expression => @_static_expression._write_string}
-      return [ format % {indent: indent, keyword: keyword, identifier: identifier, mode: mode, type: type, value: value, separator: separator} ]
+
+      return [ format % {
+                 :indent     => indent,
+                 :keyword    => keyword,
+                 :identifier => identifier,
+                 :mode       => mode,
+                 :type       => type,
+                 :value      => value,
+                 :separator  => separator
+               }
+             ]
     end
 
     def _write_keyword_string(directive={})
-      return ""
+      interface_class = self.class::WRITE_DIRECTIVE[:class]
+      reserved_words  = directive.fetch(:reserved_words, self.class::WRITE_DIRECTIVE[:reserved_words])
+      return (interface_class.nil?)? "" : reserved_words[interface_class]
     end
 
     def _write_identifier_string(directive={})

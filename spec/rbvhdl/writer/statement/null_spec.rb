@@ -16,7 +16,7 @@ describe 'RbVHDL::Ast::Statement::Null' do
       expect(line.shift).to eq "    process begin"
       expect(line.shift).to eq "        null;"
       expect(line.shift).to eq "    end process;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
 
     it "_null_statement._label!('L_NULL')" do
@@ -31,7 +31,7 @@ describe 'RbVHDL::Ast::Statement::Null' do
       expect(line.shift).to eq "    process begin"
       expect(line.shift).to eq "        L_NULL: null;"
       expect(line.shift).to eq "    end process;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
   end
 end

@@ -20,7 +20,7 @@ describe 'RbVHDL::Ast::Statement::SimpleVariableAssignment' do
       expect(line.shift).to eq "        sig10  := 10;"
       expect(line.shift).to eq "        sig100 := 100;"
       expect(line.shift).to eq "    end process;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
 
   end

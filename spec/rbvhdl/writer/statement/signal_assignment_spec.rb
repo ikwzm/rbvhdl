@@ -13,7 +13,7 @@ describe 'RbVHDL::Ast::Statement::SimpleSignalAssignment' do
       expect(line.shift).to eq "architecture MODEL of TEST is"
       expect(line.shift).to eq "begin"
       expect(line.shift).to eq "    VALID <= '0';"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
 
     it "_simple_signal_assignment_statement('VALID', character_literal('0')._label!('VALID_INIT')" do
@@ -25,7 +25,7 @@ describe 'RbVHDL::Ast::Statement::SimpleSignalAssignment' do
       expect(line.shift).to eq "architecture MODEL of TEST is"
       expect(line.shift).to eq "begin"
       expect(line.shift).to eq "    VALID_INIT: VALID <= '0';"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
 
     it "_simple_signal_assignment_statement('VALID', character_literal('0'))._postponed!" do
@@ -37,7 +37,7 @@ describe 'RbVHDL::Ast::Statement::SimpleSignalAssignment' do
       expect(line.shift).to eq "architecture MODEL of TEST is"
       expect(line.shift).to eq "begin"
       expect(line.shift).to eq "    postponed VALID <= '0';"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
 
     it "_simple_signal_assignment_statement('VALID', character_literal('0')).!_after(physical_literal(0, 'ns'))" do
@@ -49,7 +49,7 @@ describe 'RbVHDL::Ast::Statement::SimpleSignalAssignment' do
       expect(line.shift).to eq "architecture MODEL of TEST is"
       expect(line.shift).to eq "begin"
       expect(line.shift).to eq "    VALID <= '0' after 0 ns;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
 
     it "_simple_signal_assignment_statement('VALID', character_literal('0'))..." do
@@ -67,7 +67,7 @@ describe 'RbVHDL::Ast::Statement::SimpleSignalAssignment' do
       expect(line.shift).to eq "             '1' after 1 ns,"
       expect(line.shift).to eq "             '0' after 2 ns,"
       expect(line.shift).to eq "             '1' after 3 ns;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
 
     it "_simple_signal_assignment_statement('VALID', character_literal('0'))._transport!..." do
@@ -85,7 +85,7 @@ describe 'RbVHDL::Ast::Statement::SimpleSignalAssignment' do
       expect(line.shift).to eq "                       '1' after 1 ns,"
       expect(line.shift).to eq "                       '0' after 2 ns,"
       expect(line.shift).to eq "                       '1' after 3 ns;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
 
   end
@@ -106,7 +106,7 @@ describe 'RbVHDL::Ast::Statement::ConditionalSignalAssignment' do
       expect(line.shift).to eq "begin"
       expect(line.shift).to eq "    VALID <= '1' when curr_state = VALID_STATE else"
       expect(line.shift).to eq "             '0';"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
 
     it "_conditional_signal_assignment_statement('DATA')..." do
@@ -124,7 +124,7 @@ describe 'RbVHDL::Ast::Statement::ConditionalSignalAssignment' do
       expect(line.shift).to eq "            S10_DATA  when curr_state = S10_STATE  else"
       expect(line.shift).to eq "            S111_DATA when curr_state = S111_STATE else"
       expect(line.shift).to eq "            IDLE_DATA;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
 
     it "_conditional_signal_assignment_statement('VALID', character_literal('0'))._when()" do
@@ -151,7 +151,7 @@ describe 'RbVHDL::Ast::Statement::ConditionalSignalAssignment' do
       expect(line.shift).to eq "             '1' after 1 ns,"
       expect(line.shift).to eq "             '0' after 2 ns,"
       expect(line.shift).to eq "             '1' after 3 ns;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
   end
 end
@@ -176,7 +176,7 @@ describe 'RbVHDL::Ast::Statement::SelectedSignalAssignment' do
       expect(line.shift).to eq "                2 when 2,"
       expect(line.shift).to eq "                1 when 1,"
       expect(line.shift).to eq "                0 when others;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
 
     it "selected_signal_assignment_statement(nil, name('cond'), name('sig0'))..." do
@@ -199,7 +199,7 @@ describe 'RbVHDL::Ast::Statement::SelectedSignalAssignment' do
       expect(line.shift).to eq "                0 after 1 ns when 2,"
       expect(line.shift).to eq "                1 after 0 ns,"
       expect(line.shift).to eq "                0 after 1 ns when others;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
   end
 end

@@ -5,23 +5,26 @@ module RbVHDL::Ast
     class Mode
 
       class In
-        WRITE_DIRECTIVE = {:keyword => "in"}
+        WRITE_DIRECTIVE = {:reserved_words => RbVHDL::Writer::RESERVED_WORDS}
         def _write_string(directive={})
-          return directive.fetch(:in_keyword, self.class::WRITE_DIRECTIVE[:keyword])
+          reserved_words = directive.fetch(:reserved_words, self.class::WRITE_DIRECTIVE[:reserved_words])
+          return reserved_words[:in]
         end
       end
 
       class Out
-        WRITE_DIRECTIVE = {:keyword => "out"}
+        WRITE_DIRECTIVE = {:reserved_words => RbVHDL::Writer::RESERVED_WORDS}
         def _write_string(directive={})
-          return directive.fetch(:out_keyword, self.class::WRITE_DIRECTIVE[:keyword])
+          reserved_words = directive.fetch(:reserved_words, self.class::WRITE_DIRECTIVE[:reserved_words])
+          return reserved_words[:out]
         end
       end
 
       class Inout
-        WRITE_DIRECTIVE = {:keyword => "inout"}
+        WRITE_DIRECTIVE = {:reserved_words => RbVHDL::Writer::RESERVED_WORDS}
         def _write_string(directive={})
-          return directive.fetch(:inout_keyword, self.class::WRITE_DIRECTIVE[:keyword])
+          reserved_words = directive.fetch(:reserved_words, self.class::WRITE_DIRECTIVE[:reserved_words])
+          return reserved_words[:inout]
         end
       end
     end

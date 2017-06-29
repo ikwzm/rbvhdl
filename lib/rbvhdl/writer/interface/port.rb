@@ -5,8 +5,8 @@ module RbVHDL::Writer
     module Port
 
       WRITE_DIRECTIVE = {
-        :port_keyword             => "port",
-        :port_begin_format        => "%{indent}%{port_indent}%{port_keyword}(",
+        :reserved_words           => RbVHDL::Writer::RESERVED_WORDS,
+        :port_begin_format        => "%{indent}%{port_indent}%{_port_}(",
         :port_end_format          => "%{indent}%{port_indent});",
         :port_indent              => "    ",
         :port_interface_indent    => "    ",
@@ -19,14 +19,14 @@ module RbVHDL::Writer
           write_line = []
           if @_port_interface_list.size > 0 then
             indent                = directive.fetch(:indent, "")
-            port_keyword          = directive.fetch(:port_keyword         , self.class::WRITE_DIRECTIVE[:port_keyword         ])
+            reserved_words        = directive.fetch(:reserved_words       , self.class::WRITE_DIRECTIVE[:reserved_words       ])
             port_begin_format     = directive.fetch(:port_begin_format    , self.class::WRITE_DIRECTIVE[:port_begin_format    ])
             port_end_format       = directive.fetch(:port_end_format      , self.class::WRITE_DIRECTIVE[:port_end_format      ])
             port_indent           = directive.fetch(:port_indent          , self.class::WRITE_DIRECTIVE[:port_indent          ])
             port_interface_indent = directive.fetch(:port_interface_indent, self.class::WRITE_DIRECTIVE[:port_interface_indent])
             port_separator        = directive.fetch(:port_separator       , self.class::WRITE_DIRECTIVE[:port_separator       ])
   
-            write_line.push(port_begin_format % {indent: indent, port_indent: port_indent, port_keyword: port_keyword})
+            write_line.push(port_begin_format % {indent: indent, port_indent: port_indent, _port_: reserved_words[:port]})
 
             keyword_field_size    = @_port_interface_list.map{|interface| interface._write_keyword_string(   directive).size}.max
             identifier_field_size = @_port_interface_list.map{|interface| interface._write_identifier_string(directive).size}.max

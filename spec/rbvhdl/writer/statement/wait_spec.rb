@@ -16,7 +16,7 @@ describe 'RbVHDL::Ast::Statement::Wait' do
       expect(line.shift).to eq "    process begin"
       expect(line.shift).to eq "        wait;"
       expect(line.shift).to eq "    end process;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
 
     it "_wait_statement._label!('MAIN_WAIT')" do
@@ -31,7 +31,7 @@ describe 'RbVHDL::Ast::Statement::Wait' do
       expect(line.shift).to eq "    process begin"
       expect(line.shift).to eq "        MAIN_WAIT: wait;"
       expect(line.shift).to eq "    end process;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
 
     it "_wait_statement._on!('CLK','VALID')" do
@@ -46,7 +46,7 @@ describe 'RbVHDL::Ast::Statement::Wait' do
       expect(line.shift).to eq "    process begin"
       expect(line.shift).to eq "        wait on CLK, VALID;"
       expect(line.shift).to eq "    end process;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
 
     it "_wait_statement._until!(...)" do
@@ -61,7 +61,7 @@ describe 'RbVHDL::Ast::Statement::Wait' do
       expect(line.shift).to eq "    process begin"
       expect(line.shift).to eq "        wait until VALID'event and VALID = '1';"
       expect(line.shift).to eq "    end process;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
 
     it "_wait_statement._for!(physical_literal(10, 'ns'))" do
@@ -76,7 +76,7 @@ describe 'RbVHDL::Ast::Statement::Wait' do
       expect(line.shift).to eq "    process begin"
       expect(line.shift).to eq "        wait for 10 ns;"
       expect(line.shift).to eq "    end process;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
 
   end

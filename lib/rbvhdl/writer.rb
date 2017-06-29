@@ -3,7 +3,8 @@ module RbVHDL
 
   module Writer
   end
-  
+
+  require_relative 'writer/reserved_words'
   require_relative 'writer/identifier'
   require_relative 'writer/label'
   require_relative 'writer/expression'

@@ -5,14 +5,13 @@ module RbVHDL::Writer
     module Parameter
 
       WRITE_DIRECTIVE = {
-        :param_keyword          => "",
-        :param_begin_format     => "%{indent}%{param_indent}%{param_keyword}(" , 
+        :reserved_words         => RbVHDL::Writer::RESERVED_WORDS,
+        :param_begin_format     => "%{indent}%{param_indent}%{_parameter_}(" , 
         :param_end_format       => "%{indent}%{param_indent})%{return}", 
         :param_indent           => "",
         :param_interface_indent => "    ",
         :param_separator        => ";"   ,
-        :return_format          => "%{return_keyword} %{return_type}",
-        :return_keyword         => "return",
+        :return_format          => "%{_return_} %{return_type}",
         :return_type_format     => "%{type}",
       }
     
@@ -23,13 +22,13 @@ module RbVHDL::Writer
 
           if @_parameter_interface_list.size > 0 then
             indent                  = directive.fetch(:indent, "")
+            reserved_words          = directive.fetch(:reserved_words        , self.class::WRITE_DIRECTIVE[:reserved_words        ])
             param_keyword           = directive.fetch(:param_keyword         , self.class::WRITE_DIRECTIVE[:param_keyword         ])
             param_begin_format      = directive.fetch(:param_begin_format    , self.class::WRITE_DIRECTIVE[:param_begin_format    ])
             param_end_format        = directive.fetch(:param_end_format      , self.class::WRITE_DIRECTIVE[:param_end_format      ])
             param_indent            = directive.fetch(:param_indent          , self.class::WRITE_DIRECTIVE[:param_indent          ])
             param_interface_indent  = directive.fetch(:param_interface_indent, self.class::WRITE_DIRECTIVE[:param_interface_indent])
             param_separator         = directive.fetch(:param_separator       , self.class::WRITE_DIRECTIVE[:param_separator       ])
-            return_keyword          = directive.fetch(:return_keyword        , self.class::WRITE_DIRECTIVE[:return_keyword        ])
             param_keyword_format    = directive.fetch(:param_keyword_format  , nil)
             param_identifier_format = directive.fetch(:param_identifer_format, nil)
             param_mode_format       = directive.fetch(:param_mode_format     , nil)
@@ -75,7 +74,7 @@ module RbVHDL::Writer
             param_directive[:identifier_format] = param_identifier_format
             param_directive[:mode_format      ] = param_mode_format
 
-            write_line.push(param_begin_format % {indent: indent, param_indent: param_indent, param_keyword: param_keyword})
+            write_line.push(param_begin_format % {indent: indent, param_indent: param_indent, _parameter_: ""})
 
             param_last_index = @_parameter_interface_list.size - 1
             @_parameter_interface_list.each_with_index do |interface, index|
@@ -99,15 +98,15 @@ module RbVHDL::Writer
               return_indent      = param_interface_indent.chop
               return_mode_format = param_mode_format.gsub(/:/, " ")
               return_string      = return_format % {:indent     => return_indent,
-                                                    :keyword    => param_keyword_format    % {:keyword    => ""            },
-                                                    :identifier => param_identifier_format % {:identifier => return_keyword},
-                                                    :mode       => return_mode_format      % {:mode       => ""            },
+                                                    :keyword    => param_keyword_format    % {:keyword    => ""                     },
+                                                    :identifier => param_identifier_format % {:identifier => reserved_words[:return]},
+                                                    :mode       => return_mode_format      % {:mode       => ""                     },
                                                     :type       => return_type._write_string,
                                                     :value      => "",
                                                     :separator  => ""
               }
             else
-              return_string = return_format % {:return_keyword => return_keyword, :return_type => return_type._write_string}
+              return_string = return_format % {:_return_ => reserved_words[:return], :return_type => return_type._write_string}
             end
 
             write_line.push(param_end_format % {:indent => indent, :param_indent =>  param_indent, :return => return_string})

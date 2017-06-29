@@ -14,7 +14,7 @@ describe 'RbVHDL::Ast::Statement::Block' do
       expect(line.shift).to eq "begin"
       expect(line.shift).to eq "    BLK: block begin"
       expect(line.shift).to eq "    end block;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
     
     it "_block_statement('BLK')..." do
@@ -32,7 +32,7 @@ describe 'RbVHDL::Ast::Statement::Block' do
       expect(line.shift).to eq "    begin"
       expect(line.shift).to eq "        assert valid = '0';"
       expect(line.shift).to eq "    end block;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
     
   end

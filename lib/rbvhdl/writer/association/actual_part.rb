@@ -1,3 +1,5 @@
+require_relative '../reserved_words'
+
 module RbVHDL::Ast
 
   class Association
@@ -39,12 +41,12 @@ module RbVHDL::Ast
     end
 
     class ActualOpen
-      WRITE_DIRECTIVE = {:format => "%{keyword}", :keyword => "open"}
+      WRITE_DIRECTIVE = {:format => "%{keyword}", :keywords => RbVHDL::Writer::RESERVED_WORDS}
 
       def _write_string(directive={})
-        format  = directive.fetch(:format , WRITE_DIRECTIVE[:format ])
-        keyword = directive.fetch(:keyword, WRITE_DIRECTIVE[:keyword])
-        return format % {keyword: keyword}
+        format   = directive.fetch(:format  , WRITE_DIRECTIVE[:format  ])
+        keywords = directive.fetch(:keywords, WRITE_DIRECTIVE[:keywords])
+        return format % {keyword: keywords[:open]}
       end
     end
 

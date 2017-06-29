@@ -14,11 +14,14 @@ module RbVHDL::Ast
       end
 
       class RangeConstraint
-        WRITE_DIRECTIVE = {:keyword => "range", :format => " %{keyword} %{range}"}
+        WRITE_DIRECTIVE = {
+          :reserved_words => RbVHDL::Writer::RESERVED_WORDS,
+          :format         => " %{_range_} %{range}",
+        }
         def _write_string(directive={})
-          keyword = directive.fetch(:keyword, WRITE_DIRECTIVE[:keyword])
-          format  = directive.fetch(:format , WRITE_DIRECTIVE[:format ])
-          return format % {keyword: keyword, range: @_range._write_string}
+          reserved_words = directive.fetch(:reserved_words, WRITE_DIRECTIVE[:reserved_words])
+          format         = directive.fetch(:format        , WRITE_DIRECTIVE[:format        ])
+          return format % {_range_: reserved_words[:range], range: @_range._write_string}
         end
       end
 

@@ -113,7 +113,7 @@ describe 'RbVHDL::Ast::Declaration::ArchitectureBody' do
       expect(line.shift).to eq "            D       => i_data          ,"
       expect(line.shift).to eq "            Q       => q_data          "
       expect(line.shift).to eq "    );"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
     
   end

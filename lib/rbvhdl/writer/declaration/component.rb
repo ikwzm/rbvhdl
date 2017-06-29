@@ -8,11 +8,10 @@ module RbVHDL::Ast
     class Component
 
       WRITE_DIRECTIVE = {
-        :keyword                  => "component",
-        :is_keyword               => "is",
-        :end_keyword              => "end",
-        :component_begin_format   => "%{indent}%<keyword>-9s %{identifier} %{is_keyword}",
-        :component_end_format     => "%{indent}%{end_keyword} %{keyword};",
+        :reserved_words           => RbVHDL::Writer::RESERVED_WORDS,
+        :component_begin_format   => "%{indent}%{keyword} %{identifier} %{_is_}",
+        :component_end_format     => "%{indent}%{_end_} %{_component_};",
+        :keyword_format           => "%<keyword>-9s",
       }.merge( RbVHDL::Writer::Interface::Generic::WRITE_DIRECTIVE )
        .merge( RbVHDL::Writer::Interface::Port::WRITE_DIRECTIVE    )
        .merge( {
@@ -25,18 +24,27 @@ module RbVHDL::Ast
         indent     = directive.fetch(:indent, "")
         identifier = @_identifier._write_string
   
-        keyword                = directive.fetch(:entity_keyword        , WRITE_DIRECTIVE[:keyword               ])
-        is_keyword             = directive.fetch(:is_keyword            , WRITE_DIRECTIVE[:is_keyword            ])
-        end_keyword            = directive.fetch(:end_keyword           , WRITE_DIRECTIVE[:end_keyword           ])
+        reserved_words         = directive.fetch(:reserved_words        , WRITE_DIRECTIVE[:reserved_words        ])
+        keyword_format         = directive.fetch(:keyword_format        , WRITE_DIRECTIVE[:keyword_format        ])
         component_begin_format = directive.fetch(:component_begin_format, WRITE_DIRECTIVE[:component_begin_format])
         component_end_format   = directive.fetch(:component_end_format  , WRITE_DIRECTIVE[:component_end_format  ])
 
-        write_line.push(component_begin_format % {indent: indent, keyword: keyword, identifier: identifier, is_keyword: is_keyword})
+        write_line.push   component_begin_format % {
+          :indent      => indent,
+          :keyword     => keyword_format  % {:keyword => reserved_words[:component]},
+          :identifier  => identifier,
+          :_is_        => reserved_words[:is]
+        }
 
-        write_line.concat(_write_generic_interface(directive))
-        write_line.concat(_write_port_interface(directive))
+        write_line.concat _write_generic_interface(directive)
+        write_line.concat _write_port_interface(directive)
 
-        write_line.push(component_end_format   % {indent: indent, keyword: keyword, identifier: identifier, end_keyword: end_keyword})
+        write_line.push   component_end_format   % {
+          :indent      => indent,
+          :_component_ => reserved_words[:component],
+          :identifier  => identifier,
+          :_end_       => reserved_words[:end],
+        }
 
         return write_line
       end

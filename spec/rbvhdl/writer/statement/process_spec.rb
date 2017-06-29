@@ -14,7 +14,7 @@ describe 'RbVHDL::Ast::Statement::Process' do
       expect(line.shift).to eq "begin"
       expect(line.shift).to eq "    process begin"
       expect(line.shift).to eq "    end process;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
 
     it "_process_statement._label!('FSM')" do
@@ -27,7 +27,7 @@ describe 'RbVHDL::Ast::Statement::Process' do
       expect(line.shift).to eq "begin"
       expect(line.shift).to eq "    FSM: process begin"
       expect(line.shift).to eq "    end process;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
 
     it "_process_statement._postponed!" do
@@ -40,7 +40,7 @@ describe 'RbVHDL::Ast::Statement::Process' do
       expect(line.shift).to eq "begin"
       expect(line.shift).to eq "    postponed process begin"
       expect(line.shift).to eq "    end postponed process;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
 
     it "_process_statement._sensitivity_all!" do
@@ -53,7 +53,7 @@ describe 'RbVHDL::Ast::Statement::Process' do
       expect(line.shift).to eq "begin"
       expect(line.shift).to eq "    process all begin"
       expect(line.shift).to eq "    end process;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
 
     it "_process_statement._sensitivity_signal!('CLK','RST')" do
@@ -66,7 +66,7 @@ describe 'RbVHDL::Ast::Statement::Process' do
       expect(line.shift).to eq "begin"
       expect(line.shift).to eq "    process(CLK, RST) begin"
       expect(line.shift).to eq "    end process;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
 
     it "_process_statement._sensitivity_signal!('CLK','RST')..." do
@@ -82,7 +82,7 @@ describe 'RbVHDL::Ast::Statement::Process' do
       expect(line.shift).to eq "        variable  valid   :  boolean;"
       expect(line.shift).to eq "    begin"
       expect(line.shift).to eq "    end process;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
 
   end

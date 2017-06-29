@@ -12,26 +12,32 @@ module RbVHDL::Ast
     end
 
     class RangeTo
-      WRITE_DIRECTIVE = {:format => "%{left} %{keyword} %{right}", :keyword => "to"}
+      WRITE_DIRECTIVE = {
+        :reserved_words => RbVHDL::Writer::RESERVED_WORDS,
+        :format         => "%{left} %{keyword} %{right}",
+      }
 
       def _write_string(directive={})
-        format  = directive.fetch(:format  , WRITE_DIRECTIVE[:format ])
-        keyword = directive.fetch(:keyword , WRITE_DIRECTIVE[:keyword])
-        left    = @_l_expr._write_string
-        right   = @_r_expr._write_string
-        return format % {left: left, keyword: keyword, right: right}
+        reserved_words = directive.fetch(:reserved_words, WRITE_DIRECTIVE[:reserved_words])
+        format         = directive.fetch(:format        , WRITE_DIRECTIVE[:format        ])
+        left           = @_l_expr._write_string
+        right          = @_r_expr._write_string
+        return format % {left: left, keyword: reserved_words[:to]    , right: right}
       end
     end
 
     class RangeDownto
-      WRITE_DIRECTIVE = {:format => "%{left} %{keyword} %{right}", :keyword => "downto"}
+      WRITE_DIRECTIVE = {
+        :reserved_words => RbVHDL::Writer::RESERVED_WORDS,
+        :format         => "%{left} %{keyword} %{right}",
+      }
 
       def _write_string(directive={})
-        format  = directive.fetch(:format  , WRITE_DIRECTIVE[:format ])
-        keyword = directive.fetch(:keyword , WRITE_DIRECTIVE[:keyword])
-        left    = @_l_expr._write_string
-        right   = @_r_expr._write_string
-        return format % {left: left, keyword: keyword, right: right}
+        reserved_words = directive.fetch(:reserved_words, WRITE_DIRECTIVE[:reserved_words])
+        format         = directive.fetch(:format  , WRITE_DIRECTIVE[:format ])
+        left           = @_l_expr._write_string
+        right          = @_r_expr._write_string
+        return format % {left: left, keyword: reserved_words[:downto], right: right}
       end
     end
 

@@ -7,11 +7,9 @@ module RbVHDL::Ast
     class PackageBody
 
       WRITE_DIRECTIVE = {
-        :keyword                   => "package body",
-        :is_keyword                => "is",
-        :end_keyword               => "end",
-        :package_body_begin_format => "%{indent}%{keyword} %{identifier} %{is_keyword}",
-        :package_body_end_format   => "%{indent}%{end_keyword} %{identifier};",
+        :reserved_words            => RbVHDL::Writer::RESERVED_WORDS,
+        :package_body_begin_format => "%{indent}%{_package_} %{_body_} %{identifier} %{_is_}",
+        :package_body_end_format   => "%{indent}%{_end_} %{identifier};",
       }.merge( RbVHDL::Writer::Declaration::WRITE_DIRECTIVE )
 
       def _write_line(directive={})
@@ -19,19 +17,27 @@ module RbVHDL::Ast
         indent      = directive.fetch(:indent, "")
         identifier  = @_identifier._write_string
     
-        keyword                   = directive.fetch(:package_body_keyword     , WRITE_DIRECTIVE[:keyword                  ])
-        is_keyword                = directive.fetch(:is_keyword               , WRITE_DIRECTIVE[:is_keyword               ])
-        of_keyword                = directive.fetch(:of_keyword               , WRITE_DIRECTIVE[:of_keyword               ])
-        end_keyword               = directive.fetch(:end_keyword              , WRITE_DIRECTIVE[:end_keyword              ])
+        reserved_words            = directive.fetch(:reserved_words           , WRITE_DIRECTIVE[:reserved_words           ])
         package_body_begin_format = directive.fetch(:package_body_begin_format, WRITE_DIRECTIVE[:package_body_begin_format])
         package_body_end_format   = directive.fetch(:package_body_end_format  , WRITE_DIRECTIVE[:package_body_end_format  ])
-        declaration_indent        = directive.fetch(:declaration_indent       , WRITE_DIRECTIVE[:declaration_indent       ])
 
-        write_line.push(package_body_begin_format % {indent: indent, keyword: keyword, identifier: identifier, is_keyword: is_keyword  })
+        write_line.push   package_body_begin_format % {
+          :indent     => indent,
+          :_package_  => reserved_words[:package],
+          :_body_     => reserved_words[:body],
+          :identifier => identifier,
+          :_is_       => reserved_words[:is],
+        }
 
-        write_line.concat(_write_declarative_item_list(directive))
+        write_line.concat _write_declarative_item_list(directive)
 
-        write_line.push(package_body_end_format   % {indent: indent, keyword: keyword, identifier: identifier, end_keyword: end_keyword})
+        write_line.push   package_body_end_format   % {
+          :indent     => indent,
+          :_end_      => reserved_words[:end],
+          :_package_  => reserved_words[:package],
+          :_body_     => reserved_words[:body],
+          :identifier => identifier,
+        }
 
         return write_line
       end

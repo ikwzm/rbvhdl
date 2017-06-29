@@ -17,7 +17,7 @@ describe 'RbVHDL::Ast::Statement::If' do
       expect(line.shift).to eq "        if cond_0 then"
       expect(line.shift).to eq "        end if;"
       expect(line.shift).to eq "    end process;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
 
     it "if_statement(RbVHDL::Ast.name('cond_0'))._label!('IF_COND0')" do
@@ -33,7 +33,7 @@ describe 'RbVHDL::Ast::Statement::If' do
       expect(line.shift).to eq "        IF_COND0: if cond_0 then"
       expect(line.shift).to eq "        end if;"
       expect(line.shift).to eq "    end process;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
   end
 
@@ -58,7 +58,7 @@ describe 'RbVHDL::Ast::Statement::If' do
       expect(line.shift).to eq "            null;"
       expect(line.shift).to eq "        end if;"
       expect(line.shift).to eq "    end process;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
 
     it "if_statement(name('cond_0')) ... _else_statement" do
@@ -80,7 +80,7 @@ describe 'RbVHDL::Ast::Statement::If' do
       expect(line.shift).to eq "            null;"
       expect(line.shift).to eq "        end if;"
       expect(line.shift).to eq "    end process;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
 
     it "if_statement(name('cond_0')) ... _elsif_statement(name('cond_1')) ... _else_statement" do
@@ -106,7 +106,7 @@ describe 'RbVHDL::Ast::Statement::If' do
       expect(line.shift).to eq "            null;"
       expect(line.shift).to eq "        end if;"
       expect(line.shift).to eq "    end process;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
   end
 

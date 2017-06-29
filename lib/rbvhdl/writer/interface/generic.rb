@@ -5,8 +5,8 @@ module RbVHDL::Writer
     module Generic
     
       WRITE_DIRECTIVE = {
-        :generic_keyword          => "generic",
-        :generic_begin_format     => "%{indent}%{generic_indent}%{generic_keyword}(" , 
+        :reserved_words           => RbVHDL::Writer::RESERVED_WORDS,
+        :generic_begin_format     => "%{indent}%{generic_indent}%{_generic_}(" , 
         :generic_end_format       => "%{indent}%{generic_indent});", 
         :generic_indent           => "    ",
         :generic_interface_indent => "    ",
@@ -19,14 +19,14 @@ module RbVHDL::Writer
           write_line = []
           if @_generic_interface_list.size > 0 then
             indent                   = directive.fetch(:indent, "")
-            generic_keyword          = directive.fetch(:generic_keyword         , self.class::WRITE_DIRECTIVE[:generic_keyword         ])
+            reserved_words           = directive.fetch(:reserved_words          , self.class::WRITE_DIRECTIVE[:reserved_words          ])
             generic_begin_format     = directive.fetch(:generic_begin_format    , self.class::WRITE_DIRECTIVE[:generic_begin_format    ])
             generic_end_format       = directive.fetch(:generic_end_format      , self.class::WRITE_DIRECTIVE[:generic_end_format      ])
             generic_indent           = directive.fetch(:generic_indent          , self.class::WRITE_DIRECTIVE[:generic_indent          ])
             generic_interface_indent = directive.fetch(:generic_interface_indent, self.class::WRITE_DIRECTIVE[:generic_interface_indent])
             generic_separator        = directive.fetch(:generic_separator       , self.class::WRITE_DIRECTIVE[:generic_separator       ])
 
-            write_line.push(generic_begin_format % {indent: indent, generic_indent: generic_indent, generic_keyword: generic_keyword})
+            write_line.push(generic_begin_format % {indent: indent, generic_indent: generic_indent, _generic_: reserved_words[:generic]})
 
             keyword_field_size       = @_generic_interface_list.map{|interface| interface._write_keyword_string(   directive).size}.max
             identifier_field_size    = @_generic_interface_list.map{|interface| interface._write_identifier_string(directive).size}.max

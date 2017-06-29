@@ -5,11 +5,11 @@ module RbVHDL::Ast
     class SimpleSignalAssignment
 
       WRITE_DIRECTIVE = {
+        :reserved_words       => RbVHDL::Writer::RESERVED_WORDS,
         :format               => "%{indent}%{label?}%{postponed?}%{target}<=%{delay?}%{waveform};",
         :label_format         => "%{label}: ",
         :target_format        => "%{target} ",
-        :postponed_format     => "%{postponed_keyword} ",
-        :postponed_keyword    => "postponed",
+        :postponed_format     => "%{_postponed_} ",
         :delay_format         => " %{delay}",
         :target_align         => true,
       }
@@ -21,11 +21,11 @@ module RbVHDL::Ast
         target_format     = directive.fetch(:target_format    , WRITE_DIRECTIVE[:target_format    ])
         delay_format      = directive.fetch(:delay_format     , WRITE_DIRECTIVE[:delay_format     ])
         postponed_format  = directive.fetch(:postponed_format , WRITE_DIRECTIVE[:postponed_format ])
-        postponed_keyword = directive.fetch(:postponed_keyword, WRITE_DIRECTIVE[:postponed_keyword])
+        reserved_words    = directive.fetch(:reserved_words   , WRITE_DIRECTIVE[:reserved_words   ])
 
-        label     = (@_label    .nil?)? "" : label_format     % {:label => @_label._write_string}
-        delay     = (@_delay    .nil?)? "" : delay_format     % {:delay => @_delay._write_string}
-        postponed = (@_postponed.nil?)? "" : postponed_format % {:postponed_keyword => postponed_keyword}
+        label     = (@_label    .nil?)? "" : label_format     % {:label       => @_label._write_string     }
+        delay     = (@_delay    .nil?)? "" : delay_format     % {:delay       => @_delay._write_string     }
+        postponed = (@_postponed.nil?)? "" : postponed_format % {:_postponed_ => reserved_words[:postponed]}
         target    = target_format % {:target => @_target._write_string}
 
         waveform_value_max_size = @_waveform._list.map{|pair| (pair[0].nil?)? 0 : pair[0]._write_string.size}.max
@@ -34,7 +34,7 @@ module RbVHDL::Ast
         waveform_directive = directive.dup
         if waveform_after_max_size > 0 then
           waveform_directive[:waveform_format] = " %<value>-#{waveform_value_max_size}s%{after?}"
-          waveform_directive[:after_format   ] = " %<after_keyword>-5s %<time>#{waveform_after_max_size}s"
+          waveform_directive[:after_format   ] = " %<_after_>-5s %<time>#{waveform_after_max_size}s"
         else
           waveform_directive[:waveform_format] = " %<value>-#{waveform_value_max_size}s"
           waveform_directive[:after_format   ] = ""
@@ -67,16 +67,14 @@ module RbVHDL::Ast
     class ConditionalSignalAssignment
 
       WRITE_DIRECTIVE = {
+        :reserved_words       => RbVHDL::Writer::RESERVED_WORDS,
         :format               => "%{indent}%{label?}%{postponed?}%{target}<=%{delay?}%{waveform};",
         :label_format         => "%{label}: ",
         :target_format        => "%{target} ",
-        :postponed_format     => "%{postponed_keyword} ",
-        :postponed_keyword    => "postponed",
+        :postponed_format     => "%{_postponed_} ",
         :delay_format         => " %{delay}",
-        :when_keyword         => "when",
-        :else_keyword         => "else",
         :waveform_format      => "%{waveform}%{when?}",
-        :when_format          => " %{when_keyword} %{condition}",
+        :when_format          => " %{_when_} %{condition}",
         :target_align         => true,
       }
 
@@ -87,15 +85,13 @@ module RbVHDL::Ast
         target_format     = directive.fetch(:target_format    , WRITE_DIRECTIVE[:target_format    ])
         delay_format      = directive.fetch(:delay_format     , WRITE_DIRECTIVE[:delay_format     ])
         postponed_format  = directive.fetch(:postponed_format , WRITE_DIRECTIVE[:postponed_format ])
-        postponed_keyword = directive.fetch(:postponed_keyword, WRITE_DIRECTIVE[:postponed_keyword])
         waveform_format   = directive.fetch(:waveform_format  , WRITE_DIRECTIVE[:waveform_format  ])
         when_format       = directive.fetch(:when_format      , WRITE_DIRECTIVE[:when_format      ])
-        when_keyword      = directive.fetch(:when_keyword     , WRITE_DIRECTIVE[:when_keyword     ])
-        else_keyword      = directive.fetch(:else_keyword     , WRITE_DIRECTIVE[:else_keyword     ])
+        reserved_words    = directive.fetch(:reserved_words   , WRITE_DIRECTIVE[:reserved_words   ])
         
-        label     = (@_label    .nil?)? "" : label_format     % {:label => @_label._write_string}
-        delay     = (@_delay    .nil?)? "" : delay_format     % {:delay => @_delay._write_string}
-        postponed = (@_postponed.nil?)? "" : postponed_format % {:postponed_keyword => postponed_keyword}
+        label     = (@_label    .nil?)? "" : label_format     % {:label       => @_label._write_string     }
+        delay     = (@_delay    .nil?)? "" : delay_format     % {:delay       => @_delay._write_string     }
+        postponed = (@_postponed.nil?)? "" : postponed_format % {:_postponed_ => reserved_words[:postponed]}
         target    = target_format % {:target => @_target._write_string}
 
         waveform_value_max_size = @_waveform_list.map{|pair| pair[0]._list.map{|pair| (pair[0].nil?)? 0 : pair[0]._write_string.size}.max}.max
@@ -105,7 +101,7 @@ module RbVHDL::Ast
         waveform_directive = directive.dup
         if waveform_after_max_size > 0 then
           waveform_directive[:waveform_format] = " %<value>-#{waveform_value_max_size}s%{after?}"
-          waveform_directive[:after_format   ] = " %<after_keyword>-5s %<time>#{waveform_after_max_size}s"
+          waveform_directive[:after_format   ] = " %<_after_>-5s %<time>#{waveform_after_max_size}s"
         else
           waveform_directive[:waveform_format] = " %<value>-#{waveform_value_max_size}s"
           waveform_directive[:after_format   ] = ""
@@ -132,7 +128,7 @@ module RbVHDL::Ast
                                   :waveform   => waveform_format % {:waveform => "", :when? => ""}
                                 }).size-1
         else_indent      = " " * else_indent_size
-        else_separator   = " #{else_keyword}\n#{else_indent}"
+        else_separator   = " #{reserved_words[:else]}\n#{else_indent}"
 
         waveform_string  = @_waveform_list.map{ |pair|
           waveform  = pair[0]
@@ -140,8 +136,8 @@ module RbVHDL::Ast
           if condition.nil? then
             when_string = ""
           else
-            when_string = when_format % {:when_keyword => when_keyword,
-                                         :condition    => condition_format % {:expression => condition._write_string}}
+            when_string = when_format % {:_when_    => reserved_words[:when],
+                                         :condition => condition_format % {:expression => condition._write_string}}
           end
           waveform_string = waveform._write_line(waveform_directive).join(waveform_separator)
           waveform_format % {:waveform => waveform_string, :when? => when_string}
@@ -161,21 +157,16 @@ module RbVHDL::Ast
 
     class SelectedSignalAssignment
       WRITE_DIRECTIVE = {
-        :format               => "%{indent}%{label?}%{postponed?}%{with_keyword} %{condition} %{select_keyword}\n%{assign}",
+        :reserved_words       => RbVHDL::Writer::RESERVED_WORDS,
+        :format               => "%{indent}%{label?}%{postponed?}%{_with_} %{condition} %{_select_}\n%{assign}",
         :assign_format        => "%{indent}%{assign_indent}%{target}<=%{delay?}%{waveform};",
         :assign_indent        => "    ",
         :label_format         => "%{label}: ",
         :target_format        => "%{target} ",
-        :postponed_format     => "%{postponed_keyword} ",
-        :postponed_keyword    => "postponed",
+        :postponed_format     => "%{_postponed_} ",
         :delay_format         => " %{delay}",
-        :when_keyword         => "when",
-        :select_format        => "%{with_keyword} %{condition} %{select_keyword}\n",
-        :with_keyword         => "with",
-        :select_keyword       => "select",
-        :else_keyword         => "else",
         :waveform_format      => "%{waveform}%{when?}",
-        :when_format          => " %{when_keyword} %{condition}",
+        :when_format          => " %{_when_} %{condition}",
       }
 
       def _write_line(directive={})
@@ -187,17 +178,13 @@ module RbVHDL::Ast
         target_format     = directive.fetch(:target_format    , WRITE_DIRECTIVE[:target_format    ])
         delay_format      = directive.fetch(:delay_format     , WRITE_DIRECTIVE[:delay_format     ])
         postponed_format  = directive.fetch(:postponed_format , WRITE_DIRECTIVE[:postponed_format ])
-        postponed_keyword = directive.fetch(:postponed_keyword, WRITE_DIRECTIVE[:postponed_keyword])
         waveform_format   = directive.fetch(:waveform_format  , WRITE_DIRECTIVE[:waveform_format  ])
         when_format       = directive.fetch(:when_format      , WRITE_DIRECTIVE[:when_format      ])
-        when_keyword      = directive.fetch(:when_keyword     , WRITE_DIRECTIVE[:when_keyword     ])
-        with_keyword      = directive.fetch(:with_keyword     , WRITE_DIRECTIVE[:with_keyword     ])
-        select_keyword    = directive.fetch(:select_keyword   , WRITE_DIRECTIVE[:select_keyword   ])
-        select_format     = directive.fetch(:select_format    , WRITE_DIRECTIVE[:select_format    ])
+        reserved_words    = directive.fetch(:reserved_words   , WRITE_DIRECTIVE[:reserved_words   ])
         
-        label     = (@_label    .nil?)? "" : label_format     % {:label => @_label._write_string}
-        delay     = (@_delay    .nil?)? "" : delay_format     % {:delay => @_delay._write_string}
-        postponed = (@_postponed.nil?)? "" : postponed_format % {:postponed_keyword => postponed_keyword}
+        label     = (@_label    .nil?)? "" : label_format     % {:label       => @_label._write_string     }
+        delay     = (@_delay    .nil?)? "" : delay_format     % {:delay       => @_delay._write_string     }
+        postponed = (@_postponed.nil?)? "" : postponed_format % {:_postponed_ => reserved_words[:postponed]}
         target    = target_format % {:target => @_target._write_string}
 
         waveform_value_max_size = @_waveform_list.map{|pair| pair[0]._list.map{|pair| (pair[0].nil?)? 0 : pair[0]._write_string.size}.max}.max
@@ -207,7 +194,7 @@ module RbVHDL::Ast
         waveform_directive = directive.dup
         if waveform_after_max_size > 0 then
           waveform_directive[:waveform_format] = " %<value>-#{waveform_value_max_size}s%{after?}"
-          waveform_directive[:after_format   ] = " %<after_keyword>-5s %<time>#{waveform_after_max_size}s"
+          waveform_directive[:after_format   ] = " %<_after_>-5s %<time>#{waveform_after_max_size}s"
         else
           waveform_directive[:waveform_format] = " %<value>-#{waveform_value_max_size}s"
           waveform_directive[:after_format   ] = ""
@@ -241,8 +228,8 @@ module RbVHDL::Ast
           if condition.nil? then
             when_string = ""
           else
-            when_string = when_format % {:when_keyword => when_keyword,
-                                         :condition    => condition_format % {:expression => condition._write_string}}
+            when_string = when_format % {:_when_    => reserved_words[:when],
+                                         :condition => condition_format % {:expression => condition._write_string}}
           end
           waveform_string = waveform._write_line(waveform_directive).join(waveform_separator)
           waveform_format % {:waveform => waveform_string, :when? => when_string}
@@ -260,9 +247,9 @@ module RbVHDL::Ast
                   :indent         => indent,
                   :label?         => label,
                   :postponed?     => postponed,
-                  :with_keyword   => with_keyword,
+                  :_with_         => reserved_words[:with],
                   :condition      => @_expression._write_string,
-                  :select_keyword => select_keyword, 
+                  :_select_       => reserved_words[:select],
                   :assign         => assign_string,
                 }).split(/\n/)
       end
@@ -270,21 +257,22 @@ module RbVHDL::Ast
 
     class Waveform
       WRITE_DIRECTIVE = {
+        :reserved_words  => RbVHDL::Writer::RESERVED_WORDS,
         :waveform_format => "%{value}%{after?}",
-        :after_format    => " %{after_keyword} %{time}",
-        :after_keyword   => "after",
+        :after_format    => " %{_after_} %{time}",
       }
       def _write_line(directive={})
         waveform_format = directive.fetch(:waveform_format, WRITE_DIRECTIVE[:waveform_format])
         after_format    = directive.fetch(:after_format   , WRITE_DIRECTIVE[:after_format   ])
-        after_keyword   = directive.fetch(:after_keyword  , WRITE_DIRECTIVE[:after_keyword  ])
+        reserved_words  = directive.fetch(:reserved_words , WRITE_DIRECTIVE[:reserved_words ])
+
         return @_list.map{|pair|
           value = pair[0]
           time  = pair[1]
           if time.nil? then
-            after_string = after_format % {:after_keyword => ""           , :time => ""                }
+            after_string = after_format % {:_after_ => ""                    , :time => ""                }
           else
-            after_string = after_format % {:after_keyword => after_keyword, :time => time._write_string}
+            after_string = after_format % {:_after_ => reserved_words[:after], :time => time._write_string}
           end
           waveform_format % {:value => value._write_string, :after? => after_string}
         }
@@ -294,30 +282,29 @@ module RbVHDL::Ast
     class Transport
 
       WRITE_DIRECTIVE = {
-        :transport_keyword    => "transport",
+        :reserved_words       => RbVHDL::Writer::RESERVED_WORDS,
       }
       def _write_string(directive={})
-        return directive.fetch(:transport_keyword , WRITE_DIRECTIVE[:transport_keyword])
+        reserved_words  = directive.fetch(:reserved_words , WRITE_DIRECTIVE[:reserved_words ])
+        return reserved_words[:transport]
       end
 
     end
 
     class Inertial
       WRITE_DIRECTIVE = {
-        :inertial_keyword => "inertial",
-        :inertial_format  => "%{inertial_keyword}%{reject?}",
-        :reject_keyword   => "reject",
-        :reject_format    => " %{reject_keyword} %{expression}"
+        :reserved_words       => RbVHDL::Writer::RESERVED_WORDS,
+        :inertial_format  => "%{reject?}%{_inertial_}",
+        :reject_format    => "%{_reject_} %{expression} "
       }
       def _write_string(directive={})
-        inertial_keyword = directive.fetch(:inertial_keyword, WRITE_DIRECTIVE[:inertial_keyword])
-        inertial_format  = directive.fetch(:inertial_format , WRITE_DIRECTIVE[:inertial_format ])
-        reject_keyword   = directive.fetch(:reject_keyword  , WRITE_DIRECTIVE[:reject_keyword  ])
-        reject_format    = directive.fetch(:reject_format   , WRITE_DIRECTIVE[:reject_format   ])
+        reserved_words  = directive.fetch(:reserved_words , WRITE_DIRECTIVE[:reserved_words  ])
+        inertial_format = directive.fetch(:inertial_format, WRITE_DIRECTIVE[:inertial_format ])
+        reject_format   = directive.fetch(:reject_format  , WRITE_DIRECTIVE[:reject_format   ])
         return inertial_format % {
-          :inertial_keyword => inertial_keyword,
-          :reject?          => (@_reject.nil?)? "" : reject_format % {:reject_keyword => reject_keyword,
-                                                                      :expression     => @_reject._write_string}
+          :_inertial_ => reserved_words[:inertial],
+          :reject?    => (@_reject.nil?)? "" : reject_format % {:_reject_   => reserved_words[:reject],
+                                                                :expression => @_reject._write_string },
         }
       end
     end

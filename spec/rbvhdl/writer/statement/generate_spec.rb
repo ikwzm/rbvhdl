@@ -14,7 +14,7 @@ describe 'RbVHDL::Ast::Statement::IfGenerate' do
       expect(line.shift).to eq "begin"
       expect(line.shift).to eq "    IF_COND0: if cond_0 generate"
       expect(line.shift).to eq "    end generate;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
   end
 end
@@ -33,7 +33,7 @@ describe 'RbVHDL::Ast::Statement::ForGenerate' do
       expect(line.shift).to eq "begin"
       expect(line.shift).to eq "    FOR_GEN: for i in 0 to 7 generate"
       expect(line.shift).to eq "    end generate;"
-      expect(line.shift).to eq "end     MODEL;"
+      expect(line.shift).to eq "end MODEL;"
     end
   end
 end

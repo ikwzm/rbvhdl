@@ -8,14 +8,10 @@ module RbVHDL::Ast
     class ArchitectureBody
 
       WRITE_DIRECTIVE = {
-        :keyword                      => "architecture",
-        :of_keyword                   => "of",
-        :is_keyword                   => "is",
-        :begin_keyword                => "begin",
-        :end_keyword                  => "end",
-        :architecture_begin_format    => "%{indent}%<keyword>-7s %{identifier} %{of_keyword} %{entity_name} %{is_keyword}",
-        :architecture_end_format      => "%{indent}%<end_keyword>-7s %{identifier};",
-        :statement_begin_format       => "%{indent}%{begin_keyword}",
+        :reserved_words               => RbVHDL::Writer::RESERVED_WORDS,
+        :architecture_begin_format    => "%{indent}%{_architecture_} %{identifier} %{_of_} %{entity_name} %{_is_}",
+        :architecture_end_format      => "%{indent}%{_end_} %{identifier};",
+        :statement_begin_format       => "%{indent}%{_begin_}",
         :statement_indent             => "    ",
       }.merge( RbVHDL::Writer::Declaration::WRITE_DIRECTIVE )
        .merge( RbVHDL::Writer::Statement::WRITE_DIRECTIVE   )
@@ -26,32 +22,34 @@ module RbVHDL::Ast
         identifier  = @_identifier._write_string
         entity_name = @_entity_name._write_string
     
-        keyword                   = directive.fetch(:architecture_keyword     , WRITE_DIRECTIVE[:keyword                  ])
-        is_keyword                = directive.fetch(:is_keyword               , WRITE_DIRECTIVE[:is_keyword               ])
-        of_keyword                = directive.fetch(:of_keyword               , WRITE_DIRECTIVE[:of_keyword               ])
-        begin_keyword             = directive.fetch(:begin_keyword            , WRITE_DIRECTIVE[:begin_keyword            ])
-        end_keyword               = directive.fetch(:end_keyword              , WRITE_DIRECTIVE[:end_keyword              ])
+        reserved_words            = directive.fetch(:reserved_words           , WRITE_DIRECTIVE[:reserved_words           ])
         architecture_begin_format = directive.fetch(:architecture_begin_format, WRITE_DIRECTIVE[:architecture_begin_format])
         architecture_end_format   = directive.fetch(:architecture_end_format  , WRITE_DIRECTIVE[:architecture_end_format  ])
         declaration_indent        = directive.fetch(:declaration_indent       , WRITE_DIRECTIVE[:declaration_indent       ])
         statement_begin_format    = directive.fetch(:statement_begin_format   , WRITE_DIRECTIVE[:statement_begin_format   ])
         statement_indent          = directive.fetch(:statement_indent         , WRITE_DIRECTIVE[:statement_indent         ])
 
-        write_line.push(architecture_begin_format % {:indent      => indent     ,
-                                                     :keyword     => keyword    ,
-                                                     :identifier  => identifier ,
-                                                     :of_keyword  => of_keyword ,
-                                                     :entity_name => entity_name,
-                                                     :is_keyword  => is_keyword ,
-                        })
+        write_line.push architecture_begin_format % {
+          :indent          => indent     ,
+          :_architecture_  => reserved_words[:architecture],
+          :identifier      => identifier ,
+          :_of_            => reserved_words[:of],
+          :entity_name     => entity_name,
+          :_is_            => reserved_words[:is],
+        }
 
-        write_line.concat(_write_declarative_item_list(directive))
+        write_line.concat _write_declarative_item_list(directive)
 
-        write_line.push(statement_begin_format    % {indent: indent, begin_keyword: begin_keyword})
+        write_line.push   statement_begin_format    % {:indent => indent, :_begin_ => reserved_words[:begin]}
 
-        write_line.concat(_write_statement_list(directive))
+        write_line.concat _write_statement_list(directive)
 
-        write_line.push(architecture_end_format   % {indent: indent, end_keyword: end_keyword, keyword: keyword, identifier: identifier})
+        write_line.push   architecture_end_format   % {
+          :indent          => indent,
+          :_end_           => reserved_words[:end],
+          :_entity_        => reserved_words[:entity],
+          :identifier      => identifier ,
+        }
 
         return write_line
       end
