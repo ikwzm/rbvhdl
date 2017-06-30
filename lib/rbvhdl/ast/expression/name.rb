@@ -67,7 +67,7 @@ module RbVHDL::Ast
     class AttributeName < Name
       attr_reader   :_name
       attr_reader   :_attribute
-      attr_reader   :_signature
+      attr_accessor :_signature
       attr_reader   :_expression
       def initialize(name, attribute, signature=nil, expression=nil)
         super()

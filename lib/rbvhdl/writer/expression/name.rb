@@ -94,17 +94,23 @@ module RbVHDL::Ast
     end
 
     class AttributeName
-      WRITE_DIRECTIVE = {:format => "%{name}'%{attribute}"}
+      WRITE_DIRECTIVE = {
+        :format           => "%{name}%{signature?}'%{attribute}%{parameter?}",
+        :signature_format => " %{signature} ",
+        :parameter_format => "(%{expression})",
+      }
 
       def _write_string(directive={})
+        format           = directive.fetch(:format           , WRITE_DIRECTIVE[:format          ])
+        signature_format = directive.fetch(:signature_format , WRITE_DIRECTIVE[:signature_format])
+        parameter_format = directive.fetch(:parameter_format , WRITE_DIRECTIVE[:parameter_format])
+
         name      = @_name._write_string
-        format    = directive.fetch(:format , WRITE_DIRECTIVE[:format ])
         attribute = @_attribute._write_string
-        unless @_expression.nil? then
-          expression = @_expression._write_string
-          attribute  = "%{attribute}(%{expression})" % {attribute: attribute, expression: expression}
-        end
-        return format % {name: name, attribute: attribute}
+        signature = (@_signature. nil?)? "" : signature_format % {:signature  => @_signature._write_string }
+        parameter = (@_expression.nil?)? "" : parameter_format % {:expression => @_expression._write_string}
+
+        return format % {:name => name, :signature? => signature, :attribute => attribute, :parameter? => parameter}
       end
     end
 

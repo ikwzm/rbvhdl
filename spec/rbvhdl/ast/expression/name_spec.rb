@@ -259,15 +259,22 @@ describe 'RbVHDL::Ast::Expression::Name' do
         expect(name._expression     ).to eq nil
       end
 
-      it "name('signal_1')._attribute('range', nil, nil)" do
-        name = RbVHDL::Ast.name('signal_1')._attribute('range', nil, nil)
-        expect(name.class           ).to eq RbVHDL::Ast::Expression::AttributeName
-        expect(name._name.class     ).to eq RbVHDL::Ast::Expression::SimpleName
-        expect(name._name._name     ).to eq :signal_1
-        expect(name._attribute.class).to eq RbVHDL::Ast::Identifier
-        expect(name._attribute      ).to eq :range
-        expect(name._signature      ).to eq nil
-        expect(name._expression     ).to eq nil
+      it "name('func_1')._attribute('high', signature('integer', 'integer')._return!('integer'), nil)" do
+        name = RbVHDL::Ast.name('func_1')._attribute('high', RbVHDL::Ast.signature('integer', 'integer')._return!('integer'), nil)
+        expect(name.class                                   ).to eq RbVHDL::Ast::Expression::AttributeName
+        expect(name._name.class                             ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(name._name._name                             ).to eq :func_1
+        expect(name._attribute.class                        ).to eq RbVHDL::Ast::Identifier
+        expect(name._attribute                              ).to eq :high
+        expect(name._signature.class                        ).to eq RbVHDL::Ast::Expression::Signature
+        expect(name._signature._parameter_type_list.size    ).to eq 2
+        expect(name._signature._parameter_type_list[0].class).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(name._signature._parameter_type_list[0]._name).to eq :integer
+        expect(name._signature._parameter_type_list[1].class).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(name._signature._parameter_type_list[1]._name).to eq :integer
+        expect(name._signature._return_type.class           ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(name._signature._return_type._name           ).to eq :integer
+        expect(name._expression                             ).to eq nil
       end
     end
   end

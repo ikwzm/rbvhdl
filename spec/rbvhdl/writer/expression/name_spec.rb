@@ -96,6 +96,14 @@ describe 'RbVHDL::Writer::Expression::Name' do
         string = RbVHDL::Ast.name('signal_1')._attribute('range')._write_string({})
         expect(string).to eq "signal_1'range"
       end
+      it do
+        string = RbVHDL::Ast.name('high')._attribute('representation', RbVHDL::Ast.signature._return!('speed_range'))._write_string({})
+        expect(string).to eq "high [ return speed_range ] 'representation"
+      end
+      it do
+        string = RbVHDL::Ast.name('increment')._attribute('built_in', RbVHDL::Ast.signature('bit_vector')._return!('bit_vector'))._write_string({})
+        expect(string).to eq "increment [ bit_vector return bit_vector ] 'built_in"
+      end
     end
   end
     

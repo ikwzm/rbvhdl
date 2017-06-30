@@ -13,6 +13,7 @@ describe 'RbVHDL::Ast::Declaration::ArchitectureBody' do
       ready_decl  = body._signal_declaration      'ready' , 'std_logic', RbVHDL::Ast.character_literal('0')
       instr_decl  = body._signal_declaration      'instr' , RbVHDL::Ast.subtype_indication('std_logic_vector')._downto(15,0)
       alias_decl  = body._alias_declaration       'OPCODE', nil, RbVHDL::Ast.name('instr')._downto(15,12)
+      alias_decl  = body._alias_declaration       'bitadd', nil, 'add', RbVHDL::Ast.signature('bit','bit')._return!('bit')
       attr_decl   = body._attribute_declaration   'attr_0', 'string'
       attr_spec   = body._attribute_specification 'attr_0', 'valid', :signal, RbVHDL::Ast.string_literal("true")
       comp_decl   = body._component_declaration   'SUB_0'
@@ -63,6 +64,7 @@ describe 'RbVHDL::Ast::Declaration::ArchitectureBody' do
       expect(line.shift).to eq "    signal    ready   :  std_logic := '0';"
       expect(line.shift).to eq "    signal    instr   :  std_logic_vector(15 downto 0);"
       expect(line.shift).to eq "    alias     OPCODE  is instr(15 downto 12);"
+      expect(line.shift).to eq "    alias     bitadd  is add [ bit, bit return bit ];"
       expect(line.shift).to eq "    attribute attr_0  :  string;"
       expect(line.shift).to eq "    attribute attr_0  of valid : signal is \"true\";"
       expect(line.shift).to eq "    component SUB_0 is"

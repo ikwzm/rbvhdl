@@ -9,10 +9,10 @@ module RbVHDL::Ast
       attr_reader   :_identifier          # RbVHDL::Ast::Identifer | RbVHDL::Ast::Expression::CharacterLiteral
       attr_reader   :_subtype_indication  # RbVHDL::Ast::Type::Indication | nil
       attr_reader   :_name                # RbVHDL::Ast::Expression::Name
-      attr_accessor :_signature
+      attr_accessor :_signature           # RbVHDL::Ast::Expression::Signature | nil
       attr_reader   :_annotation
 
-      def initialize(owner, identifier, subtype_indication, name, signature)
+      def initialize(owner, identifier, subtype_indication, name, signature=nil)
         @_owner              = owner
         @_identifier         = identifier
         @_subtype_indication = subtype_indication

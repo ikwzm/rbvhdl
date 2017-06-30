@@ -7,4 +7,5 @@ module RbVHDL
   require_relative 'expression/parenthesized_expression'
   require_relative 'expression/qualified_expression'
   require_relative 'expression/operation'
+  require_relative 'expression/signature'
 end
