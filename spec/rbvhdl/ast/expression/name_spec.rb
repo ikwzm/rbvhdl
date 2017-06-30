@@ -25,6 +25,30 @@ describe 'RbVHDL::Ast::Expression::Name' do
     end
   end
 
+  describe 'OperatorSymbol' do
+    context "new" do
+
+      it "operator_symbol('*')" do
+        name = RbVHDL::Ast.operator_symbol('*')
+        expect(name.class  ).to eq RbVHDL::Ast::Expression::OperatorSymbol
+        expect(name._symbol).to eq :"*"
+      end
+
+      it "operator_symbol(:and)" do
+        name = RbVHDL::Ast.operator_symbol(:and)
+        expect(name.class  ).to eq RbVHDL::Ast::Expression::OperatorSymbol
+        expect(name._symbol).to eq :and
+      end
+
+      it "operator_symbol(operator_symbol(:or))" do
+        name = RbVHDL::Ast.operator_symbol(RbVHDL::Ast.operator_symbol(:or))
+        expect(name.class  ).to eq RbVHDL::Ast::Expression::OperatorSymbol
+        expect(name._symbol).to eq :or
+      end
+    end
+  end
+      
+
   describe 'IndexedName' do
     context "new" do
 

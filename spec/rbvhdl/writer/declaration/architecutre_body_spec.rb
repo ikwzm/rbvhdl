@@ -12,8 +12,8 @@ describe 'RbVHDL::Ast::Declaration::ArchitectureBody' do
       valid_decl  = body._signal_declaration      'valid' , 'std_logic'
       ready_decl  = body._signal_declaration      'ready' , 'std_logic', RbVHDL::Ast.character_literal('0')
       instr_decl  = body._signal_declaration      'instr' , RbVHDL::Ast.subtype_indication('std_logic_vector')._downto(15,0)
-      alias_decl  = body._alias_declaration       'OPCODE', nil, RbVHDL::Ast.name('instr')._downto(15,12)
-      alias_decl  = body._alias_declaration       'bitadd', nil, 'add', RbVHDL::Ast.signature('bit','bit')._return!('bit')
+      alias_decl  = body._alias_declaration       'OPCODE', RbVHDL::Ast.name('instr')._downto(15,12)
+      alias_decl  = body._alias_declaration       'bitadd', 'add', nil, RbVHDL::Ast.signature('bit','bit')._return!('bit')
       attr_decl   = body._attribute_declaration   'attr_0', 'string'
       attr_spec   = body._attribute_specification 'attr_0', 'valid', :signal, RbVHDL::Ast.string_literal("true")
       comp_decl   = body._component_declaration   'SUB_0'
@@ -28,8 +28,8 @@ describe 'RbVHDL::Ast::Declaration::ArchitectureBody' do
       proc_decl._parameter_interface  'PARAM0', 'integer'         , :in, 8
       proc_decl._parameter_interface  'D'     , 'std_logic_vector', :in
       proc_decl._parameter_interface  'Q'     , 'std_logic_vector', :out
-      proc_decl._alias_declaration    'i_data', RbVHDL::Ast.subtype_indication('std_logic_vector')._downto(RbVHDL::Ast.subtraction(RbVHDL::Ast.name(:PARAM0),1), 0), 'D'
-      proc_decl._variable_declaration 'q_data', RbVHDL::Ast.subtype_indication('std_logic_vector')._downto(RbVHDL::Ast.subtraction(RbVHDL::Ast.name(:PARAM0),1), 0)
+      proc_decl._alias_declaration    'i_data', 'D', RbVHDL::Ast.subtype_indication('std_logic_vector')._downto(RbVHDL::Ast.subtraction(RbVHDL::Ast.name(:PARAM0),1), 0)
+      proc_decl._variable_declaration 'q_data',      RbVHDL::Ast.subtype_indication('std_logic_vector')._downto(RbVHDL::Ast.subtraction(RbVHDL::Ast.name(:PARAM0),1), 0)
       proc_loop1 = proc_decl._loop_statement
       proc_loop1._label!('LOOP1')
       proc_loop1._exit_statement._label!('EXIT_LOOP1')._exit_label!('LOOP1')

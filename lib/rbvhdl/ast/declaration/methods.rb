@@ -87,8 +87,8 @@ module RbVHDL::Ast
       end
 
       module Alias
-        def _alias_declaration(identifier, type, name, signature=nil)
-          decl = RbVHDL::Ast.alias_declaration(self, identifier, type, name, signature)
+        def _alias_declaration(identifier, name, type=nil, signature=nil)
+          decl = RbVHDL::Ast.alias_declaration(self, identifier, name, type, signature)
           @_declarative_item_list.push(decl)
           return decl
         end

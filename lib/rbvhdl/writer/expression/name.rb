@@ -13,6 +13,15 @@ module RbVHDL::Ast
       end
     end
 
+    class OperatorSymbol
+      WRITE_DIRECTIVE = {:format => "\"%{symbol}\""}
+
+      def _write_string(directive={})
+        format = directive.fetch(:format , WRITE_DIRECTIVE[:format ])
+        return format % {symbol: @_symbol}
+      end
+    end
+
     class FunctionCall
       WRITE_DIRECTIVE = {
         :format                              => "%{name}%{parameter}",

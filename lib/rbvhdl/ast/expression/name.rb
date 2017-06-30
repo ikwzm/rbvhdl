@@ -16,6 +16,14 @@ module RbVHDL::Ast
       end
     end
 
+    class OperatorSymbol < Name
+      attr_reader   :_symbol
+      def initialize(symbol)
+        super()
+        @_symbol = symbol
+      end
+    end
+
     class FunctionCall < Name
       attr_reader   :_name
       attr_reader   :_parameter_association_list
@@ -147,6 +155,18 @@ module RbVHDL::Ast
       return name
     else
       return RbVHDL::Ast::Expression::SimpleName.new(RbVHDL::Ast.identifier(name))
+    end
+  end
+
+  def self.operator_symbol(symbol)
+    if    symbol.class == RbVHDL::Ast::Expression::OperatorSymbol then
+      return symbol
+    elsif symbol.class == Symbol then
+      return RbVHDL::Ast::Expression::OperatorSymbol.new(symbol)
+    elsif symbol.class == String then
+      return RbVHDL::Ast::Expression::OperatorSymbol.new(symbol.to_sym)
+    else
+      raise ArgumentError, "#{self.inspect}.#{__method__}(#{symbol.inspect}:#{symbol.class})"
     end
   end
 

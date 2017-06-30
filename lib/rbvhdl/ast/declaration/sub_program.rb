@@ -17,7 +17,7 @@ module RbVHDL::Ast
 
       def initialize(owner, identifier)
         @_owner                    = owner
-        @_identifier               = RbVHDL::Ast.identifier(identifier)
+        @_identifier               = identifier
         @_generic_interface_list   = []
         @_generic_association_list = []
         @_parameter_interface_list = []
@@ -92,38 +92,46 @@ module RbVHDL::Ast
     return RbVHDL::Ast::Declaration::ProcedureBody.new(owner, identifier)
   end
 
+  def self.function_identifier(ident)
+    if ident.class == RbVHDL::Ast::Expression::OperatorSymbol then
+      return ident
+    else
+      return RbVHDL::Ast.identifier(ident)
+    end
+  end
+
   def self.function_declaration(owner, ident, type)
-    identifier = RbVHDL::Ast.identifier(ident)
+    identifier = RbVHDL::Ast.function_identifier(ident)
     type_mark  = RbVHDL::Ast.type_mark(type)
     return RbVHDL::Ast::Declaration::FunctionDecl.new(owner, identifier, type_mark)
   end
     
   def self.function_body(owner, ident, type)
-    identifier = RbVHDL::Ast.identifier(ident)
+    identifier = RbVHDL::Ast.function_identifier(ident)
     type_mark  = RbVHDL::Ast.type_mark(type)
     return RbVHDL::Ast::Declaration::FunctionBody.new(owner, identifier, type_mark)
   end
     
   def self.pure_function_declaration(owner, ident, type)
-    identifier = RbVHDL::Ast.identifier(ident)
+    identifier = RbVHDL::Ast.function_identifier(ident)
     type_mark  = RbVHDL::Ast.type_mark(type)
     return RbVHDL::Ast::Declaration::PureFunctionDecl.new(owner, identifier, type_mark)
   end
     
   def self.pure_function_body(owner, ident, type)
-    identifier = RbVHDL::Ast.identifier(ident)
+    identifier = RbVHDL::Ast.function_identifier(ident)
     type_mark  = RbVHDL::Ast.type_mark(type)
     return RbVHDL::Ast::Declaration::PureFunctionBody.new(owner, identifier, type_mark)
   end
     
   def self.impure_function_declaration(owner, ident, type)
-    identifier = RbVHDL::Ast.identifier(ident)
+    identifier = RbVHDL::Ast.function_identifier(ident)
     type_mark  = RbVHDL::Ast.type_mark(type)
     return RbVHDL::Ast::Declaration::ImpureFunctionDecl.new(owner, identifier, type_mark)
   end
     
   def self.impure_function_body(owner, ident, type)
-    identifier = RbVHDL::Ast.identifier(ident)
+    identifier = RbVHDL::Ast.function_identifier(ident)
     type_mark  = RbVHDL::Ast.type_mark(type)
     return RbVHDL::Ast::Declaration::ImpureFunctionBody.new(owner, identifier, type_mark)
   end

@@ -11,6 +11,20 @@ describe 'RbVHDL::Writer::Expression::Name' do
     end
   end
 
+  describe 'OperatorSymbol' do
+    context "_write_string" do
+      it do
+        string = RbVHDL::Ast.operator_symbol('*')._write_string
+        expect(string).to eq "\"*\""
+      end
+
+      it  do
+        string = RbVHDL::Ast.operator_symbol(:and)._write_string
+        expect(string).to eq "\"and\""
+      end
+    end
+  end
+
   describe 'IndexedName' do
     context "_write_string" do
       it do
