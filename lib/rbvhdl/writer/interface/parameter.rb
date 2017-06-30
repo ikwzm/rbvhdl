@@ -36,20 +36,22 @@ module RbVHDL::Writer
             return_type             = directive.fetch(:return_type           , nil)
             return_format           = directive.fetch(:return_format         , nil)
 
+            parameter_interface_list  = @_parameter_interface_list.select{|interface| interface.class <= RbVHDL::Ast::Interface}
+
             if param_keyword_format.nil? then
-              keyword_max_size        = @_parameter_interface_list.map{|interface| interface._write_keyword_string(   directive).size}.max
+              keyword_max_size        = parameter_interface_list.map{|interface| interface._write_keyword_string(   directive).size}.max
               keyword_field_size      = (keyword_max_size < 10) ? 10 : keyword_max_size+1
               param_keyword_format    = "%<keyword>-#{keyword_field_size}s"
             end
               
             if param_identifier_format.nil? then
-              identifier_max_size     = @_parameter_interface_list.map{|interface| interface._write_identifier_string(directive).size}.max
+              identifier_max_size     = parameter_interface_list.map{|interface| interface._write_identifier_string(directive).size}.max
               identifier_field_size   = ((((identifier_max_size+1).to_f/8).ceil)*8)-1
               param_identifier_format = "%<identifier>-#{identifier_field_size}s"
             end
 
             if param_mode_format.nil? then
-              param_mode_max_size     = @_parameter_interface_list.map{|interface| interface._write_mode_string(      directive).size}.max
+              param_mode_max_size     = parameter_interface_list.map{|interface| interface._write_mode_string(      directive).size}.max
               if    param_mode_max_size < 1 then
                 param_mode_format     = ":  "
               elsif param_mode_max_size < 4 then
@@ -60,7 +62,7 @@ module RbVHDL::Writer
             end
 
             if param_type_format.nil? then
-              param_type_max_size     = @_parameter_interface_list.map{|interface| interface._write_type_string(      directive).size}.max
+              param_type_max_size     = parameter_interface_list.map{|interface| interface._write_type_string(      directive).size}.max
               with_value_type_format  = "%<type>-#{param_type_max_size}s"
               none_value_type_format  = "%{type}"
             else
@@ -76,7 +78,13 @@ module RbVHDL::Writer
 
             write_line.push(param_begin_format % {indent: indent, param_indent: param_indent, _parameter_: ""})
 
-            param_last_index = @_parameter_interface_list.size - 1
+            param_last_index = 0
+            @_parameter_interface_list.each_with_index do |interface, index|
+              if interface.class <= RbVHDL::Ast::Interface then
+                param_last_index = index
+              end
+            end
+
             @_parameter_interface_list.each_with_index do |interface, index|
               if index < param_last_index then
                 param_directive[:separator] = param_separator

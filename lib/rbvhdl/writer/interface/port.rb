@@ -28,10 +28,11 @@ module RbVHDL::Writer
   
             write_line.push(port_begin_format % {indent: indent, port_indent: port_indent, _port_: reserved_words[:port]})
 
-            keyword_field_size    = @_port_interface_list.map{|interface| interface._write_keyword_string(   directive).size}.max
-            identifier_field_size = @_port_interface_list.map{|interface| interface._write_identifier_string(directive).size}.max
-            type_field_size       = @_port_interface_list.map{|interface| interface._write_type_string(      directive).size}.max
-            mode_field_size       = @_port_interface_list.map{|interface| interface._write_mode_string(      directive).size}.max
+            port_interface_list   = @_port_interface_list.select{|interface| interface.class <= RbVHDL::Ast::Interface}
+            keyword_field_size    = port_interface_list.map{|interface| interface._write_keyword_string(   directive).size}.max
+            identifier_field_size = port_interface_list.map{|interface| interface._write_identifier_string(directive).size}.max
+            type_field_size       = port_interface_list.map{|interface| interface._write_type_string(      directive).size}.max
+            mode_field_size       = port_interface_list.map{|interface| interface._write_mode_string(      directive).size}.max
             mode_field_size       = 3 if mode_field_size < 3
 
             port_directive = directive.dup
@@ -41,7 +42,13 @@ module RbVHDL::Writer
             port_directive[:mode_format      ] = ":  %<mode>-#{mode_field_size+1}s"
             port_directive[:type_format      ] = "%{type}"
 
-            port_last_index       = @_port_interface_list.size - 1
+            port_last_index = 0
+            @_port_interface_list.each_with_index do |interface, index|
+              if interface.class <= RbVHDL::Ast::Interface then
+                port_last_index = index
+              end
+            end
+            
             @_port_interface_list.each_with_index do |interface, index|
               if index < port_last_index then
                 port_directive[:separator] = port_separator

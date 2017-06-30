@@ -2,6 +2,28 @@ module RbVHDL::Ast
   module Declaration
     module Methods
 
+      module Comment
+
+        def _declaration_horizontal_rule
+          decl = RbVHDL::Ast.horizontal_rule(self)
+          @_declarative_item_list.push(decl)
+          return decl
+        end
+
+        def _declaration_new_line
+          decl = RbVHDL::Ast.new_line(self)
+          @_declarative_item_list.push(decl)
+          return decl
+        end
+          
+        def _declaration_comment(text)
+          decl = RbVHDL::Ast.comment(self, text)
+          @_declarative_item_list.push(decl)
+          return decl
+        end
+          
+      end
+
       module Type
 
         def _integer_type_declaration(identifier, range)
@@ -197,6 +219,7 @@ module RbVHDL::Ast
       end
 
       module BlockItem
+        include Comment
         include SubProgramDecl
         include SubProgramBody
         include Type
@@ -215,6 +238,7 @@ module RbVHDL::Ast
       end
 
       module SubProgramItem
+        include Comment
         include SubProgramDecl
         include SubProgramBody
         include Type
@@ -232,6 +256,7 @@ module RbVHDL::Ast
       end
     
       module PackageItem
+        include Comment
         include SubProgramDecl
         include Type
         include Subtype
@@ -249,6 +274,7 @@ module RbVHDL::Ast
       end
     
       module PackageBodyItem
+        include Comment
         include SubProgramDecl
         include SubProgramBody
         include Type
@@ -264,6 +290,7 @@ module RbVHDL::Ast
       end
 
       module EntityItem
+        include Comment
         include SubProgramDecl
         include SubProgramBody
         include Type
@@ -281,6 +308,7 @@ module RbVHDL::Ast
       end
 
       module ProcessItem
+        include Comment
         include SubProgramDecl
         include SubProgramBody
         include Type

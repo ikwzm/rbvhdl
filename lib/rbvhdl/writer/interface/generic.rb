@@ -28,9 +28,10 @@ module RbVHDL::Writer
 
             write_line.push(generic_begin_format % {indent: indent, generic_indent: generic_indent, _generic_: reserved_words[:generic]})
 
-            keyword_field_size       = @_generic_interface_list.map{|interface| interface._write_keyword_string(   directive).size}.max
-            identifier_field_size    = @_generic_interface_list.map{|interface| interface._write_identifier_string(directive).size}.max
-            type_field_size          = @_generic_interface_list.map{|interface| interface._write_type_string(      directive).size}.max
+            generic_interface_list   = @_generic_interface_list.select{|interface| interface.class <= RbVHDL::Ast::Interface}
+            keyword_field_size       = generic_interface_list.map{|interface| interface._write_keyword_string(   directive).size}.max
+            identifier_field_size    = generic_interface_list.map{|interface| interface._write_identifier_string(directive).size}.max
+            type_field_size          = generic_interface_list.map{|interface| interface._write_type_string(      directive).size}.max
 
             generic_directive = directive.dup
             generic_directive[:indent           ] = indent + generic_indent + generic_interface_indent
@@ -39,7 +40,13 @@ module RbVHDL::Writer
             generic_directive[:mode_format      ] = ":  "
             generic_directive[:type_format      ] = "%<type>-#{type_field_size}s"
 
-            generic_last_index       = @_generic_interface_list.size - 1
+            generic_last_index = 0
+            @_generic_interface_list.each_with_index do |interface, index|
+              if interface.class <= RbVHDL::Ast::Interface then
+                generic_last_index = index
+              end
+            end
+
             @_generic_interface_list.each_with_index do |interface, index|
               if index < generic_last_index then
                 generic_directive[:separator] = generic_separator

@@ -2,6 +2,24 @@ module RbVHDL::Ast
   module Statement
     module Methods
 
+      module Comment
+        def _statement_horizontal_rule
+          decl = RbVHDL::Ast.horizontal_rule(self)
+          @_statement_list.push(decl)
+          return decl
+        end
+        def _statement_new_line
+          decl = RbVHDL::Ast.new_line(self)
+          @_statement_list.push(decl)
+          return decl
+        end
+        def _statement_comment(text)
+          decl = RbVHDL::Ast.comment(self, text)
+          @_statement_list.push(decl)
+          return decl
+        end
+      end
+
       module Assertion
         def _assertion_statement(condition)
           stmt = RbVHDL::Ast.assertion_statement(self, condition)
@@ -183,6 +201,7 @@ module RbVHDL::Ast
       end
 
       module Concurrent
+        include Comment
         include Block
         include Process
         include ProcedureCall
@@ -193,7 +212,7 @@ module RbVHDL::Ast
       end
 
       module Sequential
-        include Wait
+        include Comment
         include Assertion
         include Report
         include SignalAssignment
@@ -202,8 +221,9 @@ module RbVHDL::Ast
         include If
         include Case
         include Loop
-        include Return
         include Null
+        include Return
+        include Wait
       end
 
     end

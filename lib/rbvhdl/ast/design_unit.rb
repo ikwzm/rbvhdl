@@ -1,26 +1,42 @@
 module RbVHDL::Ast
 
   class DesignUnit
-    attr_reader   :_clause_list
     attr_reader   :_unit_list
     attr_reader   :_annotation
     
     def initialize
-      @_clause_list = []
       @_unit_list   = []
       @_annotation  = Hash.new
     end
 
+    def _horizontal_rule
+      unit = RbVHDL::Ast.horizontal_rule(self)
+      @_unit_list.push(unit)
+      return unit
+    end
+
+    def _new_line
+      unit = RbVHDL::Ast.new_line(self)
+      @_unit_list.push(unit)
+      return unit
+    end
+
+    def _comment(text)
+      unit = RbVHDL::Ast.comment(self, text)
+      @_unit_list.push(unit)
+      return unit
+    end
+
     def _library_clause(identifier)
-      clause = RbVHDL::Ast.library_clause(self, identifier)
-      @_clause_list.push(clause)
-      return clause
+      unit = RbVHDL::Ast.library_clause(self, identifier)
+      @_unit_list.push(unit)
+      return unit
     end
 
     def _use_clause(args=nil)
-      clause = RbVHDL::Ast.use_clause(self, args)
-      @_clause_list.push(clause)
-      return clause
+      unit = RbVHDL::Ast.use_clause(self, args)
+      @_unit_list.push(unit)
+      return unit
     end
 
     def _entity(identifier)

@@ -5,16 +5,54 @@ module RbVHDL::Ast
     module Methods
 
       module Generic
+
         def _generic_interface(identifier, type, value=nil)
           interface = RbVHDL::Ast.interface_declaration(self, identifier, type, nil, value)
+          @_generic_interface_list.push(interface)
+          return interface
+        end
+
+        def _generic_interface_horizontal_rule
+          interface = RbVHDL::Ast.horizontal_rule(self)
+          @_generic_interface_list.push(interface)
+          return interface
+        end
+
+        def _generic_interface_new_line
+          interface = RbVHDL::Ast.new_line(self)
+          @_generic_interface_list.push(interface)
+          return interface
+        end
+
+        def _generic_interface_comment(text)
+          interface = RbVHDL::Ast.comment(self, text)
           @_generic_interface_list.push(interface)
           return interface
         end
       end
 
       module Port
+
         def _port_interface(identifier, type, mode=nil, value=nil)
           interface = RbVHDL::Ast.interface_declaration(self, identifier, type, mode, value)
+          @_port_interface_list.push(interface)
+          return interface
+        end
+
+        def _port_interface_horizontal_rule
+          interface = RbVHDL::Ast.horizontal_rule(self)
+          @_port_interface_list.push(interface)
+          return interface
+        end
+
+        def _port_interface_new_line
+          interface = RbVHDL::Ast.new_line(self)
+          @_port_interface_list.push(interface)
+          return interface
+        end
+
+        def _port_interface_comment(text)
+          interface = RbVHDL::Ast.comment(self, text)
           @_port_interface_list.push(interface)
           return interface
         end
@@ -48,6 +86,24 @@ module RbVHDL::Ast
 
         def _parameter_file_interface(identifier, type)
           interface = RbVHDL::Ast.interface_file_declaration(self, identifier, type)
+          @_parameter_interface_list.push(interface)
+          return interface
+        end
+
+        def _parameter_interface_horizontal_rule
+          interface = RbVHDL::Ast.horizontal_rule(self)
+          @_parameter_interface_list.push(interface)
+          return interface
+        end
+
+        def _parameter_interface_new_line
+          interface = RbVHDL::Ast.new_line(self)
+          @_parameter_interface_list.push(interface)
+          return interface
+        end
+
+        def _parameter_interface_comment(text)
+          interface = RbVHDL::Ast.comment(self, text)
           @_parameter_interface_list.push(interface)
           return interface
         end
@@ -85,6 +141,23 @@ module RbVHDL::Ast
           return interface
         end
 
+        def _parameter_interface_horizontal_rule
+          interface = RbVHDL::Ast.horizontal_rule(self)
+          @_parameter_interface_list.push(interface)
+          return interface
+        end
+
+        def _parameter_interface_new_line
+          interface = RbVHDL::Ast.new_line(self)
+          @_parameter_interface_list.push(interface)
+          return interface
+        end
+
+        def _parameter_interface_comment(text)
+          interface = RbVHDL::Ast.comment(self, text)
+          @_parameter_interface_list.push(interface)
+          return interface
+        end
       end
     end
   end
