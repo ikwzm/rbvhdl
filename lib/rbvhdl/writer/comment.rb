@@ -5,7 +5,7 @@ module RbVHDL::Ast
     class Text
       WRITE_DIRECTIVE = {
         :format          => "%{indent}-- %{text}",
-        :max_column      => 100,
+        :max_column      => 84,
       }
       def _write_line(directive={})
         indent          = directive.fetch(:indent    , "")
@@ -24,7 +24,7 @@ module RbVHDL::Ast
       WRITE_DIRECTIVE = {
         :format          => "%{indent}--%{horizontal_rule}",
         :horizontal_char => "-",
-        :max_column      => 100,
+        :max_column      => 84,
       }
       def _write_line(directive={})
         indent          = directive.fetch(:indent    , "")
