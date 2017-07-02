@@ -25,6 +25,30 @@ describe 'RbVHDL::Ast::Expression::Name' do
     end
   end
 
+  describe 'OperatorSymbol' do
+    context "new" do
+
+      it "operator_symbol('*')" do
+        name = RbVHDL::Ast.operator_symbol('*')
+        expect(name.class  ).to eq RbVHDL::Ast::Expression::OperatorSymbol
+        expect(name._symbol).to eq :"*"
+      end
+
+      it "operator_symbol(:and)" do
+        name = RbVHDL::Ast.operator_symbol(:and)
+        expect(name.class  ).to eq RbVHDL::Ast::Expression::OperatorSymbol
+        expect(name._symbol).to eq :and
+      end
+
+      it "operator_symbol(operator_symbol(:or))" do
+        name = RbVHDL::Ast.operator_symbol(RbVHDL::Ast.operator_symbol(:or))
+        expect(name.class  ).to eq RbVHDL::Ast::Expression::OperatorSymbol
+        expect(name._symbol).to eq :or
+      end
+    end
+  end
+      
+
   describe 'IndexedName' do
     context "new" do
 
@@ -151,6 +175,17 @@ describe 'RbVHDL::Ast::Expression::Name' do
         expect(name._suffix.class              ).to eq RbVHDL::Ast::Expression::SimpleName
         expect(name._suffix._name              ).to eq :component_name
       end
+
+      it "name('library_name')._select(name('package_name'))._select_all" do
+        name = RbVHDL::Ast.name('library_name')._select(RbVHDL::Ast.name('package_name'))._select_all
+        expect(name.class                      ).to eq RbVHDL::Ast::Expression::SelectedName
+        expect(name._prefix.class              ).to eq RbVHDL::Ast::Expression::SelectedName
+        expect(name._prefix._prefix.class      ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(name._prefix._prefix._name      ).to eq :library_name
+        expect(name._prefix._suffix.class      ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(name._prefix._suffix._name      ).to eq :package_name
+        expect(name._suffix.class              ).to eq RbVHDL::Ast::Expression::All
+      end
     end
   end
       
@@ -248,15 +283,22 @@ describe 'RbVHDL::Ast::Expression::Name' do
         expect(name._expression     ).to eq nil
       end
 
-      it "name('signal_1')._attribute('range', nil, nil)" do
-        name = RbVHDL::Ast.name('signal_1')._attribute('range', nil, nil)
-        expect(name.class           ).to eq RbVHDL::Ast::Expression::AttributeName
-        expect(name._name.class     ).to eq RbVHDL::Ast::Expression::SimpleName
-        expect(name._name._name     ).to eq :signal_1
-        expect(name._attribute.class).to eq RbVHDL::Ast::Identifier
-        expect(name._attribute      ).to eq :range
-        expect(name._signature      ).to eq nil
-        expect(name._expression     ).to eq nil
+      it "name('func_1')._attribute('high', signature('integer', 'integer')._return!('integer'), nil)" do
+        name = RbVHDL::Ast.name('func_1')._attribute('high', RbVHDL::Ast.signature('integer', 'integer')._return!('integer'), nil)
+        expect(name.class                                   ).to eq RbVHDL::Ast::Expression::AttributeName
+        expect(name._name.class                             ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(name._name._name                             ).to eq :func_1
+        expect(name._attribute.class                        ).to eq RbVHDL::Ast::Identifier
+        expect(name._attribute                              ).to eq :high
+        expect(name._signature.class                        ).to eq RbVHDL::Ast::Expression::Signature
+        expect(name._signature._parameter_type_list.size    ).to eq 2
+        expect(name._signature._parameter_type_list[0].class).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(name._signature._parameter_type_list[0]._name).to eq :integer
+        expect(name._signature._parameter_type_list[1].class).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(name._signature._parameter_type_list[1]._name).to eq :integer
+        expect(name._signature._return_type.class           ).to eq RbVHDL::Ast::Expression::SimpleName
+        expect(name._signature._return_type._name           ).to eq :integer
+        expect(name._expression                             ).to eq nil
       end
     end
   end

@@ -54,16 +54,37 @@ module RbVHDL::Ast
     class SimpleSignalAssignment      < SignalAssignment
       attr_reader   :_waveform
 
-      def initialize(owner, target, waveform)
+      def initialize(owner, target, waveform=nil)
         super(owner, target)
         @_waveform = waveform
       end
+
+      def _value!(value)
+        if @_waveform.nil? then
+          @_waveform = RbVHDL::Ast.waveform_or_nil(value)
+        else
+          @_waveform._value!(value)
+        end
+        return self
+      end
+      
+      def _after!(time)
+        @_waveform._after!(time)
+        return self
+      end
+
+      def _when!(condition)
+        conditional_assignment = RbVHDL::Ast.conditional_signal_assignment_statement(@_owner, @_target, @_waveform)
+        conditional_assignment._when!(condition)
+        return conditional_assignment
+      end
+      
     end
 
     class ConditionalSignalAssignment < SignalAssignment
       attr_reader   :_waveform_list
 
-      def initialize(owner, target, waveform)
+      def initialize(owner, target, waveform=nil)
         super(owner, target)
         if waveform.nil? then
           @_waveform_list = []
@@ -72,12 +93,26 @@ module RbVHDL::Ast
         end
       end
 
+      def _value!(value)
+        if @_waveform_list.size > 0 then
+          @_waveform_list.last[0]._value!(value)
+        else
+          @_waveform_list.push([RbVHDL::Ast.waveform(value), nil])
+        end
+        return self
+      end
+      
+      def _after!(time)
+        @_waveform_list.last[0]._after!(time)
+        return self
+      end
+      
       def _when!(condition)
         @_waveform_list.last[1] = RbVHDL::Ast.expression(condition)
         return self
       end
 
-      def _else!(waveform)
+      def _else!(value=nil)
         @_waveform_list.push([RbVHDL::Ast.waveform(value), nil])
         return self
       end
@@ -87,28 +122,46 @@ module RbVHDL::Ast
       attr_reader   :_waveform_list
       attr_accessor :_expression
 
-      def initialize(owner, expression, target, waveform, choices)
+      def initialize(owner, expression, target, waveform=nil, choices=nil)
         super(owner, target)
         @_expression    = expression
-        @_waveform_list = [[waveform, choices]]
+        if waveform.nil? then
+          @_waveform_list = []
+        else
+          @_waveform_list = [[waveform, choices]]
+        end
       end
 
+      def _value!(value)
+        if @_waveform_list.size > 0 and @_waveform_list.last[1].nil? then
+          @_waveform_list.last[0]._value!(value)
+        else
+          @_waveform_list.push([RbVHDL::Ast.waveform(value), nil])
+        end
+        return self
+      end
+      
+      def _after!(time)
+        @_waveform_list.last[0]._after!(time)
+        return self
+      end
+      
       def _when!(choices)
         @_waveform_list.last[1] = RbVHDL::Ast.choices(choices)
         return self
       end
 
-      def _else!(waveform)
-        @_waveform_list.push([RbVHDL::Ast.waveform(waveform), nil])
-        return self
-      end
     end
 
     class Waveform
       attr_reader   :_list
       
       def initialize(value, time=nil)
-        @_list  = [[value, time]]
+        if value.nil? then
+          @_list = []
+        else
+          @_list  = [[value, time]]
+        end
       end
 
       def _after!(time)
@@ -152,6 +205,14 @@ module RbVHDL::Ast
     end
   end
 
+  def self.waveform_or_nil(value, time=nil)
+    if value.nil? then
+      return nil
+    else
+      return self.waveform(value, time)
+    end
+  end
+
   def self.delay_mechanism(delay)
     if delay.nil? or
        delay.class < RbVHDL::Ast::Statement::DelayMechanism then
@@ -178,23 +239,27 @@ module RbVHDL::Ast
     end
   end
 
-  def self.simple_signal_assignment_statement(owner, target, waveform)
+  def self.signal_assignment_statement(owner, target, waveform=nil)
+    return self.simple_signal_assignment_statement(owner, target, waveform)
+  end
+
+  def self.simple_signal_assignment_statement(owner, target, waveform=nil)
     _target   = RbVHDL::Ast.signal_assignment_target(target)
-    _waveform = RbVHDL::Ast.waveform(waveform)
+    _waveform = RbVHDL::Ast.waveform_or_nil(waveform)
     return RbVHDL::Ast::Statement::SimpleSignalAssignment.new(owner, _target, _waveform)
   end
 
   def self.conditional_signal_assignment_statement(owner, target, waveform=nil)
-    _target   = RbVHDL::Ast.variable_assignment_target(target)
-    _waveform = RbVHDL::Ast.waveform(waveform)
+    _target   = RbVHDL::Ast.signal_assignment_target(target)
+    _waveform = RbVHDL::Ast.waveform_or_nil(waveform)
     return RbVHDL::Ast::Statement::ConditionalSignalAssignment.new(owner, _target, _waveform)
   end
 
-  def self.selected_signal_assignment_statement(owner, expression, target, waveform, choices)
+  def self.selected_signal_assignment_statement(owner, expression, target, waveform=nil, choices=nil)
     _target     = RbVHDL::Ast.signal_assignment_target(target)
     _expression = RbVHDL::Ast.expression(expression)
-    _waveform   = RbVHDL::Ast.waveform(waveform)
-    _choices    = RbVHDL::Ast.choices(choices)
+    _waveform   = RbVHDL::Ast.waveform_or_nil(waveform)
+    _choices    = RbVHDL::Ast.choices_or_nil(choices)
     return RbVHDL::Ast::Statement::SelectedSignalAssignment.new(owner, _expression, _target, _waveform, _choices)
   end
     

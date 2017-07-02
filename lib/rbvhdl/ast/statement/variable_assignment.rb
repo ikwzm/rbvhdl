@@ -22,17 +22,28 @@ module RbVHDL::Ast
     class SimpleVariableAssignment      < VariableAssignment
       attr_accessor :_value
 
-      def initialize(owner, target, value)
+      def initialize(owner, target, value=nil)
         super(owner, target)
         @_value = value
       end
 
+      def _value!(value)
+        @_value = value
+        return self
+      end
+
+      def _when!(condition)
+        conditional_assignment = RbVHDL::Ast.conditional_variable_assignment_statement(@_owner, @_target, @_value)
+        conditional_assignment._when!(condition)
+        return conditional_assignment
+      end
+      
     end
     
     class ConditionalVariableAssignment < VariableAssignment
       attr_reader   :_value_list
 
-      def initialize(owner, target, value)
+      def initialize(owner, target, value=nil)
         super(owner, target)
         if value.nil? then
           @_value_list = []
@@ -41,13 +52,20 @@ module RbVHDL::Ast
         end
       end
 
+      def _value!(value)
+        @_value_list.push([RbVHDL::Ast.expression(value), nil])
+        return self
+      end
+
       def _when!(condition)
         @_value_list.last[1] = RbVHDL::Ast.expression(condition)
         return self
       end
 
-      def _else!(value)
-        @_value_list.push([RbVHDL::Ast.expression(value), nil])
+      def _else!(value=nil)
+        unless value.nil? then
+          @_value_list.push([RbVHDL::Ast.expression_or_nil(value), nil])
+        end
         return self
       end
     end
@@ -56,21 +74,26 @@ module RbVHDL::Ast
       attr_reader   :_value_list
       attr_accessor :_expression
 
-      def initialize(owner, expression, target, value, choices)
+      def initialize(owner, expression, target, value=nil, choices=nil)
         super(owner, target)
         @_expression = expression
-        @_value_list = [[value, choices]]
+        if value.nil? then
+          @_value_list = []
+        else
+          @_value_list = [[value, choices]]
+        end
       end
 
+      def _value!(value)
+        @_value_list.push([RbVHDL::Ast.expression(value), nil])
+        return self
+      end
+      
       def _when!(choices)
         @_value_list.last[1] = RbVHDL::Ast.choices(choices)
         return self
       end
 
-      def _else!(value)
-        @_value_list.push([RbVHDL::Ast.expression(value), nil])
-        return self
-      end
     end
   end
 
@@ -81,6 +104,10 @@ module RbVHDL::Ast
     else
       return RbVHDL::Ast.name(target)
     end
+  end
+
+  def self.variable_assignment_statement(owner, target, value=nil)
+    return self.simple_variable_assignment_statement(owner, target, value)
   end
 
   def self.simple_variable_assignment_statement(owner, target, value=nil)
@@ -95,11 +122,11 @@ module RbVHDL::Ast
     return RbVHDL::Ast::Statement::ConditionalVariableAssignment.new(owner, _target, _value)
   end
 
-  def self.selected_variable_assignment_statement(owner, expression, target, value, choices)
+  def self.selected_variable_assignment_statement(owner, expression, target, value=nil, choices=nil)
     _target     = RbVHDL::Ast.variable_assignment_target(target)
     _expression = RbVHDL::Ast.expression(expression)
     _value      = RbVHDL::Ast.expression_or_nil(value)
-    _choices    = RbVHDL::Ast.choices(choices)
+    _choices    = RbVHDL::Ast.choices_or_nil(choices)
     return RbVHDL::Ast::Statement::SelectedVariableAssignment.new(owner, _expression, _target, _value, _choices)
   end
     

@@ -9,49 +9,84 @@ module RbVHDL::Ast
       attr_reader   :_label
       attr_accessor :_condition
       attr_reader   :_statement_list
-      attr_reader   :_else
+      attr_reader   :_else_list
       attr_reader   :_annotation
 
-      def initialize(owner, condition)
+      include RbVHDL::Ast::Statement::Methods::Sequential
+
+      def initialize(owner, condition, &block)
         @_owner          = owner
         @_label          = nil
         @_condition      = condition
         @_statement_list = []
-        @_else           = nil
+        @_else_list      = []
         @_annotation     = Hash.new
+        if block_given? then
+          self.instance_eval(&block)
+        end
       end
 
-      def _label!(label)
-        @_label          = RbVHDL::Ast.label_or_nil(label)
+      def _label!(label, &block)
+        @_label = RbVHDL::Ast.label_or_nil(label)
+        if block_given? then
+          self.instance_eval(&block)
+        end
         return self
       end
 
+      def _elsif_statement(condition, owner=self, &block)
+        else_statement = RbVHDL::Ast::Statement::Elsif.new(owner, RbVHDL::Ast.expression(condition), &block)
+        @_else_list.push(else_statement)
+        return else_statement
+      end
+
+      def _else_statement(owner=self, &block)
+        else_statement = RbVHDL::Ast::Statement::Else.new(owner, &block)
+        @_else_list.push(else_statement)
+        return else_statement
+      end
+    end
+
+    class Elsif
+      attr_reader   :_owner
+      attr_accessor :_condition
+      attr_reader   :_statement_list
+      attr_reader   :_annotation
+
+      def initialize(owner, condition, &block)
+        @_owner          = owner
+        @_condition      = condition
+        @_statement_list = []
+        @_annotation     = Hash.new
+        if block_given? then
+          self.instance_eval(&block)
+        end
+      end
+
       include RbVHDL::Ast::Statement::Methods::Sequential
+    end
 
-      def _elsif_statement(condition, owner=self)
-        if @_else.nil? then
-          @_else = RbVHDL::Ast::Statement::If.new(owner, RbVHDL::Ast.expression(condition))
-          return @_else
-        else
-          return @_else._elsif_statement(condtion, owner)
+    class Else
+      attr_reader   :_owner
+      attr_reader   :_statement_list
+      attr_reader   :_annotation
+
+      def initialize(owner, &block)
+        @_owner          = owner
+        @_statement_list = []
+        @_annotation     = Hash.new
+        if block_given? then
+          self.instance_eval(&block)
         end
       end
 
-      def _else_statement(owner=self)
-        if @_else.nil? then
-          @_else = RbVHDL::Ast::Statement::If.new(owner, nil)
-          return @_else
-        else
-          return @_else._else_statement(owner)
-        end
-      end
+      include RbVHDL::Ast::Statement::Methods::Sequential
     end
 
   end
 
-  def self.if_statement(owner, condition)
-    return RbVHDL::Ast::Statement::If.new(owner, RbVHDL::Ast.expression(condition))
+  def self.if_statement(owner, condition, &block)
+    return RbVHDL::Ast::Statement::If.new(owner, RbVHDL::Ast.expression(condition), &block)
   end
 
 end
-

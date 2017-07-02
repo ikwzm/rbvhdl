@@ -1,4 +1,3 @@
-require_relative 'mark'
 require_relative 'range'
 
 module RbVHDL::Ast
@@ -24,20 +23,25 @@ module RbVHDL::Ast
 
     class PhysicalDefinition    < Definition
       attr_reader   :_range     # RbVHDL::Ast::Type::Range
-      attr_reader   :_unit      # RbVHDL::Identifier
-      attr_reader   :_unit_list # Array of [ RbVHDL::Identifier, RbVHDL::Expression::PhysicalLiteral ]
+      attr_reader   :_unit      # RbVHDL::Ast::Identifier
+      attr_reader   :_unit_list # Array of [ RbVHDL::Ast::Identifier, RbVHDL::Ast::Expression::PhysicalLiteral ]
       def initialize(range, unit, unit_list)
         @_range     = range
         @_unit      = unit
         @_unit_list = unit_list
       end
-      def _unit!(ident, name)
-        @_unit_list.push([RbVHDL.identifier(ident), name])
+      def _unit!(ident, arg0, arg1=nil)
+        if arg0.class == RbVHDL::Ast::Expression::PhysicalLiteral then
+          literal = arg0
+        else
+          literal = RbVHDL::Ast.physical_literal(arg0, arg1)
+        end
+        @_unit_list.push([RbVHDL::Ast.identifier(ident), literal])
       end
     end
 
     class ArrayDefinition       < Definition
-      attr_reader   :_range_list         # Array of (RbVHDL::Ast::Type::Mark or RbVHDL::Ast::Type::Range)
+      attr_reader   :_range_list         # Array of (RbVHDL::Ast::Expression::Name or RbVHDL::Ast::Type::Range)
       attr_reader   :_subtype_indication # RbVHDL::Ast::Type::Indication
       def initialize(range_list, subtype_indication)
         @_range_list         = range_list
@@ -46,12 +50,17 @@ module RbVHDL::Ast
     end
 
     class EnumerationDefinition < Definition
-      attr_reader   :_enum_list # Array of RbVHDL::Ast::Identifier
+      attr_reader   :_enum_list # Array of RbVHDL::Ast::Identifier | RbVHDL::Ast::Expression::CharacterLiteral
       def initialize(enum_list)
         @_enum_list = enum_list
       end
-      def _enum!(identifier)
-        @_enum_list.push(RbVHDL::Ast.identifier(identifier))
+      def _enum!(enum)
+        if enum.class == RbVHDL::Ast::Identifier or
+           enum.class == RbVHDL::Ast::Expression::CharacterLiteral then
+          @_enum_list.push(enum)
+        else
+          @_enum_list.push(RbVHDL::Ast.identifier(enum))
+        end
         return self
       end
     end
@@ -82,7 +91,7 @@ module RbVHDL::Ast
     end
 
     class FileDefinition        < Definition
-      attr_reader   :_type_mark # RbVHDL::Ast::Type::Mark
+      attr_reader   :_type_mark # RbVHDL::Ast::Expression::Name
       def initialize(type_mark)
         @_type_mark = type_mark
       end
@@ -164,12 +173,17 @@ module RbVHDL::Ast
   end
   
   def self.enumeration_type_definition(enum_list=nil)
+    type_def = RbVHDL::Ast::Type::EnumerationDefinition.new([])
     if    enum_list.nil? then
-      return RbVHDL::Ast::Type::EnumerationDefinition.new([])
+      return type_def
     elsif enum_list.class == Array then
-      return RbVHDL::Ast::Type::EnumerationDefinition.new(enum_list.map{|enum| RbVHDL::Ast.identifier(enum)})
+      enum_list.each do |enum|
+        type_def._enum!(enum)
+      end
+      return type_def
     else
-      return RbVHDL::Ast::Type::EnumerationDefinition.new([RbVHDL::Ast.identifier(enum)])
+      type_def._enum!(enum_list)
+      return type_def
     end
   end
 
@@ -188,7 +202,7 @@ module RbVHDL::Ast
   end
   
   def self.file_type_definition(type)
-    type_mark = RbVHDL::Ast.type_mark(type)
+    type_mark = RbVHDL::Ast.name(type)
     return RbVHDL::Ast::Type::FileDefinition.new(type_mark)
   end
 

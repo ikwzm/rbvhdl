@@ -25,6 +25,10 @@ module RbVHDL::Ast
     end
 
     class PhysicalType < Type
+      def _unit!(ident, arg0, arg1=nil)
+        @_type_definition._unit!(ident, arg0, arg1)
+        return self
+      end
     end
 
     class ArrayType    < Type

@@ -2,6 +2,24 @@ module RbVHDL::Ast
   module Statement
     module Methods
 
+      module Comment
+        def _statement_horizontal_rule
+          decl = RbVHDL::Ast.horizontal_rule(self)
+          @_statement_list.push(decl)
+          return decl
+        end
+        def _statement_new_line
+          decl = RbVHDL::Ast.new_line(self)
+          @_statement_list.push(decl)
+          return decl
+        end
+        def _statement_comment(text)
+          decl = RbVHDL::Ast.comment(self, text)
+          @_statement_list.push(decl)
+          return decl
+        end
+      end
+
       module Assertion
         def _assertion_statement(condition)
           stmt = RbVHDL::Ast.assertion_statement(self, condition)
@@ -11,68 +29,68 @@ module RbVHDL::Ast
       end
 
       module Block
-        def _block_statement(label)
-          stmt = RbVHDL::Ast.block_statement(self, label)
+        def _block_statement(label, &block)
+          stmt = RbVHDL::Ast.block_statement(self, label, &block)
           @_statement_list.push(stmt)
           return stmt
         end
       end
 
       module Case
-        def _case_statement(expression)
-          stmt = RbVHDL::Ast.case_statement(self, expression)
+        def _case_statement(expression, &block)
+          stmt = RbVHDL::Ast.case_statement(self, expression, &block)
           @_statement_list.push(stmt)
           return stmt
         end
       end
 
       module ComponentInstantiation
-        def _component_instantiation_statement(label, component_name)
-          stmt = RbVHDL::Ast.component_instantiation_statement(self, label, component_name)
+        def _component_instantiation_statement(label, component_name, &block)
+          stmt = RbVHDL::Ast.component_instantiation_statement(self, label, component_name, &block)
           @_statement_list.push(stmt)
           return stmt
         end
-        def _entity_instantiation_statement(label, entity_name, architecture_name)
-          stmt = RbVHDL::Ast.entity_instantiation_statement(self, label, entity_name, architecture_name)
+        def _entity_instantiation_statement(label, entity_name, architecture_name, &block)
+          stmt = RbVHDL::Ast.entity_instantiation_statement(self, label, entity_name, architecture_name, &block)
           @_statement_list.push(stmt)
           return stmt
         end
       end
 
       module Generate
-        def _if_generate_statement(label, condition)
-          stmt = RbVHDL::Ast.if_generate_statement(self, label, condition)
+        def _if_generate_statement(label, condition, &block)
+          stmt = RbVHDL::Ast.if_generate_statement(self, label, condition, &block)
           @_statement_list.push(stmt)
           return stmt
         end
-        def _for_generate_statement(label, index_identifier, index_range)
-          stmt = RbVHDL::Ast.for_generate_statement(self, label, index_identifier, index_range)
+        def _for_generate_statement(label, index_identifier, index_range, &block)
+          stmt = RbVHDL::Ast.for_generate_statement(self, label, index_identifier, index_range, &block)
           @_statement_list.push(stmt)
           return stmt
         end
       end
   
       module If
-        def _if_statement(condition)
-          stmt = RbVHDL::Ast.if_statement(self, condition)
+        def _if_statement(condition, &block)
+          stmt = RbVHDL::Ast.if_statement(self, condition, &block)
           @_statement_list.push(stmt)
           return stmt
         end
       end
 
       module Loop
-        def _loop_statement
-          stmt = RbVHDL::Ast.loop_statement(self)
+        def _loop_statement(&block)
+          stmt = RbVHDL::Ast.loop_statement(self, &block)
           @_statement_list.push(stmt)
           return stmt
         end
-        def _for_loop_statement(index_identifier, index_range)
-          stmt = RbVHDL::Ast.for_loop_statement(self, index_identifier, index_range)
+        def _for_loop_statement(index_identifier, index_range, &block)
+          stmt = RbVHDL::Ast.for_loop_statement(self, index_identifier, index_range, &block)
           @_statement_list.push(stmt)
           return stmt
         end
-        def _while_loop_statement(condition)
-          stmt = RbVHDL::Ast.while_loop_statement(self, condition)
+        def _while_loop_statement(condition, &block)
+          stmt = RbVHDL::Ast.while_loop_statement(self, condition, &block)
           @_statement_list.push(stmt)
           return stmt
         end
@@ -97,16 +115,16 @@ module RbVHDL::Ast
       end
 
       module Process
-        def _process_statement
-          stmt = RbVHDL::Ast.process_statement(self)
+        def _process_statement(&block)
+          stmt = RbVHDL::Ast.process_statement(self, &block)
           @_statement_list.push(stmt)
           return stmt
         end
       end
 
       module ProcedureCall
-        def _procedure_call(name)
-          stmt = RbVHDL::Ast.procedure_call(self, name)
+        def _procedure_call(name, &block)
+          stmt = RbVHDL::Ast.procedure_call(self, name, &block)
           @_statement_list.push(stmt)
           return stmt
         end
@@ -129,17 +147,22 @@ module RbVHDL::Ast
       end
 
       module SignalAssignment
-        def _simple_signal_assignment_statement(target, waveform)
+        def _signal_assignment_statement(target, waveform=nil)
+          stmt = RbVHDL::Ast.signal_assignment_statement(self, target, waveform)
+          @_statement_list.push(stmt)
+          return stmt
+        end
+        def _simple_signal_assignment_statement(target, waveform=nil)
           stmt = RbVHDL::Ast.simple_signal_assignment_statement(self, target, waveform)
           @_statement_list.push(stmt)
           return stmt
         end
-        def _conditional_signal_assignment_statement(target, waveform)
-          stmt = RbVHDL::Ast.conditional_signal_assignment(self, target, waveform)
+        def _conditional_signal_assignment_statement(target, waveform=nil)
+          stmt = RbVHDL::Ast.conditional_signal_assignment_statement(self, target, waveform)
           @_statement_list.push(stmt)
           return stmt
         end
-        def _selected_signal_assignment_statement(expression, target, waveform, choices)
+        def _selected_signal_assignment_statement(expression, target, waveform=nil, choices=nil)
           stmt = RbVHDL::Ast.selected_signal_assignment_statement(self, expression, target, waveform, choices)
           @_statement_list.push(stmt)
           return stmt
@@ -147,17 +170,22 @@ module RbVHDL::Ast
       end
 
       module VariableAssignment
-        def _simple_variable_assignment_statement(target, value)
+        def _variable_assignment_statement(target, value=nil)
+          stmt = RbVHDL::Ast.variable_assignment_statement(self, target, value)
+          @_statement_list.push(stmt)
+          return stmt
+        end
+        def _simple_variable_assignment_statement(target, value=nil)
           stmt = RbVHDL::Ast.simple_variable_assignment_statement(self, target, value)
           @_statement_list.push(stmt)
           return stmt
         end
-        def _conditional_variable_assignment_statement(target, value)
+        def _conditional_variable_assignment_statement(target, value=nil)
           stmt = RbVHDL::Ast.conditional_variable_assignment_statement(self, target, value)
           @_statement_list.push(stmt)
           return stmt
         end
-        def _selected_variable_assignment_statement(expression, target, value, choices)
+        def _selected_variable_assignment_statement(expression, target, value=nil, choices=nil)
           stmt = RbVHDL::Ast.selected_variable_assignment_statement(self, expression, target, value, choices)
           @_statement_list.push(stmt)
           return stmt
@@ -173,6 +201,7 @@ module RbVHDL::Ast
       end
 
       module Concurrent
+        include Comment
         include Block
         include Process
         include ProcedureCall
@@ -183,7 +212,7 @@ module RbVHDL::Ast
       end
 
       module Sequential
-        include Wait
+        include Comment
         include Assertion
         include Report
         include SignalAssignment
@@ -192,8 +221,9 @@ module RbVHDL::Ast
         include If
         include Case
         include Loop
-        include Return
         include Null
+        include Return
+        include Wait
       end
 
     end

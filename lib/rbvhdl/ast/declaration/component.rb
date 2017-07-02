@@ -16,12 +16,15 @@ module RbVHDL::Ast
       attr_reader   :_port_interface_list    # Array of RbVHDL::Ast::Interface::Signal
       attr_reader   :_annotation
 
-      def initialize(owner, identifier)
+      def initialize(owner, identifier, &block)
         @_owner                   = owner
         @_identifier              = identifier
         @_generic_interface_list  = []
         @_port_interface_list     = []
         @_annotation              = Hash.new
+        if block_given? then
+          self.instance_eval(&block)
+        end
       end
     
       include RbVHDL::Ast::Interface::Methods::Generic
@@ -29,9 +32,9 @@ module RbVHDL::Ast
     end
   end
 
-  def self.component_declaration(owner, ident)
+  def self.component_declaration(owner, ident, &block)
     identifier = RbVHDL::Ast.identifier(ident)
-    return RbVHDL::Ast::Declaration::Component.new(owner, identifier)
+    return RbVHDL::Ast::Declaration::Component.new(owner, identifier, &block)
   end
     
 end

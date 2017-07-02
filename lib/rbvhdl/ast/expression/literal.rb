@@ -133,12 +133,24 @@ module RbVHDL::Ast
 
   end
 
+  def self.numeric_expression(num)
+    if num.class < Numeric then
+      if num < 0 then
+        return RbVHDL::Ast.unary_minus(RbVHDL::Ast.decimal_literal(num.abs))
+      else
+        return RbVHDL::Ast.decimal_literal(num)
+      end
+    else
+      raise ArgumentError, "#{self.inspect}.#{__method__}(#{num.inspect}:#{num.class})"
+    end      
+  end
+
   def self.decimal_literal(num)
     if    num.class == RbVHDL::Ast::Expression::DecimalLiteral then
       return num
-    elsif num.class < Integer then
+    elsif num.class < Integer and num >= 0   then
       return RbVHDL::Ast::Expression::DecimalLiteral.new(num)
-    elsif num.class == Float then
+    elsif num.class == Float  and num >= 0.0 then
       str     = num.to_s
       match   = str.match(/^(-?\d*)(.*)/)
       literal = RbVHDL::Ast::Expression::DecimalLiteral.new(match[1])

@@ -2,7 +2,7 @@ module RbVHDL::Ast
 
   class Expression
     attr_reader   :_annotation
-    def initialize()
+    def initialize
       @_annotation = Hash.new
     end
   end
@@ -22,12 +22,13 @@ module RbVHDL::Ast
   require_relative 'expression/parenthesized_expression'
   require_relative 'expression/qualified_expression'
   require_relative 'expression/operation'
+  require_relative 'expression/signature'
 
   def self.expression(arg)
     if    arg.class < RbVHDL::Ast::Expression then
       return arg
     elsif arg.class < Integer or arg.class == Float then
-      return self.decimal_literal(arg)
+      return self.numeric_expression(arg)
     else
       raise ArgumentError, "#{self.inspect}.#{__method__}(#{arg.inspect}:#{arg.class})"
     end      

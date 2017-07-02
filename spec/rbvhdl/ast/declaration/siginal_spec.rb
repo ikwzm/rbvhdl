@@ -14,8 +14,8 @@ describe 'RbVHDL::Ast::Declaration::Signal' do
       expect(sig._identifier_list                    ).to eq [:valid]
       expect(sig._identifier_list[0].class           ).to eq RbVHDL::Ast::Identifier
       expect(sig._subtype_indication.class           ).to eq RbVHDL::Ast::Type::Indication
-      expect(sig._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-      expect(sig._subtype_indication._type_mark      ).to eq :std_logic
+      expect(sig._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(sig._subtype_indication._type_mark._name).to eq :std_logic
       expect(sig._subtype_indication._constraint     ).to eq nil
       expect(sig._mode                               ).to eq nil
       expect(sig._value_expression                   ).to eq value
@@ -32,12 +32,15 @@ describe 'RbVHDL::Ast::Declaration::Signal' do
       expect(sig._identifier_list                    ).to eq [:ready]
       expect(sig._identifier_list[0].class           ).to eq RbVHDL::Ast::Identifier
       expect(sig._subtype_indication.class           ).to eq RbVHDL::Ast::Type::Indication
-      expect(sig._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-      expect(sig._subtype_indication._type_mark      ).to eq :std_logic
+      expect(sig._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(sig._subtype_indication._type_mark._name).to eq :std_logic
       expect(sig._subtype_indication._constraint     ).to eq nil
       expect(sig._mode                               ).to eq nil
       expect(sig._value_expression                   ).to eq nil
     end
+  end
+
+  context "RbVHDL::Ast.signal_declaration" do
 
     it "signal_declaration(nil, 'valid', 'std_logic')" do
       var = RbVHDL::Ast.signal_declaration(nil, 'valid', 'std_logic')
@@ -46,21 +49,21 @@ describe 'RbVHDL::Ast::Declaration::Signal' do
       expect(var._identifier_list                    ).to eq [:valid]
       expect(var._identifier_list[0].class           ).to eq RbVHDL::Ast::Identifier
       expect(var._subtype_indication.class           ).to eq RbVHDL::Ast::Type::Indication
-      expect(var._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-      expect(var._subtype_indication._type_mark      ).to eq :std_logic
+      expect(var._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(var._subtype_indication._type_mark._name).to eq :std_logic
       expect(var._subtype_indication._constraint     ).to eq nil
       expect(var._value_expression                   ).to eq nil
     end
       
-    it "signal_declaration(nil, 'valid', 'std_logic', RbVHDL::Ast.character_literal('0'))" do
+    it "signal_declaration(nil, 'valid', 'std_logic', character_literal('0'))" do
       var = RbVHDL::Ast.signal_declaration(nil, 'valid', 'std_logic', RbVHDL::Ast.character_literal('0'))
       expect(var.class                               ).to eq RbVHDL::Ast::Declaration::Signal
       expect(var._owner                              ).to eq nil
       expect(var._identifier_list                    ).to eq [:valid]
       expect(var._identifier_list[0].class           ).to eq RbVHDL::Ast::Identifier
       expect(var._subtype_indication.class           ).to eq RbVHDL::Ast::Type::Indication
-      expect(var._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-      expect(var._subtype_indication._type_mark      ).to eq :std_logic
+      expect(var._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(var._subtype_indication._type_mark._name).to eq :std_logic
       expect(var._subtype_indication._constraint     ).to eq nil
       expect(var._value_expression.class             ).to eq RbVHDL::Ast::Expression::CharacterLiteral
       expect(var._value_expression._value            ).to eq '0'

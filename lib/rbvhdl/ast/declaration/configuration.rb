@@ -18,13 +18,16 @@ module RbVHDL::Ast
       attr_accessor :_block_configuration   # RbVHDL::Ast::BlockConfiguration | nil
       attr_reader   :_annotation
 
-      def initialize(owner, identifier, entity_name)
+      def initialize(owner, identifier, entity_name, &block)
         @_owner                 = owner
         @_identifier            = identifier
         @_entity_name           = entity_name
         @_declarative_item_list = []
         @_block_configuration   = nil
         @_annotation            = Hash.new
+        if block_given? then
+          self.instance_eval(&block)
+        end
       end
       include RbVHDL::Ast::Declaration::Methods::UseClause
       include RbVHDL::Ast::Declaration::Methods::AttributeSpec
@@ -101,14 +104,17 @@ module RbVHDL::Ast
       attr_reader   :_label                 # RbVHDL::Ast::Expression::SimpleName
       attr_reader   :_declarative_item_list # Array of RbVHDL::Declaration::UseClause
       attr_reader   :_configuration_list    # Array of RbVHDL::Ast::BlockConfiguration | RbVHDL::Ast::ComponentConfiguration
-      def initialize(label)
+      def initialize(label, &block)
         @_label                 = label
         @_declarative_item_list = []
         @_configuration_list    = []
+        if block_given? then
+          self.instance_eval(&block)
+        end
       end
       include RbVHDL::Ast::Declaration::Methods::UseClause
-      def _block_configuration(label)
-        config = RbVHDL::Ast.block_configuration(label)
+      def _block_configuration(label, &block)
+        config = RbVHDL::Ast.block_configuration(label, &block)
         @_configuration_list.push(config)
         return config
       end
@@ -130,9 +136,12 @@ module RbVHDL::Ast
     class BindIndication
       attr_reader   :_generic_association_list
       attr_reader   :_port_association_list
-      def initialize
+      def initialize(&block)
         @_generic_association_list = []
         @_port_association_list    = []
+        if block_given? then
+          self.instance_eval(&block)
+        end
       end
       include RbVHDL::Ast::Association::Methods::Generic
       include RbVHDL::Ast::Association::Methods::Port
@@ -141,8 +150,8 @@ module RbVHDL::Ast
     class EntityBindIndication < BindIndication
       attr_reader   :_name               # RbVHDL::Ast::Expression::SimpleName
       attr_reader   :_architecture_name  # RbVHDL::Ast::Expression::SimpleName | nil
-      def initialize(name, architecture_name=nil)
-        super()
+      def initialize(name, architecture_name=nil, &block)
+        super(&block)
         @_name              = name
         @_architecture_name = architecture_name
       end
@@ -150,24 +159,24 @@ module RbVHDL::Ast
 
     class ConfigurationBindIndication < BindIndication
       attr_reader   :_name               # RbVHDL::Ast::Expression::SimpleName
-      def initialize(name)
-        super()
+      def initialize(name, &block)
+        super(&block)
         @_name = name
       end
     end
 
     class OpenBindIndication < BindIndication
-      def initialize
-        super()
+      def initialize(&block)
+        super(&block)
       end
     end
     
   end
 
-  def self.configuration_declaration(owner, ident, entity)
-    identifier  = RbVHDL::Ast.identifier(ident )
+  def self.configuration_declaration(owner, ident, entity, &block)
+    identifier  = RbVHDL::Ast.identifier(ident)
     entity_name = RbVHDL::Ast.name(entity)
-    return RbVHDL::Ast::Declaration::Configuration.new(owner, identifier, entity_name)
+    return RbVHDL::Ast::Declaration::Configuration.new(owner, identifier, entity_name, &block)
   end
 
   def self.configuration_specification(spec)
@@ -186,8 +195,8 @@ module RbVHDL::Ast
     end
   end
 
-  def self.block_configuration(label)
-    return RbVHDL::Ast::Declaration::BlockConfiguration.new(RbVHDL::Ast.name(label))
+  def self.block_configuration(label, &block)
+    return RbVHDL::Ast::Declaration::BlockConfiguration.new(RbVHDL::Ast.name(label), &block)
   end
 
   def self.component_specification(name, labels=nil)
@@ -209,18 +218,18 @@ module RbVHDL::Ast
     return RbVHDL::Ast::Declaration::ComponentSpecAll.new(RbVHDL::Ast.name(name))
   end
     
-  def self.entity_bind_indication(name, architecture_name=nil)
+  def self.entity_bind_indication(name, architecture_name=nil, &block)
     _name              = RbVHDL::Ast.name(name)
     _architecture_name = (architecture_name.nil?)? nil : RbVHDL::Ast.name(architecture_name)
-    return RbVHDL::Ast::Declaration::EntityBindIndication.new(_name, _architecture_name)
+    return RbVHDL::Ast::Declaration::EntityBindIndication.new(_name, _architecture_name, &block)
   end
 
-  def self.configuration_bind_indication(name)
-    return RbVHDL::Ast::Declaration::ConfigurationBindIndication.new(RbVHDL::Ast.name(name))
+  def self.configuration_bind_indication(name, &block)
+    return RbVHDL::Ast::Declaration::ConfigurationBindIndication.new(RbVHDL::Ast.name(name), &block)
   end
 
-  def self.open_bind_indication
-    return RbVHDL::Ast::Declaration::OpenBindIndication.new
+  def self.open_bind_indication(&block)
+    return RbVHDL::Ast::Declaration::OpenBindIndication.new(&block)
   end
 
 end

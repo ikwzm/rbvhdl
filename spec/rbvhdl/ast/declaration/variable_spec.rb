@@ -26,6 +26,9 @@ describe 'RbVHDL::Ast::Declaration::Variable' do
       expect(var._subtype_indication).to eq type
       expect(var._value_expression  ).to eq nil
     end
+  end
+
+  context "RbVHDL::Ast.variable_declaration" do
 
     it "variable_declaration(nil, 'i', 'integer')" do
       var = RbVHDL::Ast.variable_declaration(nil, 'i', 'integer')
@@ -34,8 +37,8 @@ describe 'RbVHDL::Ast::Declaration::Variable' do
       expect(var._identifier_list                    ).to eq [:i]
       expect(var._identifier_list[0].class           ).to eq RbVHDL::Ast::Identifier
       expect(var._subtype_indication.class           ).to eq RbVHDL::Ast::Type::Indication
-      expect(var._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-      expect(var._subtype_indication._type_mark      ).to eq :integer
+      expect(var._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(var._subtype_indication._type_mark._name).to eq :integer
       expect(var._subtype_indication._constraint     ).to eq nil
       expect(var._value_expression                   ).to eq nil
     end
@@ -47,8 +50,8 @@ describe 'RbVHDL::Ast::Declaration::Variable' do
       expect(var._identifier_list                    ).to eq [:i]
       expect(var._identifier_list[0].class           ).to eq RbVHDL::Ast::Identifier
       expect(var._subtype_indication.class           ).to eq RbVHDL::Ast::Type::Indication
-      expect(var._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Type::Mark
-      expect(var._subtype_indication._type_mark      ).to eq :integer
+      expect(var._subtype_indication._type_mark.class).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(var._subtype_indication._type_mark._name).to eq :integer
       expect(var._subtype_indication._constraint     ).to eq nil
       expect(var._value_expression.class             ).to eq RbVHDL::Ast::Expression::DecimalLiteral
       expect(var._value_expression._integer          ).to eq 8

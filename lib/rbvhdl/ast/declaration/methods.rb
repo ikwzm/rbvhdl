@@ -2,6 +2,28 @@ module RbVHDL::Ast
   module Declaration
     module Methods
 
+      module Comment
+
+        def _declaration_horizontal_rule
+          decl = RbVHDL::Ast.horizontal_rule(self)
+          @_declarative_item_list.push(decl)
+          return decl
+        end
+
+        def _declaration_new_line
+          decl = RbVHDL::Ast.new_line(self)
+          @_declarative_item_list.push(decl)
+          return decl
+        end
+          
+        def _declaration_comment(text)
+          decl = RbVHDL::Ast.comment(self, text)
+          @_declarative_item_list.push(decl)
+          return decl
+        end
+          
+      end
+
       module Type
 
         def _integer_type_declaration(identifier, range)
@@ -16,8 +38,8 @@ module RbVHDL::Ast
           return decl
         end
 
-        def _physical_type_declaration(identifier, range, pyhsical_identifier)
-          decl = RbVHDL::Ast.physical_type_declaration(self, identifier, range, pyhsical_identifier)
+        def _physical_type_declaration(identifier, range, pyhsical_identifier, unit_list=nil)
+          decl = RbVHDL::Ast.physical_type_declaration(self, identifier, range, pyhsical_identifier, unit_list)
           @_declarative_item_list.push(decl)
           return decl
         end
@@ -28,7 +50,7 @@ module RbVHDL::Ast
           return decl
         end
 
-        def _enumeration_type_declaration(identifier, enum_list)
+        def _enumeration_type_declaration(identifier, enum_list=nil)
           decl = RbVHDL::Ast.enumeration_type_declaration(self, identifier, enum_list)
           @_declarative_item_list.push(decl)
           return decl
@@ -87,8 +109,8 @@ module RbVHDL::Ast
       end
 
       module Alias
-        def _alias_declaration(identifier, type, name, signature=nil)
-          decl = RbVHDL::Ast.alias_declaration(self, identifier, type, name, signature)
+        def _alias_declaration(identifier, name, type=nil, signature=nil)
+          decl = RbVHDL::Ast.alias_declaration(self, identifier, name, type, signature)
           @_declarative_item_list.push(decl)
           return decl
         end
@@ -119,44 +141,54 @@ module RbVHDL::Ast
       end
     
       module Component
-        def _component_declaration(identifier)
-          decl = RbVHDL::Ast.component_declaration(self, identifier)
+        def _component_declaration(identifier, &block)
+          decl = RbVHDL::Ast.component_declaration(self, identifier, &block)
           @_declarative_item_list.push(decl)
           return decl
         end
       end
 
       module SubProgramDecl
-        def _procedure_declaration(identifier)
-          decl = RbVHDL::Ast::Declaration::ProcedureDecl.new(self, identifier)
+        def _procedure_declaration(identifier, &block)
+          decl = RbVHDL::Ast.procedure_declaration(self, identifier, &block)
           @_declarative_item_list.push(decl)
           return decl
         end
-        def _pure_function_declaration(identifier)
-          decl = RbVHDL::Ast::Declaration::PureFunctionDecl.new(self, identifier)
+        def _function_declaration(identifier, type_mark, &block)
+          decl = RbVHDL::Ast.function_declaration(self, identifier, type_mark, &block)
           @_declarative_item_list.push(decl)
           return decl
         end
-        def _impure_function_declaration(identifier)
-          decl = RbVHDL::Ast::Declaration::ImpureFunctionDecl.new(self, identifier)
+        def _pure_function_declaration(identifier, type_mark, &block)
+          decl = RbVHDL::Ast.pure_function_declaration(self, identifier, type_mark, &block)
+          @_declarative_item_list.push(decl)
+          return decl
+        end
+        def _impure_function_declaration(identifier, type_mark, &block)
+          decl = RbVHDL::Ast.impure_function_declaration(self, identifier, type_mark, &block)
           @_declarative_item_list.push(decl)
           return decl
         end
       end
 
       module SubProgramBody
-        def _procedure_body(identifier)
-          decl = RbVHDL::Ast::Declaration::ProcedureBody.new(self, identifier)
+        def _procedure_body(identifier, &block)
+          decl = RbVHDL::Ast.procedure_body(self, identifier, &block)
           @_declarative_item_list.push(decl)
           return decl
         end
-        def _pure_function_body(identifier)
-          decl = RbVHDL::Ast::Declaration::PureFunctionBody.new(self, identifier)
+        def _function_body(identifier, type_mark, &block)
+          decl = RbVHDL::Ast.function_body(self, identifier, type_mark, &block)
           @_declarative_item_list.push(decl)
           return decl
         end
-        def _impure_function_body(identifier)
-          decl = RbVHDL::Ast::Declaration::ImpureFunctionBody.new(self, identifier)
+        def _pure_function_body(identifier, type_mark, &block)
+          decl = RbVHDL::Ast.pure_function_body(self, identifier, type_mark, &block)
+          @_declarative_item_list.push(decl)
+          return decl
+        end
+        def _impure_function_body(identifier, type_mark, &block)
+          decl = RbVHDL::Ast.impure_function_body(self, identifier, type_mark, &block)
           @_declarative_item_list.push(decl)
           return decl
         end
@@ -187,6 +219,7 @@ module RbVHDL::Ast
       end
 
       module BlockItem
+        include Comment
         include SubProgramDecl
         include SubProgramBody
         include Type
@@ -205,6 +238,7 @@ module RbVHDL::Ast
       end
 
       module SubProgramItem
+        include Comment
         include SubProgramDecl
         include SubProgramBody
         include Type
@@ -222,6 +256,7 @@ module RbVHDL::Ast
       end
     
       module PackageItem
+        include Comment
         include SubProgramDecl
         include Type
         include Subtype
@@ -239,6 +274,7 @@ module RbVHDL::Ast
       end
     
       module PackageBodyItem
+        include Comment
         include SubProgramDecl
         include SubProgramBody
         include Type
@@ -254,6 +290,7 @@ module RbVHDL::Ast
       end
 
       module EntityItem
+        include Comment
         include SubProgramDecl
         include SubProgramBody
         include Type
@@ -271,6 +308,7 @@ module RbVHDL::Ast
       end
 
       module ProcessItem
+        include Comment
         include SubProgramDecl
         include SubProgramBody
         include Type

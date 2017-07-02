@@ -1,21 +1,10 @@
 module RbVHDL::Ast
-  module Interface
 
-    class Constant
-      attr_reader   :_owner
-      attr_reader   :_identifier_list
-      attr_reader   :_subtype_indication
-      attr_reader   :_mode
-      attr_reader   :_static_expression
-      attr_reader   :_annotation
+  class Interface
 
+    class Constant < Interface
       def initialize(owner, identifier_list, subtype_indication, mode, static_expression)
-        @_owner              = owner
-        @_identifier_list    = identifier_list
-        @_subtype_indication = subtype_indication
-        @_mode               = mode
-        @_static_expression  = static_expression
-        @_annotation         = Hash.new
+        super(owner, identifier_list, subtype_indication, mode, static_expression)
       end
     end
   end
@@ -24,7 +13,8 @@ module RbVHDL::Ast
     identifier_list    = RbVHDL::Ast.identifier_list(ident)
     subtype_indication = RbVHDL::Ast.subtype_indication(type)
     static_expression  = RbVHDL::Ast.expression_or_nil(value)
-    return RbVHDL::Ast::Interface::Constant.new(owner, identifier_list, subtype_indication, mode, static_expression)
+    interface_mode     = RbVHDL::Ast.interface_mode_or_nil(mode)
+    return RbVHDL::Ast::Interface::Constant.new(owner, identifier_list, subtype_indication, interface_mode, static_expression)
   end
 
 end

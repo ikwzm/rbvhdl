@@ -1,6 +1,7 @@
 module RbVHDL
   module Ast
   end
+  require_relative 'ast/comment'
   require_relative 'ast/identifier'
   require_relative 'ast/label'
   require_relative 'ast/expression'

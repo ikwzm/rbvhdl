@@ -1,6 +1,5 @@
 module RbVHDL::Ast
 
-  require_relative 'type/mark'
   require_relative 'type/definition'
   require_relative 'type/indication'
   require_relative 'type/range'
@@ -13,4 +12,8 @@ module RbVHDL::Ast
     end
   end
   
+  def self.type_mark(name)
+    return RbVHDL::Ast.name(name)
+  end
+
 end

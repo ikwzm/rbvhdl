@@ -30,8 +30,11 @@ describe 'RbVHDL::Ast::Declaration::Group' do
       expect(decl._name_list[0]._name.class           ).to eq RbVHDL::Ast::Identifier
       expect(decl._name_list[0]._name                 ).to eq :name0
     end
+  end
 
-    it "RbVHDL::Ast.group_declaration(nil, 'group', 'template')" do
+  context "RbVHDL::Ast.group_declaration" do
+
+    it "group_declaration(nil, 'group', 'template')" do
       decl = RbVHDL::Ast.group_declaration(nil, 'group', 'template')
       expect(decl.class                               ).to eq RbVHDL::Ast::Declaration::Group
       expect(decl._owner                              ).to eq nil
@@ -43,7 +46,7 @@ describe 'RbVHDL::Ast::Declaration::Group' do
       expect(decl._name_list                          ).to eq []
     end
 
-    it "RbVHDL::Ast.group_declaration(nil, 'group', 'template', RbVHDL::Ast.name('name0'))" do
+    it "group_declaration(nil, 'group', 'template', name('name0'))" do
       decl = RbVHDL::Ast.group_declaration(nil, 'group', 'template', RbVHDL::Ast.name('name0'))
       expect(decl.class                               ).to eq RbVHDL::Ast::Declaration::Group
       expect(decl._owner                              ).to eq nil
@@ -58,7 +61,7 @@ describe 'RbVHDL::Ast::Declaration::Group' do
       expect(decl._name_list[0]._name                 ).to eq :name0
     end
 
-    it "RbVHDL::Ast.group_declaration(nil, 'group', 'template', [RbVHDL::Ast.name('name0'), RbVHDL::Ast.name('name1')])" do
+    it "group_declaration(nil, 'group', 'template', [name('name0'), name('name1')])" do
       decl = RbVHDL::Ast.group_declaration(nil, 'group', 'template', [RbVHDL::Ast.name('name0'), RbVHDL::Ast.name('name1')])
       expect(decl.class                               ).to eq RbVHDL::Ast::Declaration::Group
       expect(decl._owner                              ).to eq nil

@@ -16,6 +16,14 @@ module RbVHDL::Ast
       end
     end
 
+    class OperatorSymbol < Name
+      attr_reader   :_symbol
+      def initialize(symbol)
+        super()
+        @_symbol = symbol
+      end
+    end
+
     class FunctionCall < Name
       attr_reader   :_name
       attr_reader   :_parameter_association_list
@@ -58,10 +66,16 @@ module RbVHDL::Ast
       end
     end
 
+    class All < Name
+      def initialize
+        super()
+      end
+    end
+
     class AttributeName < Name
       attr_reader   :_name
       attr_reader   :_attribute
-      attr_reader   :_signature
+      attr_accessor :_signature
       attr_reader   :_expression
       def initialize(name, attribute, signature=nil, expression=nil)
         super()
@@ -114,6 +128,12 @@ module RbVHDL::Ast
         return name
       end
 
+      def _select_all
+        name = SelectedName.new(self, RbVHDL::Ast.all)
+        name._annotation.merge(self._annotation)
+        return name
+      end
+
       def _call(associations)
         function_call = FunctionCall.new(self)
         function_call._add_parameter_associations(associations)
@@ -138,4 +158,20 @@ module RbVHDL::Ast
     end
   end
 
+  def self.operator_symbol(symbol)
+    if    symbol.class == RbVHDL::Ast::Expression::OperatorSymbol then
+      return symbol
+    elsif symbol.class == Symbol then
+      return RbVHDL::Ast::Expression::OperatorSymbol.new(symbol)
+    elsif symbol.class == String then
+      return RbVHDL::Ast::Expression::OperatorSymbol.new(symbol.to_sym)
+    else
+      raise ArgumentError, "#{self.inspect}.#{__method__}(#{symbol.inspect}:#{symbol.class})"
+    end
+  end
+
+  def self.all
+    return RbVHDL::Ast::Expression::All.new
+  end
+  
 end

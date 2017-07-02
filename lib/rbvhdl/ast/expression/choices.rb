@@ -112,7 +112,7 @@ module RbVHDL::Ast
       end
       return new_choices
     else
-      return RbVHDL::Ast.choice(choice)
+      return RbVHDL::Ast.choice(choices)
     end
   end
   
