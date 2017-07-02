@@ -26,6 +26,9 @@ describe 'RbVHDL::Ast::Declaration::Variable' do
       expect(var._subtype_indication).to eq type
       expect(var._value_expression  ).to eq nil
     end
+  end
+
+  context "RbVHDL::Ast.variable_declaration" do
 
     it "variable_declaration(nil, 'i', 'integer')" do
       var = RbVHDL::Ast.variable_declaration(nil, 'i', 'integer')

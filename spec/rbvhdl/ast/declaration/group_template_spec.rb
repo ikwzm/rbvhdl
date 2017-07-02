@@ -21,8 +21,11 @@ describe 'RbVHDL::Ast::Declaration::GroupTemplate' do
       expect(decl._identifier                         ).to eq :group
       expect(decl._entity_class_list                  ).to eq [:entity, :architecture]
     end
+  end
 
-    it "RbVHDL::Ast.group_template_declaration(nil,'group')" do
+  context "RbVHDL::Ast.group_template_declaration" do
+
+    it "group_template_declaration(nil,'group')" do
       decl = RbVHDL::Ast.group_template_declaration(nil,'group')
       expect(decl.class                               ).to eq RbVHDL::Ast::Declaration::GroupTemplate
       expect(decl._owner                              ).to eq nil
@@ -31,7 +34,7 @@ describe 'RbVHDL::Ast::Declaration::GroupTemplate' do
       expect(decl._entity_class_list                  ).to eq []
     end
 
-    it "RbVHDL::Ast.group_template_declaration(nil,'group', [:entity, :architecture])" do
+    it "group_template_declaration(nil,'group', [:entity, :architecture])" do
       decl = RbVHDL::Ast.group_template_declaration(nil,'group', [:entity, :architecture])
       expect(decl.class                               ).to eq RbVHDL::Ast::Declaration::GroupTemplate
       expect(decl._owner                              ).to eq nil

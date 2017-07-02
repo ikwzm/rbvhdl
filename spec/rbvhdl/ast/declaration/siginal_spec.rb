@@ -38,6 +38,9 @@ describe 'RbVHDL::Ast::Declaration::Signal' do
       expect(sig._mode                               ).to eq nil
       expect(sig._value_expression                   ).to eq nil
     end
+  end
+
+  context "RbVHDL::Ast.signal_declaration" do
 
     it "signal_declaration(nil, 'valid', 'std_logic')" do
       var = RbVHDL::Ast.signal_declaration(nil, 'valid', 'std_logic')
@@ -52,7 +55,7 @@ describe 'RbVHDL::Ast::Declaration::Signal' do
       expect(var._value_expression                   ).to eq nil
     end
       
-    it "signal_declaration(nil, 'valid', 'std_logic', RbVHDL::Ast.character_literal('0'))" do
+    it "signal_declaration(nil, 'valid', 'std_logic', character_literal('0'))" do
       var = RbVHDL::Ast.signal_declaration(nil, 'valid', 'std_logic', RbVHDL::Ast.character_literal('0'))
       expect(var.class                               ).to eq RbVHDL::Ast::Declaration::Signal
       expect(var._owner                              ).to eq nil

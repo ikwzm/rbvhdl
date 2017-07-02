@@ -16,8 +16,11 @@ describe 'RbVHDL::Ast::Declaration::Alias' do
       expect(decl._subtype_indication                 ).to eq nil
       expect(decl._signature                          ).to eq nil
     end
+  end
 
-    it "RbVHDL::Ast.alias_declaration(nil, 'a_vec', 'a')" do
+  context "RbVHDL::Ast.alias_declaration" do
+
+    it "alias_declaration(nil, 'a_vec', 'a')" do
       decl = RbVHDL::Ast.alias_declaration(nil, 'a_vec', 'a')
       expect(decl.class                               ).to eq RbVHDL::Ast::Declaration::Alias
       expect(decl._owner                              ).to eq nil
@@ -30,7 +33,7 @@ describe 'RbVHDL::Ast::Declaration::Alias' do
       expect(decl._signature                          ).to eq nil
     end
 
-    it "RbVHDL::Ast.alias_declaration(nil, 'a_val', 'a', 'integer')" do
+    it "alias_declaration(nil, 'a_val', 'a', 'integer')" do
       decl = RbVHDL::Ast.alias_declaration(nil, 'a_val', 'a', 'integer')
       expect(decl.class                                     ).to eq RbVHDL::Ast::Declaration::Alias
       expect(decl._owner                                    ).to eq nil
@@ -46,7 +49,7 @@ describe 'RbVHDL::Ast::Declaration::Alias' do
       expect(decl._signature                                ).to eq nil
     end
     
-    it "RbVHDL::Ast.alias_declaration(nil, 'a_val', 'a', 'integer', signature('integer', 'integer')._return!('integer'))" do
+    it "alias_declaration(nil, 'a_val', 'a', 'integer', signature('integer', 'integer')._return!('integer'))" do
       decl = RbVHDL::Ast.alias_declaration(nil, 'a_val', 'a', 'integer', RbVHDL::Ast.signature('integer', 'integer')._return!('integer'))
       expect(decl.class                                     ).to eq RbVHDL::Ast::Declaration::Alias
       expect(decl._owner                                    ).to eq nil

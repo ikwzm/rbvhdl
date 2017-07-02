@@ -10,15 +10,21 @@ module RbVHDL::Ast
       attr_reader   :_statement_list
       attr_reader   :_annotation
 
-      def initialize(owner)
+      def initialize(owner, &block)
         @_owner          = owner
         @_label          = nil
         @_statement_list = []
         @_annotation     = Hash.new
+        if block_given? then
+          self.instance_eval(&block)
+        end
       end
 
-      def _label!(label)
+      def _label!(label, &block)
         @_label          = RbVHDL::Ast.label_or_nil(label)
+        if block_given? then
+          self.instance_eval(&block)
+        end
         return self
       end
 
@@ -27,19 +33,19 @@ module RbVHDL::Ast
 
     class WhileLoop < Loop
       attr_reader   :_condition
-      def initialize(owner, condition)
-        super(owner)
+      def initialize(owner, condition, &block)
         @_condition = condition
+        super(owner, &block)
       end
     end
 
     class ForLoop < Loop
       attr_reader   :_index_identifier
       attr_reader   :_index_range
-      def initialize(owner, index_identifier, index_range)
-        super(owner)
+      def initialize(owner, index_identifier, index_range, &block)
         @_index_identifier = index_identifier
         @_index_range      = index_range
+        super(owner, &block)
       end
     end
 
@@ -107,19 +113,19 @@ module RbVHDL::Ast
 
   end
 
-  def self.loop_statement(owner)
-    return RbVHDL::Ast::Statement::Loop.new(owner)
+  def self.loop_statement(owner, &block)
+    return RbVHDL::Ast::Statement::Loop.new(owner, &block)
   end
 
-  def self.while_loop_statement(owner, condition)
-    return RbVHDL::Ast::Statement::WhileLoop.new(owner, RbVHDL::Ast.expression(condition))
+  def self.while_loop_statement(owner, condition, &block)
+    return RbVHDL::Ast::Statement::WhileLoop.new(owner, RbVHDL::Ast.expression(condition), &block)
   end
 
-  def self.for_loop_statement(owner, index_identifier, index_range)
+  def self.for_loop_statement(owner, index_identifier, index_range, &block)
     _index_identifier = RbVHDL::Ast.identifier(index_identifier)
     if index_range.class <  RbVHDL::Ast::Type::Range or
        index_range.class == RbVHDL::Ast::Expression::AttributeName then
-      return RbVHDL::Ast::Statement::ForLoop.new(owner, _index_identifier, index_range)
+      return RbVHDL::Ast::Statement::ForLoop.new(owner, _index_identifier, index_range, &block)
     else
       raise ArgumentError, "#{self.inspect}.#{__method__}(#{index_range.inspect}:#{index_range.class})"
     end

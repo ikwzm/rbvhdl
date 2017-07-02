@@ -141,54 +141,54 @@ module RbVHDL::Ast
       end
     
       module Component
-        def _component_declaration(identifier)
-          decl = RbVHDL::Ast.component_declaration(self, identifier)
+        def _component_declaration(identifier, &block)
+          decl = RbVHDL::Ast.component_declaration(self, identifier, &block)
           @_declarative_item_list.push(decl)
           return decl
         end
       end
 
       module SubProgramDecl
-        def _procedure_declaration(identifier)
-          decl = RbVHDL::Ast.procedure_declaration(self, identifier)
+        def _procedure_declaration(identifier, &block)
+          decl = RbVHDL::Ast.procedure_declaration(self, identifier, &block)
           @_declarative_item_list.push(decl)
           return decl
         end
-        def _function_declaration(identifier, type_mark)
-          decl = RbVHDL::Ast.function_declaration(self, identifier, type_mark)
+        def _function_declaration(identifier, type_mark, &block)
+          decl = RbVHDL::Ast.function_declaration(self, identifier, type_mark, &block)
           @_declarative_item_list.push(decl)
           return decl
         end
-        def _pure_function_declaration(identifier, type_mark)
-          decl = RbVHDL::Ast.pure_function_declaration(self, identifier, type_mark)
+        def _pure_function_declaration(identifier, type_mark, &block)
+          decl = RbVHDL::Ast.pure_function_declaration(self, identifier, type_mark, &block)
           @_declarative_item_list.push(decl)
           return decl
         end
-        def _impure_function_declaration(identifier, type_mark)
-          decl = RbVHDL::Ast.impure_function_declaration(self, identifier, type_mark)
+        def _impure_function_declaration(identifier, type_mark, &block)
+          decl = RbVHDL::Ast.impure_function_declaration(self, identifier, type_mark, &block)
           @_declarative_item_list.push(decl)
           return decl
         end
       end
 
       module SubProgramBody
-        def _procedure_body(identifier)
-          decl = RbVHDL::Ast.procedure_body(self, identifier)
+        def _procedure_body(identifier, &block)
+          decl = RbVHDL::Ast.procedure_body(self, identifier, &block)
           @_declarative_item_list.push(decl)
           return decl
         end
-        def _function_body(identifier, type_mark)
-          decl = RbVHDL::Ast.function_body(self, identifier, type_mark)
+        def _function_body(identifier, type_mark, &block)
+          decl = RbVHDL::Ast.function_body(self, identifier, type_mark, &block)
           @_declarative_item_list.push(decl)
           return decl
         end
-        def _pure_function_body(identifier, type_mark)
-          decl = RbVHDL::Ast.pure_function_body(self, identifier, type_mark)
+        def _pure_function_body(identifier, type_mark, &block)
+          decl = RbVHDL::Ast.pure_function_body(self, identifier, type_mark, &block)
           @_declarative_item_list.push(decl)
           return decl
         end
-        def _impure_function_body(identifier, type_mark)
-          decl = RbVHDL::Ast.impure_function_body(self, identifier, type_mark)
+        def _impure_function_body(identifier, type_mark, &block)
+          decl = RbVHDL::Ast.impure_function_body(self, identifier, type_mark, &block)
           @_declarative_item_list.push(decl)
           return decl
         end

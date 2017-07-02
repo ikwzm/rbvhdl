@@ -15,13 +15,16 @@ module RbVHDL::Ast
       attr_reader   :_parameter_interface_list
       attr_reader   :_annotation
 
-      def initialize(owner, identifier)
+      def initialize(owner, identifier, &block)
         @_owner                    = owner
         @_identifier               = identifier
         @_generic_interface_list   = []
         @_generic_association_list = []
         @_parameter_interface_list = []
         @_annotation               = Hash.new
+        if block_given? then
+          self.instance_eval(&block)
+        end
       end
 
       include RbVHDL::Ast::Interface::Methods::Generic
@@ -34,10 +37,10 @@ module RbVHDL::Ast
     class SubProgramBody     < SubProgram
       attr_reader   :_declarative_item_list
       attr_reader   :_statement_list
-      def initialize(owner, identifier)
-        super(owner, identifier)
+      def initialize(owner, identifier, &block)
         @_declarative_item_list = []
         @_statement_list        = []
+        super(owner, identifier, &block)
       end
       include RbVHDL::Ast::Declaration::Methods::SubProgramItem
       include RbVHDL::Ast::Statement::Methods::Sequential
@@ -53,18 +56,18 @@ module RbVHDL::Ast
 
     class FunctionDecl       < SubProgramDecl
       attr_reader   :_type_mark
-      def initialize(owner, identifier, type)
-        super(owner, identifier)
-        @_type_mark = RbVHDL::Ast.type_mark(type)
+      def initialize(owner, identifier, type, &block)
+        @_type_mark = type
+        super(owner, identifier, &block)
       end
       include RbVHDL::Ast::Interface::Methods::FunctionParameter
     end
     
     class FunctionBody       < SubProgramBody
       attr_reader   :_type_mark
-      def initialize(owner, identifier, type)
-        super(owner, identifier)
-        @_type_mark = RbVHDL::Ast.type_mark(type)
+      def initialize(owner, identifier, type, &block)
+        @_type_mark = type
+        super(owner, identifier, &block)
       end
       include RbVHDL::Ast::Interface::Methods::FunctionParameter
     end
@@ -82,14 +85,14 @@ module RbVHDL::Ast
     end
   end
 
-  def self.procedure_declaration(owner, ident)
+  def self.procedure_declaration(owner, ident, &block)
     identifier = RbVHDL::Ast.identifier(ident)
-    return RbVHDL::Ast::Declaration::ProcedureDecl.new(owner, identifier)
+    return RbVHDL::Ast::Declaration::ProcedureDecl.new(owner, identifier, &block)
   end
 
-  def self.procedure_body(owner, ident)
+  def self.procedure_body(owner, ident, &block)
     identifier = RbVHDL::Ast.identifier(ident)
-    return RbVHDL::Ast::Declaration::ProcedureBody.new(owner, identifier)
+    return RbVHDL::Ast::Declaration::ProcedureBody.new(owner, identifier, &block)
   end
 
   def self.function_identifier(ident)
@@ -100,40 +103,40 @@ module RbVHDL::Ast
     end
   end
 
-  def self.function_declaration(owner, ident, type)
+  def self.function_declaration(owner, ident, type, &block)
     identifier = RbVHDL::Ast.function_identifier(ident)
     type_mark  = RbVHDL::Ast.type_mark(type)
-    return RbVHDL::Ast::Declaration::FunctionDecl.new(owner, identifier, type_mark)
+    return RbVHDL::Ast::Declaration::FunctionDecl.new(owner, identifier, type_mark, &block)
   end
     
-  def self.function_body(owner, ident, type)
+  def self.function_body(owner, ident, type, &block)
     identifier = RbVHDL::Ast.function_identifier(ident)
     type_mark  = RbVHDL::Ast.type_mark(type)
-    return RbVHDL::Ast::Declaration::FunctionBody.new(owner, identifier, type_mark)
+    return RbVHDL::Ast::Declaration::FunctionBody.new(owner, identifier, type_mark, &block)
   end
     
-  def self.pure_function_declaration(owner, ident, type)
+  def self.pure_function_declaration(owner, ident, type, &block)
     identifier = RbVHDL::Ast.function_identifier(ident)
     type_mark  = RbVHDL::Ast.type_mark(type)
-    return RbVHDL::Ast::Declaration::PureFunctionDecl.new(owner, identifier, type_mark)
+    return RbVHDL::Ast::Declaration::PureFunctionDecl.new(owner, identifier, type_mark, &block)
   end
     
-  def self.pure_function_body(owner, ident, type)
+  def self.pure_function_body(owner, ident, type, &block)
     identifier = RbVHDL::Ast.function_identifier(ident)
     type_mark  = RbVHDL::Ast.type_mark(type)
-    return RbVHDL::Ast::Declaration::PureFunctionBody.new(owner, identifier, type_mark)
+    return RbVHDL::Ast::Declaration::PureFunctionBody.new(owner, identifier, type_mark, &block)
   end
     
-  def self.impure_function_declaration(owner, ident, type)
+  def self.impure_function_declaration(owner, ident, type, &block)
     identifier = RbVHDL::Ast.function_identifier(ident)
     type_mark  = RbVHDL::Ast.type_mark(type)
-    return RbVHDL::Ast::Declaration::ImpureFunctionDecl.new(owner, identifier, type_mark)
+    return RbVHDL::Ast::Declaration::ImpureFunctionDecl.new(owner, identifier, type_mark, &block)
   end
     
-  def self.impure_function_body(owner, ident, type)
+  def self.impure_function_body(owner, ident, type, &block)
     identifier = RbVHDL::Ast.function_identifier(ident)
     type_mark  = RbVHDL::Ast.type_mark(type)
-    return RbVHDL::Ast::Declaration::ImpureFunctionBody.new(owner, identifier, type_mark)
+    return RbVHDL::Ast::Declaration::ImpureFunctionBody.new(owner, identifier, type_mark, &block)
   end
     
 end

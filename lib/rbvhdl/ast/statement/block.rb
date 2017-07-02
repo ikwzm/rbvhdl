@@ -19,7 +19,7 @@ module RbVHDL::Ast
       attr_reader   :_statement_list
       attr_reader   :_annotation
     
-      def initialize(owner, label)
+      def initialize(owner, label, &block)
         @_owner                    = owner
         @_label                    = label
         @_gurard_expression        = nil
@@ -30,6 +30,9 @@ module RbVHDL::Ast
         @_declarative_item_list    = []
         @_statement_list           = []
         @_annotation               = Hash.new
+        if block_given? then
+          self.instance_eval(&block)
+        end
       end
 
       include RbVHDL::Ast::Interface::Methods::Generic
@@ -42,8 +45,8 @@ module RbVHDL::Ast
 
   end
 
-  def self.block_statement(owner, label)
-    return RbVHDL::Ast::Statement::Block.new(owner, RbVHDL::Ast.label(label))
+  def self.block_statement(owner, label, &block)
+    return RbVHDL::Ast::Statement::Block.new(owner, RbVHDL::Ast.label(label), &block)
   end
   
 end

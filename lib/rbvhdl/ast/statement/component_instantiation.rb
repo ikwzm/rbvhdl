@@ -12,13 +12,16 @@ module RbVHDL::Ast
       attr_reader   :_port_association_list
       attr_reader   :_annotation
     
-      def initialize(owner, label, component_name)
+      def initialize(owner, label, component_name, &block)
         @_owner                    = owner
         @_label                    = label
         @_name                     = component_name
         @_generic_association_list = []
         @_port_association_list    = []
         @_annotation               = Hash.new
+        if block_given? then
+          self.instance_eval(&block)
+        end
       end
 
       include RbVHDL::Ast::Association::Methods::Generic
@@ -28,25 +31,25 @@ module RbVHDL::Ast
 
     class EntityInstantiation < ComponentInstantiation
       attr_reader   :_architecture_identifier
-      def initialize(owner, label, entity_name, architecture_name)
-        super(owner, label, name)
+      def initialize(owner, label, entity_name, architecture_name, &block)
         @_architecture_identifier = RbVHDL::Ast.label(architecture_name)
+        super(owner, label, name, &block)
       end
     end
 
   end
 
-  def self.component_instantiation_statement(owner, label, component_name)
+  def self.component_instantiation_statement(owner, label, component_name, &block)
     _label           = RbVHDL::Ast.label(label)
     _component_name  = RbVHDL::Ast.identifier(component_name)
-    return RbVHDL::Ast::Statement::ComponentInstantiation.new(owner, _label, _component_name)
+    return RbVHDL::Ast::Statement::ComponentInstantiation.new(owner, _label, _component_name, &block)
   end
 
-  def self.entity_instantiation_statement(owner, label, entity_name, architecture_name)
+  def self.entity_instantiation_statement(owner, label, entity_name, architecture_name, &block)
     _label             = RbVHDL::Ast.label(label)
     _entity_name       = RbVHDL::Ast.identifier(entity_name)
     _architecture_name = RbVHDL::Ast.identifier(architecture_name)
-    return RbVHDL::Ast::Statement::EntityInstantiation.new(owner, _label, _entity_name, _architecture_name)
+    return RbVHDL::Ast::Statement::EntityInstantiation.new(owner, _label, _entity_name, _architecture_name, &block)
   end
   
 end

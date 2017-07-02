@@ -28,6 +28,9 @@ describe 'RbVHDL::Ast::Declaration::Constant' do
       expect(var._subtype_indication._constraint     ).to eq nil
       expect(var._value_expression                   ).to eq nil
     end
+  end
+
+  context "RbVHDL::Ast.constant_declaration" do
 
     it "constant_declaration(nil, 'width', 'integer', 8)" do
       var = RbVHDL::Ast.constant_declaration(nil, 'width', 'integer', 8)

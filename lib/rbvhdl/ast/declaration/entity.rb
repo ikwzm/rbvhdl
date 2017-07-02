@@ -27,7 +27,7 @@ module RbVHDL::Ast
       attr_reader   :_statement_list          # Array of RbVHDL::Ast::Statement::*
       attr_reader   :_annotation
     
-      def initialize(owner, identifier)
+      def initialize(owner, identifier, &block)
         @_owner                  = owner
         @_identifier             = identifier
         @_generic_interface_list = []
@@ -35,6 +35,9 @@ module RbVHDL::Ast
         @_declarative_item_list  = []
         @_statement_list         = []
         @_annotation             = Hash.new
+        if block_given? then
+          self.instance_eval(&block)
+        end
       end
 
       include RbVHDL::Ast::Declaration::Methods::EntityItem
@@ -46,8 +49,8 @@ module RbVHDL::Ast
     end
   end
 
-  def self.entity_declaration(owner, identifier)
-    return RbVHDL::Ast::Declaration::Entity.new(owner, RbVHDL::Ast.identifier(identifier))
+  def self.entity_declaration(owner, identifier, &block)
+    return RbVHDL::Ast::Declaration::Entity.new(owner, RbVHDL::Ast.identifier(identifier), &block)
   end
   
 end
