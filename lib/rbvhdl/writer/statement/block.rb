@@ -56,7 +56,7 @@ module RbVHDL::Ast
             :guard?   => guard,
             :begin?   => " #{reserved_words[:begin]}"
           }
-        end          
+        end
         write_line.concat _write_statement_list(directive)
         write_line.push   block_end_format       % {
           :indent   => indent,

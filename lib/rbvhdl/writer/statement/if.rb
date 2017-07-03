@@ -16,7 +16,7 @@ module RbVHDL::Ast
 
       def _write_line(directive={})
         write_line         = []
-        indent             = directive.fetch(:indent, "" )
+        indent             = directive.fetch(:indent           , "" )
         if_begin_format    = directive.fetch(:if_begin_format  , WRITE_DIRECTIVE[:if_begin_format  ])
         label_format       = directive.fetch(:label_format     , WRITE_DIRECTIVE[:label_format     ])
         if_end_format      = directive.fetch(:if_end_format    , WRITE_DIRECTIVE[:if_end_format    ])
@@ -37,10 +37,20 @@ module RbVHDL::Ast
           :_then_    => reserved_words[:then],
         }
 
-        write_line.concat _write_statement_list(directive)
+        statement_directive = directive.dup
+        target_field_max_size_list = [self._target_field_max_size]
+        target_field_max_size_list.concat @_else_list.map{|_else| _else._target_field_max_size}
+        target_field_size = target_field_max_size_list.max
+        if target_field_size > 0 then
+          statement_directive[:target_format] = "%<target>-#{target_field_size+1}s"
+        else
+          statement_directive.delete(:target_format)
+        end
+
+        write_line.concat _write_statement_list(statement_directive)
 
         @_else_list.each do |_else|
-          write_line.concat _else._write_line(directive)
+          write_line.concat _else._write_line(statement_directive)
         end
 
         write_line.push if_end_format   % {

@@ -33,7 +33,7 @@ design_unit._architecture('MODEL', 'SAMPLE'){
         RbVHDL::Ast.name('Q'),
         RbVHDL::Ast.aggregate(RbVHDL::Ast.aggregate_item(RbVHDL::Ast.choice_others, RbVHDL::Ast.character_literal('0')))
       )
-    }._elsif_statement(RbVHDL::Ast.logical_and(RbVHDL::Ast.name('CLK')._attribute('event'),RbVHDL::Ast.name('CLK'), RbVHDL::Ast.character_literal('1'))){
+    }._elsif!(RbVHDL::Ast.logical_and(RbVHDL::Ast.name('CLK')._attribute('event'),RbVHDL::Ast.name('CLK'), RbVHDL::Ast.character_literal('1'))){
       _signal_assignment_statement(
         RbVHDL::Ast.name('Q'),
         RbVHDL::Ast.name('D')

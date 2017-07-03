@@ -87,11 +87,11 @@ describe 'RbVHDL::Ast::Statement::If' do
 
     it "RbVHDL::Ast.if_statement(nil, name('cond_0')) ... _elsif_statement(name('cond_1')) ... _else_statement" do
       if_stmt = RbVHDL::Ast.if_statement(nil, RbVHDL::Ast.name('cond_0'))._label!('IF_COND0')
-      if_stmt._null_statement
+      if_stmt._null_statement._label!("NULL_IF_COND_0")
       e0_stmt = if_stmt._elsif_statement(RbVHDL::Ast.name('cond_1'))
-      e0_stmt._null_statement
+      e0_stmt._null_statement._label!("NULL_IF_COND_1")
       e1_stmt = if_stmt._else_statement
-      e1_stmt._null_statement
+      e1_stmt._null_statement._label!("NULL_ELSE")
       expect(if_stmt.class                    ).to eq RbVHDL::Ast::Statement::If
       expect(if_stmt._owner                   ).to eq nil
       expect(if_stmt._label.class             ).to eq RbVHDL::Ast::Label
@@ -102,7 +102,7 @@ describe 'RbVHDL::Ast::Statement::If' do
       expect(if_stmt._statement_list.size     ).to eq 1
       expect(if_stmt._statement_list[0].class ).to eq RbVHDL::Ast::Statement::Null
       expect(if_stmt._statement_list[0]._owner).to eq if_stmt
-      expect(if_stmt._statement_list[0]._label).to eq nil
+      expect(if_stmt._statement_list[0]._label).to eq :NULL_IF_COND_0
       expect(if_stmt._else_list               ).to eq [e0_stmt, e1_stmt]
       expect(e0_stmt.class                    ).to eq RbVHDL::Ast::Statement::Elsif
       expect(e0_stmt._owner                   ).to eq if_stmt
@@ -112,13 +112,52 @@ describe 'RbVHDL::Ast::Statement::If' do
       expect(e0_stmt._statement_list.size     ).to eq 1
       expect(e0_stmt._statement_list[0].class ).to eq RbVHDL::Ast::Statement::Null
       expect(e0_stmt._statement_list[0]._owner).to eq e0_stmt
-      expect(e0_stmt._statement_list[0]._label).to eq nil
+      expect(e0_stmt._statement_list[0]._label).to eq :NULL_IF_COND_1
       expect(e1_stmt.class                    ).to eq RbVHDL::Ast::Statement::Else
       expect(e1_stmt._owner                   ).to eq if_stmt
       expect(e1_stmt._statement_list.size     ).to eq 1
       expect(e1_stmt._statement_list[0].class ).to eq RbVHDL::Ast::Statement::Null
       expect(e1_stmt._statement_list[0]._owner).to eq e1_stmt
-      expect(e1_stmt._statement_list[0]._label).to eq nil
+      expect(e1_stmt._statement_list[0]._label).to eq :NULL_ELSE
+    end
+
+    it "RbVHDL::Ast.if_statement(nil, name('cond_0')){...}._elsif!(name('cond_1')){ ...}._else!{...}" do
+      if_stmt = RbVHDL::Ast.if_statement(nil, RbVHDL::Ast.name('cond_0'))._label!('IF_COND0') {
+        _null_statement._label!("NULL_IF_COND_0")
+      }._elsif!(RbVHDL::Ast.name('cond_1')) {
+        _null_statement._label!("NULL_IF_COND_1")
+      }._else! {
+        _null_statement._label!("NULL_ELSE")
+      }
+      expect(if_stmt.class                    ).to eq RbVHDL::Ast::Statement::If
+      expect(if_stmt._owner                   ).to eq nil
+      expect(if_stmt._label.class             ).to eq RbVHDL::Ast::Label
+      expect(if_stmt._label                   ).to eq :IF_COND0
+      expect(if_stmt._condition.class         ).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(if_stmt._condition._name.class   ).to eq RbVHDL::Ast::Identifier
+      expect(if_stmt._condition._name         ).to eq :cond_0
+      expect(if_stmt._statement_list.size     ).to eq 1
+      expect(if_stmt._statement_list[0].class ).to eq RbVHDL::Ast::Statement::Null
+      expect(if_stmt._statement_list[0]._owner).to eq if_stmt
+      expect(if_stmt._statement_list[0]._label).to eq :NULL_IF_COND_0
+      expect(if_stmt._else_list.size          ).to eq 2
+      e0_stmt = if_stmt._else_list[0]
+      e1_stmt = if_stmt._else_list[1]
+      expect(e0_stmt.class                    ).to eq RbVHDL::Ast::Statement::Elsif
+      expect(e0_stmt._owner                   ).to eq if_stmt
+      expect(e0_stmt._condition.class         ).to eq RbVHDL::Ast::Expression::SimpleName
+      expect(e0_stmt._condition._name.class   ).to eq RbVHDL::Ast::Identifier
+      expect(e0_stmt._condition._name         ).to eq :cond_1
+      expect(e0_stmt._statement_list.size     ).to eq 1
+      expect(e0_stmt._statement_list[0].class ).to eq RbVHDL::Ast::Statement::Null
+      expect(e0_stmt._statement_list[0]._owner).to eq e0_stmt
+      expect(e0_stmt._statement_list[0]._label).to eq :NULL_IF_COND_1
+      expect(e1_stmt.class                    ).to eq RbVHDL::Ast::Statement::Else
+      expect(e1_stmt._owner                   ).to eq if_stmt
+      expect(e1_stmt._statement_list.size     ).to eq 1
+      expect(e1_stmt._statement_list[0].class ).to eq RbVHDL::Ast::Statement::Null
+      expect(e1_stmt._statement_list[0]._owner).to eq e1_stmt
+      expect(e1_stmt._statement_list[0]._label).to eq :NULL_ELSE
     end
 
   end

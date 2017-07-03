@@ -34,6 +34,16 @@ module RbVHDL::Ast
         return self
       end
 
+      def _elsif!(condition, &block)
+        _elsif_statement(condition, self, &block)
+        return self
+      end
+
+      def _else!(&block)
+        _else_statement(self, &block)
+        return self
+      end
+
       def _elsif_statement(condition, owner=self, &block)
         else_statement = RbVHDL::Ast::Statement::Elsif.new(owner, RbVHDL::Ast.expression(condition), &block)
         @_else_list.push(else_statement)
