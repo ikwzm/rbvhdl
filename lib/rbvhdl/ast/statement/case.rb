@@ -48,7 +48,12 @@ module RbVHDL::Ast
         return self
       end
 
-      def _when(choices, &block)
+      def _when!(choices, &block)
+        _when_statement(choices, &block)
+        return self
+      end
+
+      def _when_statement(choices, &block)
         when_statement = When.new(self, RbVHDL::Ast.choices(choices), &block)
         @_when_list.push(when_statement)
         return when_statement
