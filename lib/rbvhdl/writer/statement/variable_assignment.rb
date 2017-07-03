@@ -10,7 +10,7 @@ module RbVHDL::Ast
         :label_format         => "%{label}: ",
         :target_format        => "%{target} ",
         :value_format         => " %{expression}",
-        :target_align         => true,
+        :target_align_enable  => true,
       }
 
       def _write_line(directive={})
@@ -37,7 +37,7 @@ module RbVHDL::Ast
         :target_format        => "%{target} ",
         :value_format         => " %{expression}%{when?}",
         :when_format          => " %{_when_} %{condition}",
-        :target_align         => true,
+        :target_align_enable  => true,
       }
 
       def _write_line(directive={})

@@ -50,9 +50,9 @@ describe 'RbVHDL::Ast::Statement::If' do
         _architecture('MODEL', 'TEST') {
           _process_statement {
             _if_statement(RbVHDL::Ast.name('cond_0')) {
-              _null_statement
+              _null_statement._label!("NULL_IF_0")
             }._elsif_statement(RbVHDL::Ast.name('cond_1')) {
-              _null_statement
+              _null_statement._label!("NULL_IF_1")
             }
           }
         }
@@ -63,9 +63,9 @@ describe 'RbVHDL::Ast::Statement::If' do
       expect(line.shift).to eq "begin"
       expect(line.shift).to eq "    process begin"
       expect(line.shift).to eq "        if    cond_0 then"
-      expect(line.shift).to eq "            null;"
+      expect(line.shift).to eq "            NULL_IF_0: null;"
       expect(line.shift).to eq "        elsif cond_1 then"
-      expect(line.shift).to eq "            null;"
+      expect(line.shift).to eq "            NULL_IF_1: null;"
       expect(line.shift).to eq "        end if;"
       expect(line.shift).to eq "    end process;"
       expect(line.shift).to eq "end MODEL;"
@@ -76,9 +76,9 @@ describe 'RbVHDL::Ast::Statement::If' do
         _architecture('MODEL', 'TEST'){
           _process_statement {
             _if_statement(RbVHDL::Ast.name('cond_0')) {
-              _null_statement
+              _null_statement._label!("NULL_IF_0")
             }._else_statement {
-              _null_statement
+              _null_statement._label!("NULL_ELSE")
             }
           }
         }
@@ -89,9 +89,9 @@ describe 'RbVHDL::Ast::Statement::If' do
       expect(line.shift).to eq "begin"
       expect(line.shift).to eq "    process begin"
       expect(line.shift).to eq "        if cond_0 then"
-      expect(line.shift).to eq "            null;"
+      expect(line.shift).to eq "            NULL_IF_0: null;"
       expect(line.shift).to eq "        else"
-      expect(line.shift).to eq "            null;"
+      expect(line.shift).to eq "            NULL_ELSE: null;"
       expect(line.shift).to eq "        end if;"
       expect(line.shift).to eq "    end process;"
       expect(line.shift).to eq "end MODEL;"
@@ -105,11 +105,11 @@ describe 'RbVHDL::Ast::Statement::If' do
         _architecture('MODEL', 'TEST') {
           _process_statement {
             _if_statement(RbVHDL::Ast.name('cond_0')) {
-              _null_statement._label!("NULL_IF_COND_0")
+              _signal_assignment_statement(RbVHDL::Ast.name('s'  ), RbVHDL::Ast.name('data'))
             }._elsif!(RbVHDL::Ast.name('cond_1')) {
-              _null_statement._label!("NULL_IF_COND_1")
+              _signal_assignment_statement(RbVHDL::Ast.name('ss' ), RbVHDL::Ast.name('data'))
             }._else! {
-              _null_statement._label!("NULL_ELSE")
+              _signal_assignment_statement(RbVHDL::Ast.name('sss'), RbVHDL::Ast.name('data'))
             }
           }
         }
@@ -120,17 +120,14 @@ describe 'RbVHDL::Ast::Statement::If' do
       expect(line.shift).to eq "begin"
       expect(line.shift).to eq "    process begin"
       expect(line.shift).to eq "        if    cond_0 then"
-      expect(line.shift).to eq "            NULL_IF_COND_0: null;"
+      expect(line.shift).to eq "            s   <= data;"
       expect(line.shift).to eq "        elsif cond_1 then"
-      expect(line.shift).to eq "            NULL_IF_COND_1: null;"
+      expect(line.shift).to eq "            ss  <= data;"
       expect(line.shift).to eq "        else"
-      expect(line.shift).to eq "            NULL_ELSE: null;"
+      expect(line.shift).to eq "            sss <= data;"
       expect(line.shift).to eq "        end if;"
       expect(line.shift).to eq "    end process;"
       expect(line.shift).to eq "end MODEL;"
     end
   end
-
-  
 end
-

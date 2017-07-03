@@ -11,7 +11,7 @@ module RbVHDL::Ast
         :target_format        => "%{target} ",
         :postponed_format     => "%{_postponed_} ",
         :delay_format         => " %{delay}",
-        :target_align         => true,
+        :target_align_enable  => true,
       }
 
       def _write_line(directive={})
@@ -75,7 +75,7 @@ module RbVHDL::Ast
         :delay_format         => " %{delay}",
         :waveform_format      => "%{waveform}%{when?}",
         :when_format          => " %{_when_} %{condition}",
-        :target_align         => true,
+        :target_align_enable  => true,
       }
 
       def _write_line(directive={})
@@ -167,6 +167,7 @@ module RbVHDL::Ast
         :delay_format         => " %{delay}",
         :waveform_format      => "%{waveform}%{when?}",
         :when_format          => " %{_when_} %{condition}",
+        :target_align_enable  => false,
       }
 
       def _write_line(directive={})
