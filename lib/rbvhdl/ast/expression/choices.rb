@@ -92,8 +92,9 @@ module RbVHDL::Ast
     if    choice.class < RbVHDL::Ast::Expression::Choices then
       return choice
     elsif choice.class < RbVHDL::Ast::Expression  or
-          choice.class < Integer or
-          choice.class == Float
+          choice.class <  Integer or # for Ruby 2.3.7 or earlier
+          choice.class == Integer or # for Ruby 2.4.0 or later 
+          choice.class == Float then
       return self.choice_expression(choice)
     elsif choice.class < RbVHDL::Ast::Type::Range then
       return self.choice_range(choice)

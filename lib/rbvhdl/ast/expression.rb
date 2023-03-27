@@ -27,7 +27,9 @@ module RbVHDL::Ast
   def self.expression(arg)
     if    arg.class < RbVHDL::Ast::Expression then
       return arg
-    elsif arg.class < Integer or arg.class == Float then
+    elsif arg.class <  Integer or  # for Ruby 2.3.7 or earlier
+          arg.class == Integer or  # for Ruby 2.4.0 or later 
+          arg.class == Float   then
       return self.numeric_expression(arg)
     else
       raise ArgumentError, "#{self.inspect}.#{__method__}(#{arg.inspect}:#{arg.class})"

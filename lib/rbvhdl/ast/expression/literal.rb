@@ -148,7 +148,9 @@ module RbVHDL::Ast
   def self.decimal_literal(num)
     if    num.class == RbVHDL::Ast::Expression::DecimalLiteral then
       return num
-    elsif num.class < Integer and num >= 0   then
+    elsif num.class <  Integer and num >= 0  then # for Ruby 2.3.7 or earlier
+      return RbVHDL::Ast::Expression::DecimalLiteral.new(num)
+    elsif num.class == Integer and num >= 0  then # for Ruby 2.4.0 or later 
       return RbVHDL::Ast::Expression::DecimalLiteral.new(num)
     elsif num.class == Float  and num >= 0.0 then
       str     = num.to_s
@@ -184,7 +186,8 @@ module RbVHDL::Ast
   def self.exponent(num, sign=nil)
     if    num.class == RbVHDL::Ast::Expression::Exponent
       return num
-    elsif num.class < Integer then
+    elsif num.class <  Integer or   # for Ruby 2.3.7 or earlier
+          num.class == Integer then # for Ruby 2.4.0 or later 
       return RbVHDL::Ast::Expression::Exponent.new(num, sign)
     else
       raise ArgumentError, "#{self.inspect}.#{__method__}(#{base.inspect}:#{base.class},#{num.inspect}:#{num.class})"
