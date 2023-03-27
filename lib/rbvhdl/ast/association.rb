@@ -19,7 +19,8 @@ module RbVHDL::Ast
   def self.association(owner, formal, actual)
     if    formal.class <  RbVHDL::Ast::Association::FormalPart then
       formal_part = formal
-    elsif formal.class <  Integer then
+    elsif formal.class <  Integer or   # for Ruby 2.3.7 or earlier
+          formal.class == Integer then # for Ruby 2.4.0 or later 
       formal_part = self.association_formal_index(formal)
     else
       formal_part = self.association_formal_name(formal)
@@ -29,7 +30,8 @@ module RbVHDL::Ast
     elsif actual.class <  RbVHDL::Ast::Expression::Name  then
       actual_part = self.association_actual_name(actual)
     elsif actual.class <  RbVHDL::Ast::Expression        or
-          actual.class <  Integer or
+          actual.class <  Integer or   # for Ruby 2.3.7 or earlier
+          actual.class == Integer or   # for Ruby 2.4.0 or later 
           actual.class == Float   then
       actual_part = self.association_actual_expression(actual)
     else
